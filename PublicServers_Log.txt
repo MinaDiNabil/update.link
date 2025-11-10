@@ -1,0 +1,32 @@
+=== Public Servers Activity Log ===
+التاريخ: ٢٠٢٥-١١-١٠ ١٤:٢٥:٣٥
+نظام Android: 36 (Android 16)
+الجهاز: samsung SM-S928B
+========================================
+
+[١٤:٢٥:٣٥.٣٠١] === بدء تشغيل PublicServersActivity ===
+[١٤:٢٥:٣٥.٣٠١] onCreate: Starting...
+[١٤:٢٥:٣٥.٣٢٣] onCreate: ViewBinding تم بنجاح
+[١٤:٢٥:٣٥.٣٢٣] setupToolbar: بدء إعداد Toolbar...
+[١٤:٢٥:٣٥.٣٢٣] setupToolbar: تم تعيين Toolbar
+[١٤:٢٥:٣٥.٣٢٣] setupToolbar: تم الإنتهاء بنجاح
+[١٤:٢٥:٣٥.٣٢٣] onCreate: Toolbar تم إعداده بنجاح
+[١٤:٢٥:٣٥.٣٢٣] setupRecyclerView: بدء إعداد RecyclerView...
+[١٤:٢٥:٣٥.٣٢٣] setupRecyclerView: تم إنشاء Adapter
+[١٤:٢٥:٣٥.٣٢٣] setupRecyclerView: تم تعيين LayoutManager
+[١٤:٢٥:٣٥.٣٢٤] setupRecyclerView: تم تعيين Adapter
+[١٤:٢٥:٣٥.٣٢٤] setupRecyclerView: تم الإنتهاء بنجاح
+[١٤:٢٥:٣٥.٣٢٤] onCreate: RecyclerView تم إعداده بنجاح
+[١٤:٢٥:٣٥.٣٢٤] setupListeners: بدء إعداد Listeners...
+[١٤:٢٥:٣٥.٣٢٤] setupListeners: تم الإنتهاء بنجاح
+[١٤:٢٥:٣٥.٣٢٤] onCreate: Listeners تم إعدادها بنجاح
+[١٤:٢٥:٣٥.٣٢٤] loadServers: بدء تحميل السيرفرات...
+[١٤:٢٥:٣٥.٣٢٤] loadServers: تم عرض Loading UI
+[١٤:٢٥:٣٥.٣٢٤] loadServers: تم إنشاء السيرفرات التجريبية - العدد: 5
+[١٤:٢٥:٣٥.٣٢٤] loadServers: تم إضافة السيرفرات إلى القائمة
+[١٤:٢٥:٣٥.٣٢٤] loadServers: تم تحديث Adapter
+[١٤:٢٥:٣٥.٣٢٤] loadServers: تم عرض المحتوى بنجاح
+[١٤:٢٥:٣٥.٣٢٤] onCreate: تم تحميل السيرفرات بنجاح - عدد السيرفرات: 5
+
+========================================
+نهاية الـ Log
