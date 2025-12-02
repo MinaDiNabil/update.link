@@ -1,64 +1,23 @@
-Task :app:compileDebugKotlin FAILED
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/activities/MainActivity.kt:693:18 Unresolved reference 'notificationsUpdate'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/activities/MainActivity.kt:730:18 Unresolved reference 'updateConfig'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/activities/MainActivity.kt:742:81 Argument type mismatch: actual type is 'vpn.minapronet.com.eg.model.MinaConfig', but 'kotlin.String' was expected.
+Task :app:kaptDebugKotlin
 e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:152:33 Argument type mismatch: actual type is 'kotlin.String', but 'vpn.minapronet.com.eg.model.MinaConfig' was expected.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:179:34 Unresolved reference 'customSetup'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:180:33 Unresolved reference 'customSetup'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:184:29 Unresolved reference 'spinnerCustomMode'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:492:13 Unresolved reference 'spinnerServer'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:493:13 Unresolved reference 'spinnerNetwork'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:494:13 Unresolved reference 'spinnerServer'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:494:52 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:495:32 Unresolved reference 'spinnerServer'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:527:17 Unresolved reference 'spinnerServer'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:528:17 Unresolved reference 'spinnerNetwork'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:530:17 Unresolved reference 'spinnerServer'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:544:17 Unresolved reference 'spinnerNetwork'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:646:13 Unresolved reference 'spinnerCustomMode'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:647:13 Unresolved reference 'spinnerCustomMode'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:676:17 Unresolved reference 'spinnerCustomMode'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:726:9 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:726:22 Unresolved reference 'customSetup'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:726:35 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:727:13 Unresolved reference 'enableCustomSetup'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:727:31 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:727:37 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:728:17 Unresolved reference 'isChecked'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:729:17 Unresolved reference 'setOnCheckedChangeListener'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:729:46 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:729:49 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:740:17 Unresolved reference 'enableCustomSetup'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:749:13 Unresolved reference 'spinnerNetwork'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:750:13 Unresolved reference 'spinnerCustomMode'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1849:29 Unresolved reference 'connectionStatus'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1850:29 Unresolved reference 'connectionStatus'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1854:29 Unresolved reference 'connectionStatus'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1855:29 Unresolved reference 'connectionStatus'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1862:29 Unresolved reference 'connectionStatus'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1863:29 Unresolved reference 'connectionStatus'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1867:29 Unresolved reference 'connectionStatus'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1868:29 Unresolved reference 'connectionStatus'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1878:13 Unresolved reference 'spinnerServer'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1879:13 Unresolved reference 'spinnerNetwork'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1880:13 Unresolved reference 'customSetup'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1882:17 Unresolved reference 'spinnerCustomMode'.
 e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/xyz/chz/kntinjector/core/DNSThread.kt:67:17 Class '<anonymous>' is not abstract and does not implement abstract member 'onLine'.
 e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/xyz/chz/kntinjector/core/DNSThread.kt:69:21 'onLine' overrides nothing.
 e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/xyz/chz/kntinjector/core/Pdnsd.kt:58:17 Class '<anonymous>' is not abstract and does not implement abstract member 'onLine'.
 e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/xyz/chz/kntinjector/core/Pdnsd.kt:59:21 'onLine' overrides nothing.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/xyz/chz/udp/UDPHysteriaThread.kt:116:31 'val' cannot be reassigned.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/xyz/chz/udp/UDPHysteriaThread.kt:118:31 'val' cannot be reassigned.
 e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/xyz/chz/udp/UdpService.kt:194:9 Class '<anonymous>' is not abstract and does not implement abstract member 'onLine'.
 e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/xyz/chz/udp/UdpService.kt:195:13 'onLine' overrides nothing.
 
+> Task :app:compileDebugKotlin
+
+
+> Task :app:compileDebugKotlin FAILED
 FAILURE: Build failed with an exception.
 
+81 actionable tasks: 81 executed
 * What went wrong:
 Execution failed for task ':app:compileDebugKotlin'.
 > A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
    > Compilation error. See log for more details
-81 actionable tasks: 81 executed
 
 * Try:
 > Run with --stacktrace option to get the stack trace.
@@ -66,5 +25,5 @@ Execution failed for task ':app:compileDebugKotlin'.
 > Run with --scan to get full insights.
 > Get more help at https://help.gradle.org.
 
-BUILD FAILED in 5m 22s
+BUILD FAILED in 4m 18s
 Error: Process completed with exit code 1.
