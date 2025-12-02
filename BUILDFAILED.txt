@@ -14,11 +14,11 @@ For more details see https://docs.gradle.org/8.9/release-notes.html
 Starting a Gradle Daemon (subsequent builds will be faster)
 > Task :app:clean UP-TO-DATE
 > Task :clean UP-TO-DATE
-> Task :proxyserver:clean UP-TO-DATE
-> Task :trilead-ssh2:clean UP-TO-DATE
 > Task :spongycastle:clean UP-TO-DATE
+> Task :trilead-ssh2:clean UP-TO-DATE
+> Task :proxyserver:clean UP-TO-DATE
 
-BUILD SUCCESSFUL in 59s
+BUILD SUCCESSFUL in 1m 44s
 5 actionable tasks: 5 up-to-date
 WARNING: We recommend using a newer Android Gradle plugin to use compileSdk = 36
 
@@ -116,14 +116,14 @@ Note: Recompile with -Xlint:unchecked for details.
 > Task :proxyserver:processDebugManifest
 > Task :proxyserver:compileDebugLibraryResources
 > Task :proxyserver:javaPreCompileDebug
+
 warning: [options] source value 8 is obsolete and will be removed in a future release
-
-warning: [options] target value 8 is obsolete and will be removed in a future release
 > Task :proxyserver:compileDebugJavaWithJavac
-warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
-3 warnings
+warning: [options] target value 8 is obsolete and will be removed in a future release
 
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
 > Task :proxyserver:bundleLibCompileToJarDebug
+3 warnings
 > Task :proxyserver:bundleLibRuntimeToJarDebug
 > Task :proxyserver:processDebugJavaRes NO-SOURCE
 > Task :proxyserver:createFullJarDebug
@@ -142,31 +142,32 @@ warning: [options] To suppress warnings about obsolete options, use -Xlint:-opti
 > Task :proxyserver:compileDebugShaders NO-SOURCE
 > Task :proxyserver:generateDebugAssets UP-TO-DATE
 > Task :proxyserver:packageDebugAssets
-> Task :proxyserver:prepareDebugArtProfile
-> Task :proxyserver:mergeDebugJavaResource
-> Task :proxyserver:syncDebugLibJars
-> Task :proxyserver:bundleDebugLocalLintAar
-> Task :proxyserver:lintVitalAnalyzeDebug
-> Task :proxyserver:writeDebugLintModelMetadata
-> Task :proxyserver:generateDebugLintVitalModel
-> Task :proxyserver:copyDebugJniLibsProjectOnly
-> Task :proxyserver:bundleDebugAar
-> Task :proxyserver:assembleDebug
 > Task :app:buildKotlinToolingMetadata
 > Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
 > Task :app:preBuild UP-TO-DATE
 > Task :app:preDebugBuild UP-TO-DATE
 > Task :app:dataBindingMergeDependencyArtifactsDebug
 > Task :app:generateDebugResValues
+> Task :proxyserver:prepareDebugArtProfile
 > Task :app:generateDebugResources
 > Task :app:injectCrashlyticsMappingFileIdDebug
 > Task :app:processDebugGoogleServices
+> Task :proxyserver:mergeDebugJavaResource
+> Task :proxyserver:syncDebugLibJars
+> Task :proxyserver:bundleDebugLocalLintAar
+> Task :app:mergeDebugResources
+> Task :app:packageDebugResources
+> Task :app:parseDebugLocalResources
+> Task :proxyserver:lintVitalAnalyzeDebug
+> Task :proxyserver:writeDebugLintModelMetadata
+> Task :proxyserver:generateDebugLintVitalModel
+> Task :app:dataBindingGenBaseClassesDebug
+> Task :proxyserver:copyDebugJniLibsProjectOnly
 > Task :app:generateDebugBuildConfig
 > Task :app:checkDebugAarMetadata
 > Task :app:mapDebugSourceSetPaths
 > Task :app:createDebugCompatibleScreenManifests
 > Task :app:extractDeepLinksDebug
-> Task :app:mergeDebugResources
 
 > Task :app:processDebugMainManifest
 /home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/AndroidManifest.xml:51:9-41 Warning:
@@ -175,15 +176,14 @@ The AGP Upgrade Assistant can remove the attribute from the AndroidManifest.xml 
 /home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/AndroidManifest.xml:65:9-68:47 Warning:
 	property#android.adservices.AD_SERVICES_CONFIG@android:resource was tagged at AndroidManifest.xml:65 to replace other declarations but no other declaration present
 
-> Task :app:packageDebugResources
-> Task :app:parseDebugLocalResources
 > Task :app:processDebugManifest
-> Task :app:dataBindingGenBaseClassesDebug
 > Task :app:processDebugManifestForPackage
+> Task :app:processDebugResources
+> Task :proxyserver:bundleDebugAar
+> Task :proxyserver:assembleDebug
 > Task :app:javaPreCompileDebug
 > Task :app:extractProguardFiles
 > Task :app:mergeDebugJniLibFolders
-> Task :app:processDebugResources
 > Task :app:mergeDebugNativeLibs
 
 > Task :app:stripDebugDebugSymbols
@@ -192,15 +192,15 @@ Unable to strip the following libraries, packaging them as they are: libchzcore.
 > Task :app:extractDebugNativeSymbolTables
 > Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
 > Task :app:mergeDebugArtProfile
+> Task :app:kaptGenerateStubsDebugKotlin
 > Task :app:desugarDebugFileDependencies
 > Task :app:checkDebugDuplicateClasses
 > Task :app:mergeDebugStartupProfile
-> Task :app:kaptGenerateStubsDebugKotlin
-> Task :app:mergeExtDexDebug
 
 > Task :app:kaptGenerateStubsDebugKotlin
 w: Kapt currently doesn't support language version 2.0+. Falling back to 1.9.
 
+> Task :app:mergeExtDexDebug
 > Task :app:mergeDebugShaders
 > Task :app:compileDebugShaders NO-SOURCE
 > Task :app:generateDebugAssets UP-TO-DATE
@@ -214,179 +214,16 @@ w: Kapt currently doesn't support language version 2.0+. Falling back to 1.9.
 > Task :app:writeDebugAppMetadata
 > Task :app:writeDebugSigningConfigVersions
 > Task :app:kaptDebugKotlin
-
 e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/activities/MainActivity.kt:676:18 Unresolved reference 'checkAppUpdate'.
+
 e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/activities/MainActivity.kt:686:18 Unresolved reference 'notificationsUpdate'.
 e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/activities/MainActivity.kt:723:18 Unresolved reference 'updateConfig'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:180:29 Unresolved reference 'spinnerCustomMode'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:185:39 Unresolved reference 'v2rayLinkEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:189:57 Unresolved reference 'v2rayLinkEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:488:13 Unresolved reference 'spinnerServer'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:489:13 Unresolved reference 'spinnerNetwork'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:490:13 Unresolved reference 'spinnerServer'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:490:52 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:491:32 Unresolved reference 'spinnerServer'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:523:17 Unresolved reference 'spinnerServer'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:524:17 Unresolved reference 'spinnerNetwork'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:526:17 Unresolved reference 'spinnerServer'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:540:17 Unresolved reference 'spinnerNetwork'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:644:17 Unresolved reference 'spinnerCustomMode'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:703:13 Unresolved reference 'spinnerNetwork'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:704:13 Unresolved reference 'spinnerCustomMode'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:711:13 Unresolved reference 'linearSsh'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:712:13 Unresolved reference 'linearV2ray'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:713:13 Unresolved reference 'linearSlowDns'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:714:13 Unresolved reference 'linearUdp'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:716:13 Unresolved reference 'linearSlowDnsV2ray'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:717:13 Unresolved reference 'linearHys2'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:718:13 Unresolved reference 'linearOpenVPN'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:747:17 Unresolved reference 'v2rayLinkEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:749:21 Unresolved reference 'v2rayLinkEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:751:33 Unresolved reference 'v2rayLinkTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:757:17 Unresolved reference 'udpServerEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:759:21 Unresolved reference 'udpServerEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:761:33 Unresolved reference 'udpServerTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:767:17 Unresolved reference 'udpPortEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:769:21 Unresolved reference 'udpPortEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:771:33 Unresolved reference 'udpPortTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:777:17 Unresolved reference 'udpObfsEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:779:21 Unresolved reference 'udpObfsEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:781:33 Unresolved reference 'udpObfsTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:787:17 Unresolved reference 'udpAuthPortEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:789:21 Unresolved reference 'udpAuthPortEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:791:33 Unresolved reference 'udpAuthTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:797:17 Unresolved reference 'udpUpDownEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:799:21 Unresolved reference 'udpUpDownEditText'.
-> Task :app:compileDebugKotlin
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:801:33 Unresolved reference 'udpUpDownTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:807:17 Unresolved reference 'slowDnsV2rayEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:809:21 Unresolved reference 'slowDnsV2rayEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:811:33 Unresolved reference 'slowDnsV2rayTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:817:17 Unresolved reference 'slowDnsNSV2rayEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:819:21 Unresolved reference 'slowDnsNSV2rayEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:821:33 Unresolved reference 'slowDnsNSV2rayTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:827:17 Unresolved reference 'slowDnsPubKeyV2rayEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:829:21 Unresolved reference 'slowDnsPubKeyV2rayEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:831:33 Unresolved reference 'slowDnsPubKeyV2rayTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:837:17 Unresolved reference 'slowDnsLinkV2rayEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:839:21 Unresolved reference 'slowDnsLinkV2rayEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:841:33 Unresolved reference 'slowDnsLinkV2rayTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:847:17 Unresolved reference 'slowDnsEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:849:21 Unresolved reference 'slowDnsEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:851:33 Unresolved reference 'slowDnsTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:860:17 Unresolved reference 'hysteriaLinkEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:862:21 Unresolved reference 'hysteriaLinkEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:864:33 Unresolved reference 'hysteriaTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:874:17 Unresolved reference 'openUserPassEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:876:21 Unresolved reference 'openUserPassEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:883:17 Unresolved reference 'openCfgEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:883:33 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:883:39 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:884:21 Unresolved reference 'isSingleLine'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:885:21 Unresolved reference 'maxLines'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:888:21 Unresolved reference 'openCfgEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:896:31 Unresolved reference 'cbUsePayload'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:898:21 Unresolved reference 'payloadTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:902:31 Unresolved reference 'cbUseProxy'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:904:21 Unresolved reference 'proxyTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:908:31 Unresolved reference 'cbUseSni'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:910:21 Unresolved reference 'sniTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:914:17 Unresolved reference 'sniEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:915:31 Unresolved reference 'sniEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:915:56 Unresolved reference 'sniTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:920:17 Unresolved reference 'proxyEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:922:21 Unresolved reference 'proxyEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:924:21 Unresolved reference 'proxyTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:932:21 Unresolved reference 'payloadEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:934:21 Unresolved reference 'payloadTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:941:17 Unresolved reference 'payloadTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:949:9 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:949:29 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:952:17 Unresolved reference 'v2rayAddEditButton'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:952:47 Unresolved reference 'v2rayLinkEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:959:13 Unresolved reference 'v2rayLinkEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:962:17 Unresolved reference 'v2rayTestButton'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:965:17 Unresolved reference 'v2rayTestButton'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:969:13 Unresolved reference 'v2rayTestButton'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:970:28 Unresolved reference 'v2rayLinkEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:980:13 Unresolved reference 'v2rayAddEditButton'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1131:42 Unresolved reference 'v2rayLinkEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1188:27 Unresolved reference 'v2rayLinkEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1455:23 Unresolved reference 'v2rayTestButton'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1456:23 Unresolved reference 'v2rayTestButton'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1465:39 Unresolved reference 'v2rayTestButton'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1466:39 Unresolved reference 'v2rayTestButton'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1492:35 Unresolved reference 'v2rayTestButton'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1493:35 Unresolved reference 'v2rayTestButton'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1494:35 Unresolved reference 'v2rayTestButton'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1510:23 Unresolved reference 'v2rayTestButton'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1511:23 Unresolved reference 'v2rayTestButton'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1512:23 Unresolved reference 'v2rayTestButton'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1604:52 Unresolved reference 'payloadTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1611:43 Unresolved reference 'slowDnsEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1614:35 Unresolved reference 'slowDnsTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1615:35 Unresolved reference 'slowDnsTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1618:35 Unresolved reference 'slowDnsTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1619:35 Unresolved reference 'slowDnsTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1621:50 Unresolved reference 'slowDnsV2rayEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1624:35 Unresolved reference 'slowDnsV2rayTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1625:35 Unresolved reference 'slowDnsV2rayTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1628:35 Unresolved reference 'slowDnsV2rayTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1629:35 Unresolved reference 'slowDnsV2rayTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1631:50 Unresolved reference 'udpPortEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1634:35 Unresolved reference 'udpPortTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1635:35 Unresolved reference 'udpPortTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1638:35 Unresolved reference 'udpPortTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1639:35 Unresolved reference 'udpPortTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1641:50 Unresolved reference 'udpUpDownEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1644:35 Unresolved reference 'udpUpDownTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1645:35 Unresolved reference 'udpUpDownTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1648:35 Unresolved reference 'udpUpDownTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1649:35 Unresolved reference 'udpUpDownTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1651:50 Unresolved reference 'proxyEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1654:35 Unresolved reference 'proxyTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1655:35 Unresolved reference 'proxyTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1658:35 Unresolved reference 'proxyTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1659:35 Unresolved reference 'proxyTextInputLayout'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1699:39 Unresolved reference 'payloadEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1723:29 Unresolved reference 'connectionStatus'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1724:29 Unresolved reference 'connectionStatus'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1728:29 Unresolved reference 'connectionStatus'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1729:29 Unresolved reference 'connectionStatus'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1736:29 Unresolved reference 'connectionStatus'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1737:29 Unresolved reference 'connectionStatus'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1741:29 Unresolved reference 'connectionStatus'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1742:29 Unresolved reference 'connectionStatus'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1752:13 Unresolved reference 'spinnerServer'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1753:13 Unresolved reference 'spinnerNetwork'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1756:17 Unresolved reference 'spinnerCustomMode'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1757:17 Unresolved reference 'cbUsePayload'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1758:17 Unresolved reference 'cbUseProxy'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1759:17 Unresolved reference 'cbUseSni'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1760:17 Unresolved reference 'proxyEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1761:17 Unresolved reference 'payloadEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1762:17 Unresolved reference 'sniEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1763:17 Unresolved reference 'v2rayLinkEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1764:17 Unresolved reference 'slowDnsEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1765:17 Unresolved reference 'udpServerEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1766:17 Unresolved reference 'udpPortEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1767:17 Unresolved reference 'udpObfsEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1768:17 Unresolved reference 'udpAuthPortEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1769:17 Unresolved reference 'udpUpDownEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1770:17 Unresolved reference 'slowDnsV2rayEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1771:17 Unresolved reference 'slowDnsNSV2rayEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1772:17 Unresolved reference 'slowDnsPubKeyV2rayEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1773:17 Unresolved reference 'slowDnsLinkV2rayEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1774:17 Unresolved reference 'hysteriaLinkEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1775:17 Unresolved reference 'openUserPassEditText'.
-e: file:///home/runner/work/PsiphonPlus/PsiphonPlus/app/src/main/java/vpn/minapronet/com/eg/ui/fragment/HomeFragment.kt:1776:17 Unresolved reference 'openCfgEditText'.
-
-
-FAILURE: Build failed with an exception.
 > Task :app:compileDebugKotlin FAILED
 
-81 actionable tasks: 81 executed
+FAILURE: Build failed with an exception.
+
 * What went wrong:
+81 actionable tasks: 81 executed
 Execution failed for task ':app:compileDebugKotlin'.
 > A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
    > Compilation error. See log for more details
@@ -397,5 +234,5 @@ Execution failed for task ':app:compileDebugKotlin'.
 > Run with --scan to get full insights.
 > Get more help at https://help.gradle.org.
 
-BUILD FAILED in 5m 21s
+BUILD FAILED in 5m 38s
 Error: Process completed with exit code 1.
