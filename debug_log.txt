@@ -1,0 +1,186 @@
+
+========== APP STARTED ==========
+CrashLogger initialized
+App version: 61.0.0
+Device: samsung SM-S928B
+Android: 16 (API 36)
+Primary log dir: /storage/emulated/0/Android/data/vpn.minapronet.com.eg/files/logs
+Downloads log dir: /storage/emulated/0/Download/MinaProNetVPN
+==================================
+[2025-12-02 06:40:43.026] Application onCreate started
+[2025-12-02 06:40:43.045] Application onCreate completed
+[2025-12-02 06:40:51.249] [V2Ray] VrayService onCreate started
+[2025-12-02 06:40:51.256] [V2Ray] Setting V2RayManager.serviceControl...
+[2025-12-02 06:40:51.259] [V2Ray] Setting Seq context...
+[2025-12-02 06:40:51.338] [V2Ray] Seq context set successfully
+[2025-12-02 06:40:51.342] [V2Ray] Initializing core environment...
+[2025-12-02 06:40:51.346] [V2Ray] Core environment initialized successfully
+[2025-12-02 06:40:51.349] [V2Ray] V2RayManager.serviceControl set successfully
+[2025-12-02 06:40:51.352] [V2Ray] VrayService onCreate completed
+[2025-12-02 06:40:51.360] [V2Ray] Deserializing ConfigResult...
+[2025-12-02 06:40:51.363] [V2Ray] ConfigResult deserialized successfully
+[2025-12-02 06:40:51.367] [V2Ray] Deserializing ProfileItem...
+[2025-12-02 06:40:51.370] [V2Ray] ProfileItem deserialized: true
+[2025-12-02 06:40:51.372] [V2Ray] V2Ray version: Xray-core v25.10.15 (build: 20251201-1507)
+[2025-12-02 06:40:51.376] [V2Ray] Calling V2RayManager.startCore...
+[2025-12-02 06:40:51.378] [V2Ray] startCore called
+[2025-12-02 06:40:51.381] [V2Ray] ProfileItem: ProfileItem(configVersion=4, configType=VMESS, subscriptionId=, addedTime=1764650451232, remarks=⭐V2RAY SNI/TLS⭐, server=v2ray-servers.minapronetvpn.com, serverPort=443, password=03fcc618-b93d-6796-6aed-8a38c975d581, method=auto, flow=null, username=null, network=ws, headerType=, host=v2ray-servers.minapronetvpn.com, path=/linkvws, seed=null, quicSecurity=null, quicKey=null, mode=null, serviceName=null, authority=null, xhttpMode=null, xhttpExtra=null, security=tls, sni=m.whatsapp.net, alpn=, fingerPrint=, insecure=true, publicKey=null, shortId=null, spiderX=null, secretKey=null, preSharedKey=null, localAddress=null, reserved=null, mtu=null, obfsPassword=null, portHopping=null, portHoppingInterval=null, pinSHA256=null, bandwidthDown=null, bandwidthUp=null)
+[2025-12-02 06:40:51.384] [V2Ray] ConfigResult status: true, content length: 1986
+[2025-12-02 06:40:51.393] [V2Ray] Checking if coreController is running...
+[2025-12-02 06:40:51.406] [V2Ray] Initializing CoreController...
+[2025-12-02 06:40:51.410] [V2Ray] CoreController initialized successfully
+[2025-12-02 06:40:51.412] [V2Ray] Core is not running, starting...
+[2025-12-02 06:40:51.415] [V2Ray] Testing config...
+[2025-12-02 06:40:51.426] [V2Ray] Config test passed
+[2025-12-02 06:40:51.429] [V2Ray] Starting loop...
+
+========== APP STARTED ==========
+CrashLogger initialized
+App version: 61.0.0
+Device: samsung SM-S928B
+Android: 16 (API 36)
+Primary log dir: /storage/emulated/0/Android/data/vpn.minapronet.com.eg/files/logs
+Downloads log dir: /storage/emulated/0/Download/MinaProNetVPN
+==================================
+[2025-12-02 06:40:58.395] Application onCreate started
+[2025-12-02 06:40:58.419] Application onCreate completed
+[2025-12-02 06:40:58.592] [V2Ray] VrayService onCreate started
+[2025-12-02 06:40:58.596] [V2Ray] Setting V2RayManager.serviceControl...
+[2025-12-02 06:40:58.598] [V2Ray] Setting Seq context...
+[2025-12-02 06:40:58.615] [V2Ray] Seq context set successfully
+[2025-12-02 06:40:58.618] [V2Ray] Initializing core environment...
+[2025-12-02 06:40:58.622] [V2Ray] Core environment initialized successfully
+[2025-12-02 06:40:58.625] [V2Ray] V2RayManager.serviceControl set successfully
+[2025-12-02 06:40:58.627] [V2Ray] VrayService onCreate completed
+[2025-12-02 06:40:58.657] [V2Ray] Deserializing ConfigResult...
+[2025-12-02 06:40:58.663] [V2Ray] ConfigResult deserialized successfully
+[2025-12-02 06:40:58.667] [V2Ray] Deserializing ProfileItem...
+[2025-12-02 06:40:58.671] [V2Ray] ProfileItem deserialized: true
+[2025-12-02 06:40:58.674] [V2Ray] V2Ray version: Xray-core v25.10.15 (build: 20251201-1507)
+[2025-12-02 06:40:58.678] [V2Ray] Calling V2RayManager.startCore...
+[2025-12-02 06:40:58.686] [V2Ray] startCore called
+[2025-12-02 06:40:58.689] [V2Ray] ProfileItem: ProfileItem(configVersion=4, configType=VMESS, subscriptionId=, addedTime=1764650451232, remarks=⭐V2RAY SNI/TLS⭐, server=v2ray-servers.minapronetvpn.com, serverPort=443, password=03fcc618-b93d-6796-6aed-8a38c975d581, method=auto, flow=null, username=null, network=ws, headerType=, host=v2ray-servers.minapronetvpn.com, path=/linkvws, seed=null, quicSecurity=null, quicKey=null, mode=null, serviceName=null, authority=null, xhttpMode=null, xhttpExtra=null, security=tls, sni=m.whatsapp.net, alpn=, fingerPrint=, insecure=true, publicKey=null, shortId=null, spiderX=null, secretKey=null, preSharedKey=null, localAddress=null, reserved=null, mtu=null, obfsPassword=null, portHopping=null, portHoppingInterval=null, pinSHA256=null, bandwidthDown=null, bandwidthUp=null)
+[2025-12-02 06:40:58.695] [V2Ray] ConfigResult status: true, content length: 1986
+[2025-12-02 06:40:58.697] [V2Ray] Checking if coreController is running...
+[2025-12-02 06:40:58.701] [V2Ray] Initializing CoreController...
+[2025-12-02 06:40:58.703] [V2Ray] CoreController initialized successfully
+[2025-12-02 06:40:58.705] [V2Ray] Core is not running, starting...
+[2025-12-02 06:40:58.707] [V2Ray] Testing config...
+[2025-12-02 06:40:58.712] [V2Ray] Config test passed
+[2025-12-02 06:40:58.714] [V2Ray] Starting loop...
+
+========== APP STARTED ==========
+CrashLogger initialized
+App version: 61.0.0
+Device: samsung SM-S928B
+Android: 16 (API 36)
+Primary log dir: /storage/emulated/0/Android/data/vpn.minapronet.com.eg/files/logs
+Downloads log dir: /storage/emulated/0/Download/MinaProNetVPN
+==================================
+[2025-12-02 06:41:02.388] Application onCreate started
+[2025-12-02 06:41:02.418] Application onCreate completed
+[2025-12-02 06:41:12.484] [V2Ray] VrayService onCreate started
+[2025-12-02 06:41:12.492] [V2Ray] Setting V2RayManager.serviceControl...
+[2025-12-02 06:41:12.494] [V2Ray] Setting Seq context...
+[2025-12-02 06:41:12.519] [V2Ray] Seq context set successfully
+[2025-12-02 06:41:12.522] [V2Ray] Initializing core environment...
+[2025-12-02 06:41:12.526] [V2Ray] Core environment initialized successfully
+[2025-12-02 06:41:12.528] [V2Ray] V2RayManager.serviceControl set successfully
+[2025-12-02 06:41:12.531] [V2Ray] VrayService onCreate completed
+[2025-12-02 06:41:12.539] [V2Ray] Deserializing ConfigResult...
+[2025-12-02 06:41:12.550] [V2Ray] ConfigResult deserialized successfully
+[2025-12-02 06:41:12.554] [V2Ray] Deserializing ProfileItem...
+[2025-12-02 06:41:12.558] [V2Ray] ProfileItem deserialized: true
+[2025-12-02 06:41:12.563] [V2Ray] V2Ray version: Xray-core v25.10.15 (build: 20251201-1507)
+[2025-12-02 06:41:12.567] [V2Ray] Calling V2RayManager.startCore...
+[2025-12-02 06:41:12.572] [V2Ray] startCore called
+[2025-12-02 06:41:12.576] [V2Ray] ProfileItem: ProfileItem(configVersion=4, configType=VMESS, subscriptionId=, addedTime=1764650472473, remarks=⭐V2RAY SNI/TLS⭐, server=v2ray-servers.minapronetvpn.com, serverPort=443, password=03fcc618-b93d-6796-6aed-8a38c975d581, method=auto, flow=null, username=null, network=ws, headerType=, host=v2ray-servers.minapronetvpn.com, path=/linkvws, seed=null, quicSecurity=null, quicKey=null, mode=null, serviceName=null, authority=null, xhttpMode=null, xhttpExtra=null, security=tls, sni=m.whatsapp.net, alpn=, fingerPrint=, insecure=true, publicKey=null, shortId=null, spiderX=null, secretKey=null, preSharedKey=null, localAddress=null, reserved=null, mtu=null, obfsPassword=null, portHopping=null, portHoppingInterval=null, pinSHA256=null, bandwidthDown=null, bandwidthUp=null)
+[2025-12-02 06:41:12.581] [V2Ray] ConfigResult status: true, content length: 1986
+[2025-12-02 06:41:12.589] [V2Ray] Checking if coreController is running...
+[2025-12-02 06:41:12.594] [V2Ray] Initializing CoreController...
+[2025-12-02 06:41:12.600] [V2Ray] CoreController initialized successfully
+[2025-12-02 06:41:12.606] [V2Ray] Core is not running, starting...
+[2025-12-02 06:41:12.612] [V2Ray] Testing config...
+[2025-12-02 06:41:12.623] [V2Ray] Config test passed
+[2025-12-02 06:41:12.637] [V2Ray] Starting loop...
+
+========== APP STARTED ==========
+CrashLogger initialized
+App version: 61.0.0
+Device: samsung SM-S928B
+Android: 16 (API 36)
+Primary log dir: /storage/emulated/0/Android/data/vpn.minapronet.com.eg/files/logs
+Downloads log dir: /storage/emulated/0/Download/MinaProNetVPN
+==================================
+[2025-12-02 06:41:15.973] Application onCreate started
+[2025-12-02 06:41:16.000] Application onCreate completed
+[2025-12-02 06:41:16.037] [V2Ray] VrayService onCreate started
+[2025-12-02 06:41:16.041] [V2Ray] Setting V2RayManager.serviceControl...
+[2025-12-02 06:41:16.044] [V2Ray] Setting Seq context...
+[2025-12-02 06:41:16.058] [V2Ray] Seq context set successfully
+[2025-12-02 06:41:16.070] [V2Ray] Initializing core environment...
+[2025-12-02 06:41:16.074] [V2Ray] Core environment initialized successfully
+[2025-12-02 06:41:16.076] [V2Ray] V2RayManager.serviceControl set successfully
+[2025-12-02 06:41:16.079] [V2Ray] VrayService onCreate completed
+[2025-12-02 06:41:16.083] [V2Ray] Deserializing ConfigResult...
+[2025-12-02 06:41:16.087] [V2Ray] ConfigResult deserialized successfully
+[2025-12-02 06:41:16.090] [V2Ray] Deserializing ProfileItem...
+[2025-12-02 06:41:16.094] [V2Ray] ProfileItem deserialized: true
+[2025-12-02 06:41:16.097] [V2Ray] V2Ray version: Xray-core v25.10.15 (build: 20251201-1507)
+[2025-12-02 06:41:16.099] [V2Ray] Calling V2RayManager.startCore...
+[2025-12-02 06:41:16.102] [V2Ray] startCore called
+[2025-12-02 06:41:16.104] [V2Ray] ProfileItem: ProfileItem(configVersion=4, configType=VMESS, subscriptionId=, addedTime=1764650472473, remarks=⭐V2RAY SNI/TLS⭐, server=v2ray-servers.minapronetvpn.com, serverPort=443, password=03fcc618-b93d-6796-6aed-8a38c975d581, method=auto, flow=null, username=null, network=ws, headerType=, host=v2ray-servers.minapronetvpn.com, path=/linkvws, seed=null, quicSecurity=null, quicKey=null, mode=null, serviceName=null, authority=null, xhttpMode=null, xhttpExtra=null, security=tls, sni=m.whatsapp.net, alpn=, fingerPrint=, insecure=true, publicKey=null, shortId=null, spiderX=null, secretKey=null, preSharedKey=null, localAddress=null, reserved=null, mtu=null, obfsPassword=null, portHopping=null, portHoppingInterval=null, pinSHA256=null, bandwidthDown=null, bandwidthUp=null)
+[2025-12-02 06:41:16.107] [V2Ray] ConfigResult status: true, content length: 1986
+[2025-12-02 06:41:16.109] [V2Ray] Checking if coreController is running...
+[2025-12-02 06:41:16.112] [V2Ray] Initializing CoreController...
+[2025-12-02 06:41:16.115] [V2Ray] CoreController initialized successfully
+[2025-12-02 06:41:16.119] [V2Ray] Core is not running, starting...
+[2025-12-02 06:41:16.122] [V2Ray] Testing config...
+[2025-12-02 06:41:16.129] [V2Ray] Config test passed
+[2025-12-02 06:41:16.132] [V2Ray] Starting loop...
+
+========== APP STARTED ==========
+CrashLogger initialized
+App version: 61.0.0
+Device: samsung SM-S928B
+Android: 16 (API 36)
+Primary log dir: /storage/emulated/0/Android/data/vpn.minapronet.com.eg/files/logs
+Downloads log dir: /storage/emulated/0/Download/MinaProNetVPN
+==================================
+[2025-12-02 06:41:16.668] Application onCreate started
+[2025-12-02 06:41:16.692] Application onCreate completed
+[2025-12-02 06:41:16.824] [V2Ray] VrayService onCreate started
+[2025-12-02 06:41:16.827] [V2Ray] Setting V2RayManager.serviceControl...
+[2025-12-02 06:41:16.829] [V2Ray] Setting Seq context...
+[2025-12-02 06:41:16.852] [V2Ray] Seq context set successfully
+[2025-12-02 06:41:16.856] [V2Ray] Initializing core environment...
+[2025-12-02 06:41:16.860] [V2Ray] Core environment initialized successfully
+[2025-12-02 06:41:16.863] [V2Ray] V2RayManager.serviceControl set successfully
+[2025-12-02 06:41:16.866] [V2Ray] VrayService onCreate completed
+[2025-12-02 06:41:16.872] [V2Ray] Deserializing ConfigResult...
+[2025-12-02 06:41:16.876] [V2Ray] ConfigResult deserialized successfully
+[2025-12-02 06:41:16.879] [V2Ray] Deserializing ProfileItem...
+[2025-12-02 06:41:16.883] [V2Ray] ProfileItem deserialized: true
+[2025-12-02 06:41:16.886] [V2Ray] V2Ray version: Xray-core v25.10.15 (build: 20251201-1507)
+[2025-12-02 06:41:16.890] [V2Ray] Calling V2RayManager.startCore...
+[2025-12-02 06:41:16.892] [V2Ray] startCore called
+[2025-12-02 06:41:16.895] [V2Ray] ProfileItem: ProfileItem(configVersion=4, configType=VMESS, subscriptionId=, addedTime=1764650472473, remarks=⭐V2RAY SNI/TLS⭐, server=v2ray-servers.minapronetvpn.com, serverPort=443, password=03fcc618-b93d-6796-6aed-8a38c975d581, method=auto, flow=null, username=null, network=ws, headerType=, host=v2ray-servers.minapronetvpn.com, path=/linkvws, seed=null, quicSecurity=null, quicKey=null, mode=null, serviceName=null, authority=null, xhttpMode=null, xhttpExtra=null, security=tls, sni=m.whatsapp.net, alpn=, fingerPrint=, insecure=true, publicKey=null, shortId=null, spiderX=null, secretKey=null, preSharedKey=null, localAddress=null, reserved=null, mtu=null, obfsPassword=null, portHopping=null, portHoppingInterval=null, pinSHA256=null, bandwidthDown=null, bandwidthUp=null)
+[2025-12-02 06:41:16.898] [V2Ray] ConfigResult status: true, content length: 1986
+[2025-12-02 06:41:16.901] [V2Ray] Checking if coreController is running...
+[2025-12-02 06:41:16.904] [V2Ray] Initializing CoreController...
+[2025-12-02 06:41:16.907] [V2Ray] CoreController initialized successfully
+[2025-12-02 06:41:16.910] [V2Ray] Core is not running, starting...
+[2025-12-02 06:41:16.914] [V2Ray] Testing config...
+[2025-12-02 06:41:16.922] [V2Ray] Config test passed
+[2025-12-02 06:41:16.926] [V2Ray] Starting loop...
+
+========== APP STARTED ==========
+CrashLogger initialized
+App version: 61.0.0
+Device: samsung SM-S928B
+Android: 16 (API 36)
+Primary log dir: /storage/emulated/0/Android/data/vpn.minapronet.com.eg/files/logs
+Downloads log dir: /storage/emulated/0/Download/MinaProNetVPN
+==================================
+[2025-12-02 06:41:17.686] Application onCreate started
+[2025-12-02 06:41:17.719] Application onCreate completed
