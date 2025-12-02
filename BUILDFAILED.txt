@@ -1,0 +1,162 @@
+Run ./gradlew clean && ./gradlew assembleDebug
+Downloading https://services.gradle.org/distributions/gradle-8.9-bin.zip
+............10%.............20%.............30%.............40%.............50%.............60%.............70%.............80%.............90%.............100%
+
+Welcome to Gradle 8.9!
+
+Here are the highlights of this release:
+ - Enhanced Error and Warning Messages
+ - IDE Integration Improvements
+ - Daemon JVM Information
+
+For more details see https://docs.gradle.org/8.9/release-notes.html
+
+Starting a Gradle Daemon (subsequent builds will be faster)
+> Task :clean UP-TO-DATE
+> Task :app:clean UP-TO-DATE
+> Task :spongycastle:clean UP-TO-DATE
+> Task :proxyserver:clean UP-TO-DATE
+> Task :trilead-ssh2:clean UP-TO-DATE
+
+BUILD SUCCESSFUL in 1m 4s
+5 actionable tasks: 5 up-to-date
+WARNING: We recommend using a newer Android Gradle plugin to use compileSdk = 36
+
+This Android Gradle plugin (8.7.1) was tested up to compileSdk = 35.
+
+You are strongly encouraged to update your project to use a newer
+Android Gradle plugin that has been tested with compileSdk = 36.
+
+If you are already using the latest version of the Android Gradle plugin,
+you may need to wait until a newer version with support for compileSdk = 36 is available.
+
+For more information refer to the compatibility table:
+https://d.android.com/r/tools/api-level-support
+
+To suppress this warning, add/update
+    android.suppressUnsupportedCompileSdk=34,35,36
+to this project's gradle.properties.
+
+> Task :spongycastle:compileJava
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+/home/runner/work/PsiphonPlus/PsiphonPlus/spongycastle/src/main/java/org/spongycastle/util/Strings.java:6: warning: [removal] AccessController in java.security has been deprecated and marked for removal
+import java.security.AccessController;
+                    ^
+/home/runner/work/PsiphonPlus/PsiphonPlus/spongycastle/src/main/java/org/spongycastle/util/Strings.java:18: warning: [removal] AccessController in java.security has been deprecated and marked for removal
+          AccessController.doPrivileged(
+          ^
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+5 warnings
+
+> Task :spongycastle:processResources NO-SOURCE
+> Task :spongycastle:classes
+> Task :spongycastle:jar
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+
+> Task :trilead-ssh2:compileJava
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+/home/runner/work/PsiphonPlus/PsiphonPlus/trilead-ssh2/src/main/java/net/i2p/crypto/eddsa/EdDSASecurityProvider.java:12: warning: [removal] AccessController in java.security has been deprecated and marked for removal
+import java.security.AccessController;
+                    ^
+/home/runner/work/PsiphonPlus/PsiphonPlus/trilead-ssh2/src/main/java/com/trilead/ssh2/channel/ChannelManager.java:364: warning: [removal] Integer(int) in Integer has been deprecated and marked for removal
+      Integer key = new Integer(bindPort);
+                    ^
+/home/runner/work/PsiphonPlus/PsiphonPlus/trilead-ssh2/src/main/java/com/trilead/ssh2/channel/ChannelManager.java:400: warning: [removal] Integer(int) in Integer has been deprecated and marked for removal
+      rfd = (RemoteForwardingData) remoteForwardings.get(new Integer(bindPort));
+                                                         ^
+/home/runner/work/PsiphonPlus/PsiphonPlus/trilead-ssh2/src/main/java/com/trilead/ssh2/channel/ChannelManager.java:991: warning: [removal] Integer(int) in Integer has been deprecated and marked for removal
+        rfd = (RemoteForwardingData) remoteForwardings.get(new Integer(remoteConnectedPort));
+                                                           ^
+/home/runner/work/PsiphonPlus/PsiphonPlus/trilead-ssh2/src/main/java/com/trilead/ssh2/channel/ChannelManager.java:1081: warning: [removal] Integer(int) in Integer has been deprecated and marked for removal
+        c.exit_status = new Integer(exit_status);
+                        ^
+/home/runner/work/PsiphonPlus/PsiphonPlus/trilead-ssh2/src/main/java/com/trilead/ssh2/SFTPv3Client.java:268: warning: [removal] Long(long) in Long has been deprecated and marked for removal
+      fa.size = new Long(tr.readUINT64());
+                ^
+/home/runner/work/PsiphonPlus/PsiphonPlus/trilead-ssh2/src/main/java/com/trilead/ssh2/SFTPv3Client.java:273: warning: [removal] Integer(int) in Integer has been deprecated and marked for removal
+      fa.uid = new Integer(tr.readUINT32());
+               ^
+/home/runner/work/PsiphonPlus/PsiphonPlus/trilead-ssh2/src/main/java/com/trilead/ssh2/SFTPv3Client.java:274: warning: [removal] Integer(int) in Integer has been deprecated and marked for removal
+      fa.gid = new Integer(tr.readUINT32());
+               ^
+/home/runner/work/PsiphonPlus/PsiphonPlus/trilead-ssh2/src/main/java/com/trilead/ssh2/SFTPv3Client.java:279: warning: [removal] Integer(int) in Integer has been deprecated and marked for removal
+      fa.permissions = new Integer(tr.readUINT32());
+                       ^
+/home/runner/work/PsiphonPlus/PsiphonPlus/trilead-ssh2/src/main/java/com/trilead/ssh2/SFTPv3Client.java:284: warning: [removal] Long(long) in Long has been deprecated and marked for removal
+      fa.atime = new Long(((long) tr.readUINT32()) & 0xffffffffl);
+                 ^
+/home/runner/work/PsiphonPlus/PsiphonPlus/trilead-ssh2/src/main/java/com/trilead/ssh2/SFTPv3Client.java:285: warning: [removal] Long(long) in Long has been deprecated and marked for removal
+      fa.mtime = new Long(((long) tr.readUINT32()) & 0xffffffffl);
+                 ^
+/home/runner/work/PsiphonPlus/PsiphonPlus/trilead-ssh2/src/main/java/net/i2p/crypto/eddsa/EdDSASecurityProvider.java:32: warning: [removal] AccessController in java.security has been deprecated and marked for removal
+    AccessController.doPrivileged(
+    ^
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+15 warnings
+
+> Task :trilead-ssh2:processResources NO-SOURCE
+> Task :trilead-ssh2:classes
+> Task :trilead-ssh2:jar
+> Task :proxyserver:preBuild UP-TO-DATE
+> Task :proxyserver:preDebugBuild UP-TO-DATE
+> Task :proxyserver:generateDebugResValues
+> Task :proxyserver:generateDebugResources
+> Task :proxyserver:packageDebugResources
+> Task :proxyserver:parseDebugLocalResources
+> Task :proxyserver:generateDebugRFile
+> Task :proxyserver:writeDebugAarMetadata
+> Task :proxyserver:extractDeepLinksDebug
+> Task :proxyserver:processDebugManifest
+> Task :proxyserver:compileDebugLibraryResources
+> Task :proxyserver:javaPreCompileDebug
+> Task :app:buildKotlinToolingMetadata
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+3 warnings
+
+> Task :proxyserver:compileDebugJavaWithJavac
+
+> Task :proxyserver:bundleLibCompileToJarDebug
+> Task :proxyserver:bundleLibRuntimeToJarDebug
+> Task :proxyserver:processDebugJavaRes NO-SOURCE
+> Task :proxyserver:createFullJarDebug
+> Task :proxyserver:extractProguardFiles
+> Task :proxyserver:generateDebugLintModel
+> Task :proxyserver:prepareLintJarForPublish
+> Task :proxyserver:mergeDebugJniLibFolders
+> Task :proxyserver:mergeDebugNativeLibs NO-SOURCE
+> Task :proxyserver:stripDebugDebugSymbols NO-SOURCE
+> Task :proxyserver:copyDebugJniLibsProjectAndLocalJars
+> Task :app:dataBindingMergeDependencyArtifactsDebug
+> Task :app:generateDebugResValues
+> Task :app:generateDebugResources
+> Task :app:injectCrashlyticsMappingFileIdDebug
+> Task :app:processDebugGoogleServices FAILED
+
+> Task :proxyserver:extractDebugAnnotations
+30 actionable tasks: 30 executed
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:processDebugGoogleServices'.
+> No matching client found for package name 'vpn.psiphontunnelplus.com.eg' in /home/runner/work/PsiphonPlus/PsiphonPlus/app/google-services.json
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 50s
+Error: Process completed with exit code 1.
