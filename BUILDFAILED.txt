@@ -1,4 +1,9 @@
 Run ./gradlew clean && ./gradlew assembleDebug
+  ./gradlew clean && ./gradlew assembleDebug
+  shell: /usr/bin/bash -e {0}
+  env:
+    JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.9-10/x64
+    JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.9-10/x64
 Downloading https://services.gradle.org/distributions/gradle-8.9-bin.zip
 ............10%.............20%.............30%.............40%.............50%.............60%.............70%.............80%.............90%.............100%
 
@@ -18,7 +23,7 @@ Starting a Gradle Daemon (subsequent builds will be faster)
 > Task :proxyserver:clean UP-TO-DATE
 > Task :trilead-ssh2:clean UP-TO-DATE
 
-BUILD SUCCESSFUL in 1m 4s
+BUILD SUCCESSFUL in 1m 2s
 5 actionable tasks: 5 up-to-date
 WARNING: We recommend using a newer Android Gradle plugin to use compileSdk = 36
 
@@ -56,9 +61,9 @@ Note: Recompile with -Xlint:unchecked for details.
 > Task :spongycastle:jar
 warning: [options] source value 8 is obsolete and will be removed in a future release
 warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
 
 > Task :trilead-ssh2:compileJava
-warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
 /home/runner/work/PsiphonPlus/PsiphonPlus/trilead-ssh2/src/main/java/net/i2p/crypto/eddsa/EdDSASecurityProvider.java:12: warning: [removal] AccessController in java.security has been deprecated and marked for removal
 import java.security.AccessController;
                     ^
@@ -116,16 +121,12 @@ Note: Recompile with -Xlint:unchecked for details.
 > Task :proxyserver:processDebugManifest
 > Task :proxyserver:compileDebugLibraryResources
 > Task :proxyserver:javaPreCompileDebug
-> Task :app:buildKotlinToolingMetadata
-> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
-> Task :app:preBuild UP-TO-DATE
-> Task :app:preDebugBuild UP-TO-DATE
 warning: [options] source value 8 is obsolete and will be removed in a future release
+
 warning: [options] target value 8 is obsolete and will be removed in a future release
+> Task :proxyserver:compileDebugJavaWithJavac
 warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
 3 warnings
-
-> Task :proxyserver:compileDebugJavaWithJavac
 
 > Task :proxyserver:bundleLibCompileToJarDebug
 > Task :proxyserver:bundleLibRuntimeToJarDebug
@@ -138,19 +139,30 @@ warning: [options] To suppress warnings about obsolete options, use -Xlint:-opti
 > Task :proxyserver:mergeDebugNativeLibs NO-SOURCE
 > Task :proxyserver:stripDebugDebugSymbols NO-SOURCE
 > Task :proxyserver:copyDebugJniLibsProjectAndLocalJars
+> Task :app:buildKotlinToolingMetadata
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
 > Task :app:dataBindingMergeDependencyArtifactsDebug
 > Task :app:generateDebugResValues
 > Task :app:generateDebugResources
 > Task :app:injectCrashlyticsMappingFileIdDebug
-> Task :app:processDebugGoogleServices FAILED
+> Task :app:processDebugGoogleServices
+> Task :app:mergeDebugResources
+> Task :app:packageDebugResources
+
+[Fatal Error] ic_book_open.xml:1:1: Premature end of file.
+> Task :app:parseDebugLocalResources FAILED
 
 > Task :proxyserver:extractDebugAnnotations
-30 actionable tasks: 30 executed
+33 actionable tasks: 33 executed
+
 FAILURE: Build failed with an exception.
 
 * What went wrong:
-Execution failed for task ':app:processDebugGoogleServices'.
-> No matching client found for package name 'vpn.psiphontunnelplus.com.eg' in /home/runner/work/PsiphonPlus/PsiphonPlus/app/google-services.json
+Execution failed for task ':app:parseDebugLocalResources'.
+> A failure occurred while executing com.android.build.gradle.internal.res.ParseLibraryResourcesTask$ParseResourcesRunnable
+   > Failed to parse XML file '/home/runner/work/PsiphonPlus/PsiphonPlus/app/build/intermediates/packaged_res/debug/packageDebugResources/drawable/ic_book_open.xml'
 
 * Try:
 > Run with --stacktrace option to get the stack trace.
@@ -158,5 +170,5 @@ Execution failed for task ':app:processDebugGoogleServices'.
 > Run with --scan to get full insights.
 > Get more help at https://help.gradle.org.
 
-BUILD FAILED in 50s
+BUILD FAILED in 53s
 Error: Process completed with exit code 1.
