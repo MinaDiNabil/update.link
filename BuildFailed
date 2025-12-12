@@ -1,0 +1,144 @@
+Task :app:processDebugResources FAILED
+> Task :app:checkDebugDuplicateClasses
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:processDebugResources'.
+> A failure occurred while executing com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask$TaskAction
+   > Android resource linking failed
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/about_copyright without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/about_description without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/about_developer without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/about_title without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/about_website without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/all_servers without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/app_tagline without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/app_version without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/best_server without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/btn_allow without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/btn_apply without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/btn_close without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/btn_continue without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/btn_deny without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/btn_save without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/btn_skip without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/btn_stop without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/country_ae without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/country_au without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/country_br without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/country_ca without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/country_de without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/country_eg without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/country_fr without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/country_hk without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/country_in without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/country_jp without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/country_kr without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/country_nl without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/country_sg without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/country_uk without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/country_us without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/current_server without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/dialog_exit_message without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/dialog_exit_title without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/dialog_permission_message without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/dialog_permission_title without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/disabled without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/enabled without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/error_authentication without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/error_connection_failed without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/error_no_internet without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/error_server_unavailable without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/error_timeout without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/error_unknown without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/failed without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/feature_fast without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/feature_global without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/feature_no_logs without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/feature_secure without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/feature_support without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/feature_unlimited without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/free_servers without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/loading without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/no_servers without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/notification_disconnected without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/off without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/on without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/premium_servers without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/protocol_auto without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/protocol_openvpn without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/protocol_slowdns without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/protocol_ssh without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/protocol_ssl without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/protocol_v2ray without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/protocol_wireguard without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/recommended without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/server_count without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/server_free without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/server_list without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/server_load without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/server_ping without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/server_premium without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/server_users without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/settings_about without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/settings_auto_connect without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/settings_connection without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/settings_dns without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/settings_feedback without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/settings_general without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/settings_kill_switch without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/settings_language without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/settings_notifications without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/settings_privacy without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/settings_rate without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/settings_share without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/settings_split_tunnel without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/settings_support without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/settings_terms without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/settings_theme without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/stats_download without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/stats_duration without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/stats_ip without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/stats_latency without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/stats_location without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/stats_protocol without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/stats_server without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/stats_title without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/stats_upload without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/success without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/tap_to_connect without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/tip_auto_connect without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/tip_kill_switch without required default value.
+     warn: removing resource zerotrack.minapronetvpn.com.eg:string/tip_select_server without required default value.
+     zerotrack.minapronetvpn.com.eg.app-mergeDebugResources-64:/layout/activity_main.xml:136: error: resource string/not_protected (aka zerotrack.minapronetvpn.com.eg:string/not_protected) not found.
+     zerotrack.minapronetvpn.com.eg.app-mergeDebugResources-64:/layout/activity_main.xml:252: error: resource string/stats_download (aka zerotrack.minapronetvpn.com.eg:string/stats_download) not found.
+     zerotrack.minapronetvpn.com.eg.app-mergeDebugResources-64:/layout/activity_main.xml:288: error: resource string/stats_upload (aka zerotrack.minapronetvpn.com.eg:string/stats_upload) not found.
+     zerotrack.minapronetvpn.com.eg.app-mergeDebugResources-64:/layout/activity_main.xml:416: error: resource string/all_servers (aka zerotrack.minapronetvpn.com.eg:string/all_servers) not found.
+     zerotrack.minapronetvpn.com.eg.app-mergeDebugResources-64:/layout/activity_main.xml:449: error: resource string/free_servers (aka zerotrack.minapronetvpn.com.eg:string/free_servers) not found.
+     zerotrack.minapronetvpn.com.eg.app-mergeDebugResources-64:/layout/activity_main.xml:503: error: resource color/semi_transparent_black (aka zerotrack.minapronetvpn.com.eg:color/semi_transparent_black) not found.
+     zerotrack.minapronetvpn.com.eg.app-mergeDebugResources-64:/layout/activity_server_list.xml:39: error: resource string/server_list (aka zerotrack.minapronetvpn.com.eg:string/server_list) not found.
+     zerotrack.minapronetvpn.com.eg.app-mergeDebugResources-64:/layout/activity_server_list.xml:75: error: resource color/text_disabled (aka zerotrack.minapronetvpn.com.eg:color/text_disabled) not found.
+     zerotrack.minapronetvpn.com.eg.app-mergeDebugResources-64:/layout/activity_server_list.xml:104: error: resource color/surface_variant (aka zerotrack.minapronetvpn.com.eg:color/surface_variant) not found.
+     zerotrack.minapronetvpn.com.eg.app-mergeDebugResources-64:/layout/activity_server_list.xml:104: error: resource string/all_servers (aka zerotrack.minapronetvpn.com.eg:string/all_servers) not found.
+     zerotrack.minapronetvpn.com.eg.app-mergeDebugResources-64:/layout/activity_server_list.xml:115: error: resource color/surface_variant (aka zerotrack.minapronetvpn.com.eg:color/surface_variant) not found.
+     zerotrack.minapronetvpn.com.eg.app-mergeDebugResources-64:/layout/activity_server_list.xml:115: error: resource string/free_servers (aka zerotrack.minapronetvpn.com.eg:string/free_servers) not found.
+     zerotrack.minapronetvpn.com.eg.app-mergeDebugResources-64:/layout/activity_server_list.xml:126: error: resource color/surface_variant (aka zerotrack.minapronetvpn.com.eg:color/surface_variant) not found.
+     zerotrack.minapronetvpn.com.eg.app-mergeDebugResources-64:/layout/activity_server_list.xml:126: error: resource string/premium_servers (aka zerotrack.minapronetvpn.com.eg:string/premium_servers) not found.
+     zerotrack.minapronetvpn.com.eg.app-mergeDebugResources-64:/layout/activity_server_list.xml:137: error: resource color/surface_variant (aka zerotrack.minapronetvpn.com.eg:color/surface_variant) not found.
+     zerotrack.minapronetvpn.com.eg.app-mergeDebugResources-64:/layout/activity_server_list.xml:137: error: resource string/recommended (aka zerotrack.minapronetvpn.com.eg:string/recommended) not found.
+     zerotrack.minapronetvpn.com.eg.app-mergeDebugResources-64:/layout/activity_server_list.xml:198: error: resource string/no_servers (aka zerotrack.minapronetvpn.com.eg:string/no_servers) not found.
+     zerotrack.minapronetvpn.com.eg.app-mergeDebugResources-64:/layout/activity_settings.xml:59: error: resource string/settings_connection (aka zerotrack.minapronetvpn.com.eg:string/settings_connection) not found.
+     zerotrack.minapronetvpn.com.eg.app-mergeDebugResources-64:/layout/activity_settings.xml:85: error: resource string/settings_auto_connect (aka zerotrack.minapronetvpn.com.eg:string/settings_auto_connect) not found.
+     zerotrack.minapronetvpn.com.eg.app-mergeDebugResources-64:/layout/activity_settings.xml:128: error: resource string/settings_kill_switch (aka zerotrack.minapronetvpn.com.eg:string/settings_kill_switch) not found.
+
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 1m 51s
+21 actionable tasks: 20 executed, 1 from cache
+Error: Process completed with exit code 1.
