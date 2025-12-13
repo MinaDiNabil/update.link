@@ -1,0 +1,139 @@
+============================================================
+ZeroTrack VPN - Debug Logs
+Generated: 2025-12-13 13:46:59
+============================================================
+
+--------- beginning of main
+12-13 13:46:24.387 D/ZeroVpnService(30446): VPN loop started
+12-13 13:46:24.537 D/ZeroVpnService(30446): ✓ Socket connected: 10.0.0.2:51990-157.240.196.24:443
+12-13 13:46:24.538 E/ZeroVpnService(30446): ✗ Failed to build SYN-ACK for 10.0.0.2:51990-157.240.196.24:443
+12-13 13:46:24.706 D/ZeroVpnService(30446): ✓ Socket connected: 10.0.0.2:48526-8.8.4.4:853
+12-13 13:46:24.706 E/ZeroVpnService(30446): ✗ Failed to build SYN-ACK for 10.0.0.2:48526-8.8.4.4:853
+12-13 13:46:24.857 D/ZeroVpnService(30446): ✓ Socket connected: 10.0.0.2:42886-8.8.8.8:853
+12-13 13:46:24.857 E/ZeroVpnService(30446): ✗ Failed to build SYN-ACK for 10.0.0.2:42886-8.8.8.8:853
+12-13 13:46:25.569 D/ZeroVpnService(30446): ✓ Socket connected: 10.0.0.2:60022-157.240.196.33:5222
+12-13 13:46:25.569 E/ZeroVpnService(30446): ✗ Failed to build SYN-ACK for 10.0.0.2:60022-157.240.196.33:5222
+12-13 13:46:25.571 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:42886-8.8.8.8:853
+12-13 13:46:25.572 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:48526-8.8.4.4:853
+12-13 13:46:25.572 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:51990-157.240.196.24:443
+12-13 13:46:25.819 D/ZeroVpnService(30446): ✓ Socket connected: 10.0.0.2:50470-157.240.196.33:443
+12-13 13:46:25.819 E/ZeroVpnService(30446): ✗ Failed to build SYN-ACK for 10.0.0.2:50470-157.240.196.33:443
+12-13 13:46:26.453 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:60022-157.240.196.33:5222
+12-13 13:46:26.709 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:50470-157.240.196.33:443
+12-13 13:46:27.477 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:51990-157.240.196.24:443
+12-13 13:46:27.478 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:48526-8.8.4.4:853
+12-13 13:46:27.478 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:42886-8.8.8.8:853
+12-13 13:46:28.469 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:60022-157.240.196.33:5222
+12-13 13:46:28.725 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:50470-157.240.196.33:443
+12-13 13:46:30.070 D/ZeroVpnService(30446): ✓ Socket connected: 10.0.0.2:35442-149.154.167.91:443
+12-13 13:46:30.070 E/ZeroVpnService(30446): ✗ Failed to build SYN-ACK for 10.0.0.2:35442-149.154.167.91:443
+12-13 13:46:30.933 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:35442-149.154.167.91:443
+12-13 13:46:31.669 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:42886-8.8.8.8:853
+12-13 13:46:31.670 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:51990-157.240.196.24:443
+12-13 13:46:31.670 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:48526-8.8.4.4:853
+12-13 13:46:32.694 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:60022-157.240.196.33:5222
+12-13 13:46:32.949 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:35442-149.154.167.91:443
+12-13 13:46:32.950 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:50470-157.240.196.33:443
+12-13 13:46:33.899 D/ZeroVpnService(30446): ✓ Socket connected: 10.0.0.2:54768-216.239.34.223:443
+12-13 13:46:33.899 E/ZeroVpnService(30446): ✗ Failed to build SYN-ACK for 10.0.0.2:54768-216.239.34.223:443
+12-13 13:46:34.151 D/ZeroVpnService(30446): ✓ Socket connected: 10.0.0.2:54782-216.239.34.223:443
+12-13 13:46:34.151 E/ZeroVpnService(30446): ✗ Failed to build SYN-ACK for 10.0.0.2:54782-216.239.34.223:443
+12-13 13:46:34.238 D/ZeroVpnService(30446): ✓ Socket connected: 10.0.0.2:54794-216.239.34.223:443
+12-13 13:46:34.238 E/ZeroVpnService(30446): ✗ Failed to build SYN-ACK for 10.0.0.2:54794-216.239.34.223:443
+12-13 13:46:34.308 D/ZeroVpnService(30446): ✓ Socket connected: 10.0.0.2:54808-216.239.34.223:443
+12-13 13:46:34.308 E/ZeroVpnService(30446): ✗ Failed to build SYN-ACK for 10.0.0.2:54808-216.239.34.223:443
+12-13 13:46:34.383 D/ZeroVpnService(30446): ✓ Socket connected: 10.0.0.2:54822-216.239.34.223:443
+12-13 13:46:34.383 E/ZeroVpnService(30446): ✗ Failed to build SYN-ACK for 10.0.0.2:54822-216.239.34.223:443
+12-13 13:46:34.469 D/ZeroVpnService(30446): ✓ Socket connected: 10.0.0.2:54838-216.239.34.223:443
+12-13 13:46:34.469 E/ZeroVpnService(30446): ✗ Failed to build SYN-ACK for 10.0.0.2:54838-216.239.34.223:443
+12-13 13:46:34.742 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:54768-216.239.34.223:443
+12-13 13:46:34.953 D/ZeroVpnService(30446): Socket closed by remote: 10.0.0.2:42886-8.8.8.8:853
+12-13 13:46:34.954 D/ZeroVpnService(30446): Socket closed by remote: 10.0.0.2:48526-8.8.4.4:853
+12-13 13:46:34.997 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:54782-216.239.34.223:443
+12-13 13:46:35.029 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:54808-216.239.34.223:443
+12-13 13:46:35.030 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:54794-216.239.34.223:443
+12-13 13:46:35.062 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:54838-216.239.34.223:443
+12-13 13:46:35.063 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:54822-216.239.34.223:443
+12-13 13:46:36.758 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:54768-216.239.34.223:443
+12-13 13:46:37.014 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:54782-216.239.34.223:443
+12-13 13:46:37.047 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:54794-216.239.34.223:443
+12-13 13:46:37.048 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:35442-149.154.167.91:443
+12-13 13:46:37.048 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:54808-216.239.34.223:443
+12-13 13:46:37.077 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:54822-216.239.34.223:443
+12-13 13:46:37.078 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:54838-216.239.34.223:443
+12-13 13:46:37.594 D/ZeroVpnService(30446): ✓ Socket connected: 10.0.0.2:34688-157.240.196.24:443
+12-13 13:46:37.594 E/ZeroVpnService(30446): ✗ Failed to build SYN-ACK for 10.0.0.2:34688-157.240.196.24:443
+12-13 13:46:38.113 D/ZeroVpnService(30446): ✓ Socket connected: 10.0.0.2:35444-149.154.167.91:443
+12-13 13:46:38.113 E/ZeroVpnService(30446): ✗ Failed to build SYN-ACK for 10.0.0.2:35444-149.154.167.91:443
+12-13 13:46:38.517 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:34688-157.240.196.24:443
+12-13 13:46:39.985 D/ZeroVpnService(30446): ✓ Socket connected: 10.0.0.2:48526-8.8.4.4:853
+12-13 13:46:39.985 E/ZeroVpnService(30446): ✗ Failed to build SYN-ACK for 10.0.0.2:48526-8.8.4.4:853
+12-13 13:46:40.137 D/ZeroVpnService(30446): ✓ Socket connected: 10.0.0.2:42886-8.8.8.8:853
+12-13 13:46:40.137 E/ZeroVpnService(30446): ✗ Failed to build SYN-ACK for 10.0.0.2:42886-8.8.8.8:853
+12-13 13:46:40.533 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:34688-157.240.196.24:443
+12-13 13:46:40.885 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:54768-216.239.34.223:443
+12-13 13:46:40.888 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:60022-157.240.196.33:5222
+12-13 13:46:41.141 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:54838-216.239.34.223:443
+12-13 13:46:41.141 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:54822-216.239.34.223:443
+12-13 13:46:41.141 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:54808-216.239.34.223:443
+12-13 13:46:41.142 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:54794-216.239.34.223:443
+12-13 13:46:41.142 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:54782-216.239.34.223:443
+12-13 13:46:41.142 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:50470-157.240.196.33:443
+12-13 13:46:44.137 D/ZeroVpnService(30446): Socket closed by remote: 10.0.0.2:54768-216.239.34.223:443
+12-13 13:46:44.476 D/ZeroVpnService(30446): Socket closed by remote: 10.0.0.2:54822-216.239.34.223:443
+12-13 13:46:44.477 D/ZeroVpnService(30446): Socket closed by remote: 10.0.0.2:54782-216.239.34.223:443
+12-13 13:46:44.477 D/ZeroVpnService(30446): Socket closed by remote: 10.0.0.2:54808-216.239.34.223:443
+12-13 13:46:44.478 D/ZeroVpnService(30446): Socket closed by remote: 10.0.0.2:54794-216.239.34.223:443
+12-13 13:46:44.726 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:34688-157.240.196.24:443
+12-13 13:46:44.727 D/ZeroVpnService(30446): Socket closed by remote: 10.0.0.2:54838-216.239.34.223:443
+12-13 13:46:45.644 D/ZeroVpnService(30446): ✓ Socket connected: 10.0.0.2:59834-157.240.196.33:80
+12-13 13:46:45.644 E/ZeroVpnService(30446): ✗ Failed to build SYN-ACK for 10.0.0.2:59834-157.240.196.33:80
+12-13 13:46:46.485 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:59834-157.240.196.33:80
+12-13 13:46:48.501 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:59834-157.240.196.33:80
+12-13 13:46:49.877 D/ZeroVpnService(30446): ✓ Socket connected: 10.0.0.2:48564-168.235.206.6:80
+12-13 13:46:49.877 E/ZeroVpnService(30446): ✗ Failed to build SYN-ACK for 10.0.0.2:48564-168.235.206.6:80
+12-13 13:46:50.838 D/ZeroVpnService(30446): ✓ Socket connected: 10.0.0.2:41428-157.185.189.158:443
+12-13 13:46:50.838 E/ZeroVpnService(30446): ✗ Failed to build SYN-ACK for 10.0.0.2:41428-157.185.189.158:443
+12-13 13:46:50.838 D/ZeroVpnService(30446): Socket closed by remote: 10.0.0.2:42886-8.8.8.8:853
+12-13 13:46:50.839 D/ZeroVpnService(30446): Socket closed by remote: 10.0.0.2:48526-8.8.4.4:853
+12-13 13:46:50.840 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:48564-168.235.206.6:80
+12-13 13:46:51.381 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:41428-157.185.189.158:443
+12-13 13:46:52.469 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:48564-168.235.206.6:80
+12-13 13:46:52.661 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:59834-157.240.196.33:80
+12-13 13:46:52.918 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:34688-157.240.196.24:443
+12-13 13:46:53.478 D/ZeroVpnService(30446): ✓ Socket connected: 10.0.0.2:33140-47.246.167.138:443
+12-13 13:46:53.478 E/ZeroVpnService(30446): ✗ Failed to build SYN-ACK for 10.0.0.2:33140-47.246.167.138:443
+12-13 13:46:53.482 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:41428-157.185.189.158:443
+12-13 13:46:54.261 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:33140-47.246.167.138:443
+12-13 13:46:55.735 D/ZeroVpnService(30446): ✓ Socket connected: 10.0.0.2:47160-8.8.8.8:443
+12-13 13:46:55.736 E/ZeroVpnService(30446): ✗ Failed to build SYN-ACK for 10.0.0.2:47160-8.8.8.8:443
+12-13 13:46:55.889 D/ZeroVpnService(30446): ✓ Socket connected: 10.0.0.2:57134-8.8.4.4:443
+12-13 13:46:55.890 E/ZeroVpnService(30446): ✗ Failed to build SYN-ACK for 10.0.0.2:57134-8.8.4.4:443
+12-13 13:46:56.662 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:47160-8.8.8.8:443
+12-13 13:46:56.694 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:57134-8.8.4.4:443
+12-13 13:46:57.027 D/ZeroVpnService(30446): ✓ Socket connected: 10.0.0.2:47174-8.8.8.8:443
+12-13 13:46:57.027 E/ZeroVpnService(30446): ✗ Failed to build SYN-ACK for 10.0.0.2:47174-8.8.8.8:443
+12-13 13:46:57.157 D/ZeroVpnService(30446): ✓ Socket connected: 10.0.0.2:57150-8.8.4.4:443
+12-13 13:46:57.157 E/ZeroVpnService(30446): ✗ Failed to build SYN-ACK for 10.0.0.2:57150-8.8.4.4:443
+12-13 13:46:57.878 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:47174-8.8.8.8:443
+12-13 13:46:57.910 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:57150-8.8.4.4:443
+12-13 13:46:58.126 D/ZeroVpnService(30446): ✓ Socket connected: 10.0.0.2:54060-216.239.32.223:443
+12-13 13:46:58.127 E/ZeroVpnService(30446): ✗ Failed to build SYN-ACK for 10.0.0.2:54060-216.239.32.223:443
+12-13 13:46:58.298 D/ZeroVpnService(30446): ✓ Socket connected: 10.0.0.2:54044-216.239.32.223:443
+12-13 13:46:58.298 E/ZeroVpnService(30446): ✗ Failed to build SYN-ACK for 10.0.0.2:54044-216.239.32.223:443
+12-13 13:46:58.469 D/ZeroVpnService(30446): ✓ Socket connected: 10.0.0.2:54076-216.239.32.223:443
+12-13 13:46:58.470 E/ZeroVpnService(30446): ✗ Failed to build SYN-ACK for 10.0.0.2:54076-216.239.32.223:443
+12-13 13:46:58.601 D/ZeroVpnService(30446): ✓ Socket connected: 10.0.0.2:54088-216.239.32.223:443
+12-13 13:46:58.602 E/ZeroVpnService(30446): ✗ Failed to build SYN-ACK for 10.0.0.2:54088-216.239.32.223:443
+12-13 13:46:58.678 D/ZeroVpnService(30446): ✓ Socket connected: 10.0.0.2:54090-216.239.32.223:443
+12-13 13:46:58.678 E/ZeroVpnService(30446): ✗ Failed to build SYN-ACK for 10.0.0.2:54090-216.239.32.223:443
+12-13 13:46:58.785 D/ZeroVpnService(30446): ✓ Socket connected: 10.0.0.2:54102-216.239.32.223:443
+12-13 13:46:58.786 E/ZeroVpnService(30446): ✗ Failed to build SYN-ACK for 10.0.0.2:54102-216.239.32.223:443
+12-13 13:46:58.792 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:47160-8.8.8.8:443
+12-13 13:46:58.793 D/ZeroVpnService(30446): Connection already exists: 10.0.0.2:57134-8.8.4.4:443
+12-13 13:46:59.006 D/ZeroVpnService(30446): ✓ Socket connected: 10.0.0.2:44840-8.8.8.8:443
+12-13 13:46:59.007 E/ZeroVpnService(30446): ✗ Failed to build SYN-ACK for 10.0.0.2:44840-8.8.8.8:443
+
+============================================================
+Total lines: 130
+============================================================
