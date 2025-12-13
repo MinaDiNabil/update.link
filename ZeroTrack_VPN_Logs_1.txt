@@ -1,47 +1,156 @@
 ============================================================
 ZeroTrack VPN - Debug Logs
-Generated: 2025-12-13 21:44:07
+Generated: 2025-12-13 22:06:28
 ============================================================
 
 --------- beginning of main
-12-13 21:43:25.178 D/ZeroVpnService(16134): VPN loop started
-12-13 21:43:25.241 D/ZeroVpnService(16134): ✓ Socket connecting: 10.0.0.2:58158-8.8.4.4:853
-12-13 21:43:25.241 D/ZeroVpnService(16134): ✓ Built SYN-ACK: seq=423446585, ack=3941394777
-12-13 21:43:25.242 D/ZeroVpnService(16134): ✓ Sent SYN-ACK for 10.0.0.2:58158-8.8.4.4:853
-12-13 21:43:25.242 D/ZeroVpnService(16134): ✓ Socket connected (async): 10.0.0.2:58158-8.8.4.4:853
-12-13 21:43:25.243 D/ZeroVpnService(16134): ✓ Socket connecting: 10.0.0.2:53376-8.8.8.8:853
-12-13 21:43:25.243 D/ZeroVpnService(16134): ✓ Built SYN-ACK: seq=423446587, ack=1873560076
-12-13 21:43:25.243 D/ZeroVpnService(16134): ✓ Sent SYN-ACK for 10.0.0.2:53376-8.8.8.8:853
-12-13 21:43:25.243 D/ZeroVpnService(16134): ✓ Socket connected (async): 10.0.0.2:53376-8.8.8.8:853
-12-13 21:43:25.243 D/ZeroVpnService(16134): Connection established: 10.0.0.2:58158-8.8.4.4:853
-12-13 21:43:25.243 D/ZeroVpnService(16134): Connection established: 10.0.0.2:53376-8.8.8.8:853
-12-13 21:43:40.320 D/ZeroVpnService(16134): ✓ Socket connecting: 10.0.0.2:35212-216.239.38.223:443
-12-13 21:43:40.320 D/ZeroVpnService(16134): ✓ Built SYN-ACK: seq=423461664, ack=429689365
-12-13 21:43:40.320 D/ZeroVpnService(16134): ✓ Sent SYN-ACK for 10.0.0.2:35212-216.239.38.223:443
-12-13 21:43:40.321 D/ZeroVpnService(16134): ✓ Socket connected (async): 10.0.0.2:35212-216.239.38.223:443
-12-13 21:43:40.321 D/ZeroVpnService(16134): Connection established: 10.0.0.2:35212-216.239.38.223:443
-12-13 21:43:40.460 D/ZeroVpnService(16134): ✓ Socket connecting: 10.0.0.2:35220-216.239.38.223:443
-12-13 21:43:40.460 D/ZeroVpnService(16134): ✓ Built SYN-ACK: seq=423461804, ack=712855922
-12-13 21:43:40.461 D/ZeroVpnService(16134): ✓ Sent SYN-ACK for 10.0.0.2:35220-216.239.38.223:443
-12-13 21:43:40.461 D/ZeroVpnService(16134): ✓ Socket connected (async): 10.0.0.2:35220-216.239.38.223:443
-12-13 21:43:40.461 D/ZeroVpnService(16134): Connection established: 10.0.0.2:35220-216.239.38.223:443
-12-13 21:43:48.263 D/ZeroVpnService(16134): ✓ Socket connecting: 10.0.0.2:47072-216.239.38.223:443
-12-13 21:43:48.263 D/ZeroVpnService(16134): ✓ Built SYN-ACK: seq=423469607, ack=3932460810
-12-13 21:43:48.264 D/ZeroVpnService(16134): ✓ Sent SYN-ACK for 10.0.0.2:47072-216.239.38.223:443
-12-13 21:43:48.264 D/ZeroVpnService(16134): ✓ Socket connected (async): 10.0.0.2:47072-216.239.38.223:443
-12-13 21:43:48.265 D/ZeroVpnService(16134): ✓ Socket connecting: 10.0.0.2:47076-216.239.38.223:443
-12-13 21:43:48.265 D/ZeroVpnService(16134): ✓ Built SYN-ACK: seq=423469609, ack=4011927437
-12-13 21:43:48.265 D/ZeroVpnService(16134): ✓ Sent SYN-ACK for 10.0.0.2:47076-216.239.38.223:443
-12-13 21:43:48.265 D/ZeroVpnService(16134): ✓ Socket connected (async): 10.0.0.2:47076-216.239.38.223:443
-12-13 21:43:48.265 D/ZeroVpnService(16134): Connection established: 10.0.0.2:47072-216.239.38.223:443
-12-13 21:43:48.266 D/ZeroVpnService(16134): ✓ Socket connecting: 10.0.0.2:47080-216.239.38.223:443
-12-13 21:43:48.266 D/ZeroVpnService(16134): ✓ Built SYN-ACK: seq=423469610, ack=2860119436
-12-13 21:43:48.266 D/ZeroVpnService(16134): ✓ Sent SYN-ACK for 10.0.0.2:47080-216.239.38.223:443
-12-13 21:43:48.266 D/ZeroVpnService(16134): ✓ Socket connected (async): 10.0.0.2:47080-216.239.38.223:443
-12-13 21:43:48.266 D/ZeroVpnService(16134): Connection established: 10.0.0.2:47076-216.239.38.223:443
-12-13 21:43:48.267 D/ZeroVpnService(16134): Connection established: 10.0.0.2:47080-216.239.38.223:443
-12-13 21:43:54.617 D/ZeroVpnService(16134): VPN loop interrupted (normal shutdown)
+12-13 22:05:34.014 D/ZeroVpnService(27206): VPN loop started
+12-13 22:05:34.038 D/ZeroVpnService(27206): ✓ Socket connecting: 10.0.0.2:52900-8.8.4.4:853
+12-13 22:05:34.039 D/ZeroVpnService(27206): ✓ Built SYN-ACK: seq=424775382, ack=3500225111
+12-13 22:05:34.039 D/ZeroVpnService(27206): ✓ Sent SYN-ACK for 10.0.0.2:52900-8.8.4.4:853
+12-13 22:05:34.039 D/ZeroVpnService(27206): ✓ Socket connected (async): 10.0.0.2:52900-8.8.4.4:853
+12-13 22:05:34.040 D/ZeroVpnService(27206): ✓ Socket connecting: 10.0.0.2:36830-8.8.8.8:853
+12-13 22:05:34.040 D/ZeroVpnService(27206): ✓ Built SYN-ACK: seq=424775384, ack=3385673319
+12-13 22:05:34.040 D/ZeroVpnService(27206): ✓ Sent SYN-ACK for 10.0.0.2:36830-8.8.8.8:853
+12-13 22:05:34.041 D/ZeroVpnService(27206): ✓ Socket connected (async): 10.0.0.2:36830-8.8.8.8:853
+12-13 22:05:34.041 D/ZeroVpnService(27206): Connection established: 10.0.0.2:52900-8.8.4.4:853
+12-13 22:05:34.041 D/ZeroVpnService(27206): Connection established: 10.0.0.2:36830-8.8.8.8:853
+12-13 22:05:35.707 D/ZeroVpnService(27206): Connection closed: 192.168.8.2:40066-140.82.113.22:443
+12-13 22:05:40.827 D/ZeroVpnService(27206): Connection closed: 192.168.8.2:40066-140.82.113.22:443
+12-13 22:05:48.639 D/ZeroVpnService(27206): ✓ Socket connecting: 10.0.0.2:42592-157.240.196.33:5222
+12-13 22:05:48.639 D/ZeroVpnService(27206): ✓ Built SYN-ACK: seq=424789983, ack=480863663
+12-13 22:05:48.639 D/ZeroVpnService(27206): ✓ Sent SYN-ACK for 10.0.0.2:42592-157.240.196.33:5222
+12-13 22:05:48.639 D/ZeroVpnService(27206): ✓ Socket connected (async): 10.0.0.2:42592-157.240.196.33:5222
+12-13 22:05:48.639 D/ZeroVpnService(27206): Connection established: 10.0.0.2:42592-157.240.196.33:5222
+12-13 22:05:48.843 D/ZeroVpnService(27206): ✓ Socket connecting: 10.0.0.2:58458-157.240.196.17:443
+12-13 22:05:48.843 D/ZeroVpnService(27206): ✓ Built SYN-ACK: seq=424790187, ack=550961197
+12-13 22:05:48.844 D/ZeroVpnService(27206): ✓ Sent SYN-ACK for 10.0.0.2:58458-157.240.196.17:443
+12-13 22:05:48.844 D/ZeroVpnService(27206): ✓ Socket connected (async): 10.0.0.2:58458-157.240.196.17:443
+12-13 22:05:48.845 D/ZeroVpnService(27206): Connection established: 10.0.0.2:58458-157.240.196.17:443
+12-13 22:05:50.306 D/ZeroVpnService(27206): ✓ Socket connecting: 10.0.0.2:56700-157.240.196.24:443
+12-13 22:05:50.307 D/ZeroVpnService(27206): ✓ Built SYN-ACK: seq=424791650, ack=3781648907
+12-13 22:05:50.307 D/ZeroVpnService(27206): ✓ Sent SYN-ACK for 10.0.0.2:56700-157.240.196.24:443
+12-13 22:05:50.307 D/ZeroVpnService(27206): ✓ Socket connected (async): 10.0.0.2:56700-157.240.196.24:443
+12-13 22:05:50.308 D/ZeroVpnService(27206): Connection established: 10.0.0.2:56700-157.240.196.24:443
+12-13 22:05:51.068 D/ZeroVpnService(27206): Connection closed: 192.168.8.2:40066-140.82.113.22:443
+12-13 22:05:59.198 D/ZeroVpnService(27206): ✓ Socket connecting: 10.0.0.2:38434-216.239.38.223:443
+12-13 22:05:59.199 D/ZeroVpnService(27206): ✓ Built SYN-ACK: seq=424800543, ack=3260757120
+12-13 22:05:59.199 D/ZeroVpnService(27206): ✓ Sent SYN-ACK for 10.0.0.2:38434-216.239.38.223:443
+12-13 22:05:59.199 D/ZeroVpnService(27206): ✓ Socket connected (async): 10.0.0.2:38434-216.239.38.223:443
+12-13 22:05:59.200 D/ZeroVpnService(27206): Connection established: 10.0.0.2:38434-216.239.38.223:443
+12-13 22:05:59.273 D/ZeroVpnService(27206): ✓ Socket connecting: 10.0.0.2:44132-142.251.37.246:443
+12-13 22:05:59.273 D/ZeroVpnService(27206): ✓ Built SYN-ACK: seq=424800617, ack=2724160193
+12-13 22:05:59.273 D/ZeroVpnService(27206): ✓ Sent SYN-ACK for 10.0.0.2:44132-142.251.37.246:443
+12-13 22:05:59.273 D/ZeroVpnService(27206): ✓ Socket connected (async): 10.0.0.2:44132-142.251.37.246:443
+12-13 22:05:59.273 D/ZeroVpnService(27206): Connection established: 10.0.0.2:44132-142.251.37.246:443
+12-13 22:05:59.445 D/ZeroVpnService(27206): ✓ Socket connecting: 10.0.0.2:60904-216.58.205.196:443
+12-13 22:05:59.445 D/ZeroVpnService(27206): ✓ Built SYN-ACK: seq=424800789, ack=1822446637
+12-13 22:05:59.445 D/ZeroVpnService(27206): ✓ Sent SYN-ACK for 10.0.0.2:60904-216.58.205.196:443
+12-13 22:05:59.445 D/ZeroVpnService(27206): ✓ Socket connected (async): 10.0.0.2:60904-216.58.205.196:443
+12-13 22:05:59.446 D/ZeroVpnService(27206): Connection established: 10.0.0.2:60904-216.58.205.196:443
+12-13 22:05:59.575 D/ZeroVpnService(27206): ✓ Socket connecting: 10.0.0.2:44142-142.251.37.246:443
+12-13 22:05:59.575 D/ZeroVpnService(27206): ✓ Built SYN-ACK: seq=424800919, ack=810649505
+12-13 22:05:59.575 D/ZeroVpnService(27206): ✓ Sent SYN-ACK for 10.0.0.2:44142-142.251.37.246:443
+12-13 22:05:59.575 D/ZeroVpnService(27206): ✓ Socket connected (async): 10.0.0.2:44142-142.251.37.246:443
+12-13 22:05:59.578 D/ZeroVpnService(27206): ✓ Socket connecting: 10.0.0.2:44152-142.251.37.246:443
+12-13 22:05:59.578 D/ZeroVpnService(27206): ✓ Built SYN-ACK: seq=424800922, ack=411385703
+12-13 22:05:59.578 D/ZeroVpnService(27206): ✓ Sent SYN-ACK for 10.0.0.2:44152-142.251.37.246:443
+12-13 22:05:59.578 D/ZeroVpnService(27206): ✓ Socket connected (async): 10.0.0.2:44152-142.251.37.246:443
+12-13 22:05:59.580 D/ZeroVpnService(27206): ✓ Socket connecting: 10.0.0.2:44156-142.251.37.246:443
+12-13 22:05:59.580 D/ZeroVpnService(27206): ✓ Built SYN-ACK: seq=424800924, ack=1740338911
+12-13 22:05:59.580 D/ZeroVpnService(27206): ✓ Sent SYN-ACK for 10.0.0.2:44156-142.251.37.246:443
+12-13 22:05:59.580 D/ZeroVpnService(27206): ✓ Socket connected (async): 10.0.0.2:44156-142.251.37.246:443
+12-13 22:05:59.581 D/ZeroVpnService(27206): Connection established: 10.0.0.2:44142-142.251.37.246:443
+12-13 22:05:59.583 D/ZeroVpnService(27206): Connection established: 10.0.0.2:44152-142.251.37.246:443
+12-13 22:05:59.583 D/ZeroVpnService(27206): Connection established: 10.0.0.2:44156-142.251.37.246:443
+12-13 22:05:59.596 D/ZeroVpnService(27206): ✓ Socket connecting: 10.0.0.2:38448-216.239.38.223:443
+12-13 22:05:59.596 D/ZeroVpnService(27206): ✓ Built SYN-ACK: seq=424800940, ack=2256937295
+12-13 22:05:59.596 D/ZeroVpnService(27206): ✓ Sent SYN-ACK for 10.0.0.2:38448-216.239.38.223:443
+12-13 22:05:59.596 D/ZeroVpnService(27206): ✓ Socket connected (async): 10.0.0.2:38448-216.239.38.223:443
+12-13 22:05:59.596 D/ZeroVpnService(27206): Connection established: 10.0.0.2:38448-216.239.38.223:443
+12-13 22:05:59.664 D/ZeroVpnService(27206): ✓ Socket connecting: 10.0.0.2:36438-157.240.196.33:80
+12-13 22:05:59.664 D/ZeroVpnService(27206): ✓ Built SYN-ACK: seq=424801008, ack=3271077350
+12-13 22:05:59.664 D/ZeroVpnService(27206): ✓ Sent SYN-ACK for 10.0.0.2:36438-157.240.196.33:80
+12-13 22:05:59.664 D/ZeroVpnService(27206): ✓ Socket connected (async): 10.0.0.2:36438-157.240.196.33:80
+12-13 22:05:59.666 D/ZeroVpnService(27206): Connection established: 10.0.0.2:36438-157.240.196.33:80
+12-13 22:05:59.683 D/ZeroVpnService(27206): ✓ Socket connecting: 10.0.0.2:38452-216.239.38.223:443
+12-13 22:05:59.683 D/ZeroVpnService(27206): ✓ Built SYN-ACK: seq=424801027, ack=951917958
+12-13 22:05:59.683 D/ZeroVpnService(27206): ✓ Sent SYN-ACK for 10.0.0.2:38452-216.239.38.223:443
+12-13 22:05:59.683 D/ZeroVpnService(27206): ✓ Socket connected (async): 10.0.0.2:38452-216.239.38.223:443
+12-13 22:05:59.685 D/ZeroVpnService(27206): ✓ Socket connecting: 10.0.0.2:38462-216.239.38.223:443
+12-13 22:05:59.686 D/ZeroVpnService(27206): ✓ Built SYN-ACK: seq=424801029, ack=1955726354
+12-13 22:05:59.686 D/ZeroVpnService(27206): ✓ Sent SYN-ACK for 10.0.0.2:38462-216.239.38.223:443
+12-13 22:05:59.686 D/ZeroVpnService(27206): ✓ Socket connected (async): 10.0.0.2:38462-216.239.38.223:443
+12-13 22:05:59.687 D/ZeroVpnService(27206): ✓ Socket connecting: 10.0.0.2:38468-216.239.38.223:443
+12-13 22:05:59.687 D/ZeroVpnService(27206): ✓ Built SYN-ACK: seq=424801031, ack=1269144755
+12-13 22:05:59.687 D/ZeroVpnService(27206): ✓ Sent SYN-ACK for 10.0.0.2:38468-216.239.38.223:443
+12-13 22:05:59.687 D/ZeroVpnService(27206): ✓ Socket connected (async): 10.0.0.2:38468-216.239.38.223:443
+12-13 22:05:59.688 D/ZeroVpnService(27206): ✓ Socket connecting: 10.0.0.2:38470-216.239.38.223:443
+12-13 22:05:59.689 D/ZeroVpnService(27206): ✓ Built SYN-ACK: seq=424801033, ack=3925572948
+12-13 22:05:59.689 D/ZeroVpnService(27206): ✓ Sent SYN-ACK for 10.0.0.2:38470-216.239.38.223:443
+12-13 22:05:59.689 D/ZeroVpnService(27206): ✓ Socket connected (async): 10.0.0.2:38470-216.239.38.223:443
+12-13 22:05:59.689 D/ZeroVpnService(27206): Connection established: 10.0.0.2:38452-216.239.38.223:443
+12-13 22:05:59.689 D/ZeroVpnService(27206): Connection established: 10.0.0.2:38462-216.239.38.223:443
+12-13 22:05:59.689 D/ZeroVpnService(27206): Connection established: 10.0.0.2:38468-216.239.38.223:443
+12-13 22:05:59.690 D/ZeroVpnService(27206): Connection established: 10.0.0.2:38470-216.239.38.223:443
+12-13 22:05:59.808 D/ZeroVpnService(27206): ✓ Socket connecting: 10.0.0.2:60910-216.58.205.196:443
+12-13 22:05:59.809 D/ZeroVpnService(27206): ✓ Built SYN-ACK: seq=424801153, ack=913121573
+12-13 22:05:59.809 D/ZeroVpnService(27206): ✓ Sent SYN-ACK for 10.0.0.2:60910-216.58.205.196:443
+12-13 22:05:59.809 D/ZeroVpnService(27206): ✓ Socket connected (async): 10.0.0.2:60910-216.58.205.196:443
+12-13 22:05:59.812 D/ZeroVpnService(27206): ✓ Socket connecting: 10.0.0.2:60926-216.58.205.196:443
+12-13 22:05:59.812 D/ZeroVpnService(27206): ✓ Built SYN-ACK: seq=424801156, ack=872602639
+12-13 22:05:59.812 D/ZeroVpnService(27206): ✓ Sent SYN-ACK for 10.0.0.2:60926-216.58.205.196:443
+12-13 22:05:59.812 D/ZeroVpnService(27206): ✓ Socket connected (async): 10.0.0.2:60926-216.58.205.196:443
+12-13 22:05:59.813 D/ZeroVpnService(27206): Connection established: 10.0.0.2:60910-216.58.205.196:443
+12-13 22:05:59.813 D/ZeroVpnService(27206): Connection established: 10.0.0.2:60926-216.58.205.196:443
+12-13 22:06:00.696 D/ZeroVpnService(27206): ✓ Socket connecting: 10.0.0.2:60932-216.58.205.196:443
+12-13 22:06:00.696 D/ZeroVpnService(27206): ✓ Built SYN-ACK: seq=424802040, ack=2848113482
+12-13 22:06:00.697 D/ZeroVpnService(27206): ✓ Sent SYN-ACK for 10.0.0.2:60932-216.58.205.196:443
+12-13 22:06:00.697 D/ZeroVpnService(27206): ✓ Socket connected (async): 10.0.0.2:60932-216.58.205.196:443
+12-13 22:06:00.698 D/ZeroVpnService(27206): Connection established: 10.0.0.2:60932-216.58.205.196:443
+12-13 22:06:00.745 D/ZeroVpnService(27206): ✓ Socket connecting: 10.0.0.2:60942-216.58.205.196:443
+12-13 22:06:00.745 D/ZeroVpnService(27206): ✓ Built SYN-ACK: seq=424802089, ack=726322897
+12-13 22:06:00.745 D/ZeroVpnService(27206): ✓ Sent SYN-ACK for 10.0.0.2:60942-216.58.205.196:443
+12-13 22:06:00.745 D/ZeroVpnService(27206): ✓ Socket connected (async): 10.0.0.2:60942-216.58.205.196:443
+12-13 22:06:00.748 D/ZeroVpnService(27206): ✓ Socket connecting: 10.0.0.2:60952-216.58.205.196:443
+12-13 22:06:00.748 D/ZeroVpnService(27206): ✓ Built SYN-ACK: seq=424802092, ack=529824046
+12-13 22:06:00.748 D/ZeroVpnService(27206): ✓ Sent SYN-ACK for 10.0.0.2:60952-216.58.205.196:443
+12-13 22:06:00.748 D/ZeroVpnService(27206): ✓ Socket connected (async): 10.0.0.2:60952-216.58.205.196:443
+12-13 22:06:00.748 D/ZeroVpnService(27206): Connection established: 10.0.0.2:60942-216.58.205.196:443
+12-13 22:06:00.749 D/ZeroVpnService(27206): Connection established: 10.0.0.2:60952-216.58.205.196:443
+12-13 22:06:02.853 D/ZeroVpnService(27206): ✓ Socket connecting: 10.0.0.2:44158-142.251.37.246:443
+12-13 22:06:02.853 D/ZeroVpnService(27206): ✓ Built SYN-ACK: seq=424804197, ack=2445341757
+12-13 22:06:02.854 D/ZeroVpnService(27206): ✓ Sent SYN-ACK for 10.0.0.2:44158-142.251.37.246:443
+12-13 22:06:02.854 D/ZeroVpnService(27206): ✓ Socket connected (async): 10.0.0.2:44158-142.251.37.246:443
+12-13 22:06:02.854 D/ZeroVpnService(27206): Connection established: 10.0.0.2:44158-142.251.37.246:443
+12-13 22:06:04.071 D/ZeroVpnService(27206): Connection closed: 10.0.0.2:52900-8.8.4.4:853
+12-13 22:06:04.076 D/ZeroVpnService(27206): Connection closed: 10.0.0.2:36830-8.8.8.8:853
+12-13 22:06:08.557 D/ZeroVpnService(27206): Connection closed: 10.0.0.2:60952-216.58.205.196:443
+12-13 22:06:08.557 D/ZeroVpnService(27206): Connection closed: 10.0.0.2:60942-216.58.205.196:443
+12-13 22:06:08.558 D/ZeroVpnService(27206): Connection closed: 10.0.0.2:60932-216.58.205.196:443
+12-13 22:06:08.558 D/ZeroVpnService(27206): Connection closed: 10.0.0.2:60926-216.58.205.196:443
+12-13 22:06:08.558 D/ZeroVpnService(27206): Connection closed: 10.0.0.2:60910-216.58.205.196:443
+12-13 22:06:08.558 D/ZeroVpnService(27206): Connection closed: 10.0.0.2:38470-216.239.38.223:443
+12-13 22:06:08.558 D/ZeroVpnService(27206): Connection closed: 10.0.0.2:38468-216.239.38.223:443
+12-13 22:06:08.558 D/ZeroVpnService(27206): Connection closed: 10.0.0.2:38462-216.239.38.223:443
+12-13 22:06:08.558 D/ZeroVpnService(27206): Connection closed: 10.0.0.2:38452-216.239.38.223:443
+12-13 22:06:08.558 D/ZeroVpnService(27206): Connection closed: 10.0.0.2:38448-216.239.38.223:443
+12-13 22:06:08.558 D/ZeroVpnService(27206): Connection closed: 10.0.0.2:44156-142.251.37.246:443
+12-13 22:06:08.558 D/ZeroVpnService(27206): Connection closed: 10.0.0.2:44152-142.251.37.246:443
+12-13 22:06:08.558 D/ZeroVpnService(27206): Connection closed: 10.0.0.2:44142-142.251.37.246:443
+12-13 22:06:08.559 D/ZeroVpnService(27206): Connection closed: 10.0.0.2:44158-142.251.37.246:443
+12-13 22:06:08.559 D/ZeroVpnService(27206): Connection closed: 10.0.0.2:60904-216.58.205.196:443
+12-13 22:06:08.559 D/ZeroVpnService(27206): Connection closed: 10.0.0.2:44132-142.251.37.246:443
+12-13 22:06:08.559 D/ZeroVpnService(27206): Connection closed: 10.0.0.2:38434-216.239.38.223:443
+12-13 22:06:10.685 D/ZeroVpnService(27206): ✓ Socket connecting: 10.0.0.2:50328-57.144.120.8:5222
+12-13 22:06:10.685 D/ZeroVpnService(27206): ✓ Built SYN-ACK: seq=424812029, ack=266527978
+12-13 22:06:10.685 D/ZeroVpnService(27206): ✓ Sent SYN-ACK for 10.0.0.2:50328-57.144.120.8:5222
+12-13 22:06:10.685 D/ZeroVpnService(27206): ✓ Socket connected (async): 10.0.0.2:50328-57.144.120.8:5222
+12-13 22:06:10.686 D/ZeroVpnService(27206): Connection established: 10.0.0.2:50328-57.144.120.8:5222
+12-13 22:06:11.803 D/ZeroVpnService(27206): Connection closed: 192.168.8.2:40066-140.82.113.22:443
+12-13 22:06:18.838 D/ZeroVpnService(27206): Connection closed: 10.0.0.2:58458-157.240.196.17:443
+12-13 22:06:21.415 D/ZeroVpnService(27206): VPN loop interrupted (normal shutdown)
 
 ============================================================
-Total lines: 38
+Total lines: 147
 ============================================================
