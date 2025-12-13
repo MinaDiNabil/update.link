@@ -1,0 +1,732 @@
+============================================================
+ZeroTrack VPN - Debug Logs
+Generated: 2025-12-13 16:19:30
+============================================================
+
+--------- beginning of main
+12-13 15:48:15.345 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:38188-8.8.8.8:853
+12-13 15:48:15.345 D/ZeroVpnService(16036): ← Received 536 bytes from server for 10.0.0.2:38202-8.8.8.8:853
+12-13 15:48:15.345 D/ZeroVpnService(16036): Built TCP response: seq=402140013, ack=2677825448, len=536
+12-13 15:48:15.346 D/ZeroVpnService(16036): → Sent 576 byte response packet to VPN
+12-13 15:48:15.346 E/ZeroVpnService(16036): TCP packet error
+12-13 15:48:15.346 E/ZeroVpnService(16036): java.io.IOException: Connection reset by peer
+12-13 15:48:15.346 E/ZeroVpnService(16036): 	at sun.nio.ch.FileDispatcherImpl.write0(Native Method)
+12-13 15:48:15.346 E/ZeroVpnService(16036): 	at sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:55)
+12-13 15:48:15.346 E/ZeroVpnService(16036): 	at sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:93)
+12-13 15:48:15.346 E/ZeroVpnService(16036): 	at sun.nio.ch.IOUtil.write(IOUtil.java:65)
+12-13 15:48:15.346 E/ZeroVpnService(16036): 	at sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:512)
+12-13 15:48:15.346 E/ZeroVpnService(16036): 	at zerotrack.minapronetvpn.com.eg.ZeroVpnService.handleTcpPacket(ZeroVpnService.kt:408)
+12-13 15:48:15.346 E/ZeroVpnService(16036): 	at zerotrack.minapronetvpn.com.eg.ZeroVpnService.runVpnLoop(ZeroVpnService.kt:157)
+12-13 15:48:15.346 E/ZeroVpnService(16036): 	at zerotrack.minapronetvpn.com.eg.ZeroVpnService.startVpn$lambda$0(ZeroVpnService.kt:93)
+12-13 15:48:15.346 E/ZeroVpnService(16036): 	at zerotrack.minapronetvpn.com.eg.ZeroVpnService.$r8$lambda$oP_ESc-PnSPutI5rhsMWdGAsOn0(Unknown Source:0)
+12-13 15:48:15.346 E/ZeroVpnService(16036): 	at zerotrack.minapronetvpn.com.eg.ZeroVpnService$$ExternalSyntheticLambda0.run(Unknown Source:2)
+12-13 15:48:15.346 E/ZeroVpnService(16036): 	at java.lang.Thread.run(Thread.java:1119)
+12-13 15:48:15.346 D/ZeroVpnService(16036): Socket closed by remote: 10.0.0.2:38202-8.8.8.8:853
+12-13 15:48:15.348 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:38202-8.8.8.8:853
+12-13 15:48:15.473 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:33586-8.8.4.4:853
+12-13 15:48:15.920 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:33574-8.8.4.4:853
+12-13 15:48:16.177 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:33576-8.8.4.4:853
+12-13 15:48:16.529 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:38202-8.8.8.8:853
+12-13 15:48:17.081 D/ZeroVpnService(16036): ✓ Socket connected: 10.0.0.2:47236-149.154.166.111:443
+12-13 15:48:17.082 D/ZeroVpnService(16036): ✓ Built SYN-ACK: seq=402138426, ack=1319343985
+12-13 15:48:17.082 D/ZeroVpnService(16036): ✓ Sent SYN-ACK for 10.0.0.2:47236-149.154.166.111:443
+12-13 15:48:17.318 D/ZeroVpnService(16036): ✓ Socket connected: 10.0.0.2:52770-149.154.167.91:443
+12-13 15:48:17.318 D/ZeroVpnService(16036): ✓ Built SYN-ACK: seq=402138662, ack=1613722375
+12-13 15:48:17.319 D/ZeroVpnService(16036): ✓ Sent SYN-ACK for 10.0.0.2:52770-149.154.167.91:443
+12-13 15:48:17.319 D/ZeroVpnService(16036): Connection established: 10.0.0.2:47236-149.154.166.111:443
+12-13 15:48:17.319 D/ZeroVpnService(16036): Forwarded 105 bytes for 10.0.0.2:47236-149.154.166.111:443
+12-13 15:48:17.320 D/ZeroVpnService(16036): Connection established: 10.0.0.2:52770-149.154.167.91:443
+12-13 15:48:17.320 D/ZeroVpnService(16036): Forwarded 361 bytes for 10.0.0.2:52770-149.154.167.91:443
+12-13 15:48:17.456 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:38172-8.8.8.8:853
+12-13 15:48:18.480 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:38188-8.8.8.8:853
+12-13 15:48:18.481 D/ZeroVpnService(16036): ← Received 101 bytes from server for 10.0.0.2:47236-149.154.166.111:443
+12-13 15:48:18.481 D/ZeroVpnService(16036): Built TCP response: seq=402138427, ack=1319344090, len=101
+12-13 15:48:18.481 D/ZeroVpnService(16036): → Sent 141 byte response packet to VPN
+12-13 15:48:18.481 D/ZeroVpnService(16036): ← Received 89 bytes from server for 10.0.0.2:52770-149.154.167.91:443
+12-13 15:48:18.482 D/ZeroVpnService(16036): Built TCP response: seq=402138663, ack=1613722736, len=89
+12-13 15:48:18.482 D/ZeroVpnService(16036): → Sent 129 byte response packet to VPN
+12-13 15:48:18.482 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:33586-8.8.4.4:853
+12-13 15:48:18.483 D/ZeroVpnService(16036): Forwarded 201 bytes for 10.0.0.2:52770-149.154.167.91:443
+12-13 15:48:18.533 D/ZeroVpnService(16036): Forwarded 382 bytes for 10.0.0.2:47236-149.154.166.111:443
+12-13 15:48:18.533 D/ZeroVpnService(16036): Forwarded 169 bytes for 10.0.0.2:52770-149.154.167.91:443
+12-13 15:48:18.861 D/ZeroVpnService(16036): ← Received 89 bytes from server for 10.0.0.2:52770-149.154.167.91:443
+12-13 15:48:18.861 D/ZeroVpnService(16036): Built TCP response: seq=402138752, ack=1613723106, len=89
+12-13 15:48:18.861 D/ZeroVpnService(16036): → Sent 129 byte response packet to VPN
+12-13 15:48:18.996 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:38202-8.8.8.8:853
+12-13 15:48:20.357 D/ZeroVpnService(16036): ← Received 656 bytes from server for 10.0.0.2:47236-149.154.166.111:443
+12-13 15:48:20.357 D/ZeroVpnService(16036): Built TCP response: seq=402138528, ack=1319344472, len=656
+12-13 15:48:20.358 D/ZeroVpnService(16036): → Sent 696 byte response packet to VPN
+12-13 15:48:20.368 D/ZeroVpnService(16036): Forwarded 438 bytes for 10.0.0.2:47236-149.154.166.111:443
+12-13 15:48:21.040 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:33576-8.8.4.4:853
+12-13 15:48:21.040 D/ZeroVpnService(16036): ← Received 73 bytes from server for 10.0.0.2:47236-149.154.166.111:443
+12-13 15:48:21.041 D/ZeroVpnService(16036): Built TCP response: seq=402139184, ack=1319344910, len=73
+12-13 15:48:21.041 D/ZeroVpnService(16036): → Sent 113 byte response packet to VPN
+12-13 15:48:21.041 D/ZeroVpnService(16036): Forwarded 354 bytes for 10.0.0.2:47236-149.154.166.111:443
+12-13 15:48:21.296 D/ZeroVpnService(16036): ← Received 258 bytes from server for 10.0.0.2:47236-149.154.166.111:443
+12-13 15:48:21.296 D/ZeroVpnService(16036): Built TCP response: seq=402139257, ack=1319345264, len=258
+12-13 15:48:21.297 D/ZeroVpnService(16036): → Sent 298 byte response packet to VPN
+12-13 15:48:21.406 D/ZeroVpnService(16036): ✓ Socket connected: 10.0.0.2:42664-149.154.166.111:443
+12-13 15:48:21.407 D/ZeroVpnService(16036): ✓ Built SYN-ACK: seq=402142751, ack=2390844209
+12-13 15:48:21.407 D/ZeroVpnService(16036): ✓ Sent SYN-ACK for 10.0.0.2:42664-149.154.166.111:443
+12-13 15:48:21.407 D/ZeroVpnService(16036): Forwarded 281 bytes for 10.0.0.2:47236-149.154.166.111:443
+12-13 15:48:21.407 D/ZeroVpnService(16036): Connection established: 10.0.0.2:42664-149.154.166.111:443
+12-13 15:48:21.407 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:42664-149.154.166.111:443
+12-13 15:48:21.407 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:42664-149.154.166.111:443
+12-13 15:48:21.408 D/ZeroVpnService(16036): Forwarded 312 bytes for 10.0.0.2:42664-149.154.166.111:443
+12-13 15:48:21.779 D/ZeroVpnService(16036): ✓ Socket connected: 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:21.779 D/ZeroVpnService(16036): ✓ Built SYN-ACK: seq=402143123, ack=2383091918
+12-13 15:48:21.779 D/ZeroVpnService(16036): ✓ Sent SYN-ACK for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:21.779 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:42664-149.154.166.111:443
+12-13 15:48:21.779 D/ZeroVpnService(16036): Built TCP response: seq=402142752, ack=2390845593, len=1500
+12-13 15:48:21.779 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:21.780 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:42664-149.154.166.111:443
+12-13 15:48:21.780 D/ZeroVpnService(16036): ← Received 393 bytes from server for 10.0.0.2:42664-149.154.166.111:443
+12-13 15:48:21.780 D/ZeroVpnService(16036): Built TCP response: seq=402144252, ack=2390844745, len=393
+12-13 15:48:21.780 D/ZeroVpnService(16036): → Sent 433 byte response packet to VPN
+12-13 15:48:21.780 D/ZeroVpnService(16036): Connection established: 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:21.781 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:21.781 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:21.781 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:21.781 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:21.781 D/ZeroVpnService(16036): Forwarded 84 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:21.812 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:33574-8.8.4.4:853
+12-13 15:48:22.095 D/ZeroVpnService(16036): ✓ Socket connected: 10.0.0.2:38834-216.239.38.223:443
+12-13 15:48:22.095 D/ZeroVpnService(16036): ✓ Built SYN-ACK: seq=402143439, ack=2390694419
+12-13 15:48:22.096 D/ZeroVpnService(16036): ✓ Sent SYN-ACK for 10.0.0.2:38834-216.239.38.223:443
+12-13 15:48:22.096 D/ZeroVpnService(16036): ← Received 5 bytes from server for 10.0.0.2:42664-149.154.166.111:443
+12-13 15:48:22.096 D/ZeroVpnService(16036): Built TCP response: seq=402144645, ack=2390844745, len=5
+12-13 15:48:22.096 D/ZeroVpnService(16036): → Sent 45 byte response packet to VPN
+12-13 15:48:22.096 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.096 D/ZeroVpnService(16036): Built TCP response: seq=402143124, ack=2383094146, len=1500
+12-13 15:48:22.096 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:22.198 D/ZeroVpnService(16036): ✓ Socket connected: 10.0.0.2:38836-216.239.38.223:443
+12-13 15:48:22.198 D/ZeroVpnService(16036): ✓ Built SYN-ACK: seq=402143542, ack=2201402267
+12-13 15:48:22.199 D/ZeroVpnService(16036): ✓ Sent SYN-ACK for 10.0.0.2:38836-216.239.38.223:443
+12-13 15:48:22.199 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.199 D/ZeroVpnService(16036): Built TCP response: seq=402144624, ack=2383094146, len=1500
+12-13 15:48:22.199 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:22.335 D/ZeroVpnService(16036): ✓ Socket connected: 10.0.0.2:38846-216.239.38.223:443
+12-13 15:48:22.335 D/ZeroVpnService(16036): ✓ Built SYN-ACK: seq=402143679, ack=3768788239
+12-13 15:48:22.336 D/ZeroVpnService(16036): ✓ Sent SYN-ACK for 10.0.0.2:38846-216.239.38.223:443
+12-13 15:48:22.336 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.336 D/ZeroVpnService(16036): Built TCP response: seq=402146124, ack=2383094146, len=1500
+12-13 15:48:22.337 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:22.337 D/ZeroVpnService(16036): Connection established: 10.0.0.2:38834-216.239.38.223:443
+12-13 15:48:22.337 D/ZeroVpnService(16036): ← Received 1255 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.337 D/ZeroVpnService(16036): Built TCP response: seq=402147624, ack=2383094146, len=1255
+12-13 15:48:22.338 D/ZeroVpnService(16036): → Sent 1295 byte response packet to VPN
+12-13 15:48:22.339 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38834-216.239.38.223:443
+12-13 15:48:22.339 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38834-216.239.38.223:443
+12-13 15:48:22.339 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38834-216.239.38.223:443
+12-13 15:48:22.339 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38834-216.239.38.223:443
+12-13 15:48:22.340 D/ZeroVpnService(16036): Forwarded 180 bytes for 10.0.0.2:38834-216.239.38.223:443
+12-13 15:48:22.340 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:47236-149.154.166.111:443
+12-13 15:48:22.440 D/ZeroVpnService(16036): ✓ Socket connected: 10.0.0.2:42672-149.154.166.111:443
+12-13 15:48:22.440 D/ZeroVpnService(16036): ✓ Built SYN-ACK: seq=402143784, ack=2169925802
+12-13 15:48:22.440 D/ZeroVpnService(16036): ✓ Sent SYN-ACK for 10.0.0.2:42672-149.154.166.111:443
+12-13 15:48:22.441 D/ZeroVpnService(16036): Connection established: 10.0.0.2:38836-216.239.38.223:443
+12-13 15:48:22.441 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38836-216.239.38.223:443
+12-13 15:48:22.442 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38836-216.239.38.223:443
+12-13 15:48:22.442 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38836-216.239.38.223:443
+12-13 15:48:22.443 D/ZeroVpnService(16036): Forwarded 125 bytes for 10.0.0.2:38836-216.239.38.223:443
+12-13 15:48:22.443 D/ZeroVpnService(16036): Connection established: 10.0.0.2:38846-216.239.38.223:443
+12-13 15:48:22.443 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38846-216.239.38.223:443
+12-13 15:48:22.443 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38846-216.239.38.223:443
+12-13 15:48:22.444 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38846-216.239.38.223:443
+12-13 15:48:22.444 D/ZeroVpnService(16036): Forwarded 157 bytes for 10.0.0.2:38846-216.239.38.223:443
+12-13 15:48:22.444 D/ZeroVpnService(16036): Forwarded 74 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.445 D/ZeroVpnService(16036): Forwarded 92 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.445 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:38834-216.239.38.223:443
+12-13 15:48:22.445 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:38836-216.239.38.223:443
+12-13 15:48:22.446 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:38846-216.239.38.223:443
+12-13 15:48:22.446 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.446 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.446 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.447 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.447 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.447 D/ZeroVpnService(16036): Forwarded 381 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.447 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.448 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.448 D/ZeroVpnService(16036): Connection established: 10.0.0.2:42672-149.154.166.111:443
+12-13 15:48:22.448 D/ZeroVpnService(16036): Forwarded 146 bytes for 10.0.0.2:42672-149.154.166.111:443
+12-13 15:48:22.659 D/ZeroVpnService(16036): ← Received 1007 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.659 D/ZeroVpnService(16036): Built TCP response: seq=402148879, ack=2383098445, len=1007
+12-13 15:48:22.659 D/ZeroVpnService(16036): → Sent 1047 byte response packet to VPN
+12-13 15:48:22.659 D/ZeroVpnService(16036): ← Received 101 bytes from server for 10.0.0.2:42672-149.154.166.111:443
+12-13 15:48:22.660 D/ZeroVpnService(16036): Built TCP response: seq=402143785, ack=2169925948, len=101
+12-13 15:48:22.660 D/ZeroVpnService(16036): → Sent 141 byte response packet to VPN
+12-13 15:48:22.660 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.660 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.661 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.661 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.661 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.662 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.662 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.662 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.663 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.663 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.663 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.663 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.664 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.664 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.664 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.665 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.665 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.665 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.665 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.666 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:22.711 D/ZeroVpnService(16036): Forwarded 382 bytes for 10.0.0.2:42672-149.154.166.111:443
+12-13 15:48:23.313 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.313 D/ZeroVpnService(16036): ← Received 656 bytes from server for 10.0.0.2:42672-149.154.166.111:443
+12-13 15:48:23.314 D/ZeroVpnService(16036): Built TCP response: seq=402143886, ack=2169926330, len=656
+12-13 15:48:23.314 D/ZeroVpnService(16036): → Sent 696 byte response packet to VPN
+12-13 15:48:23.322 D/ZeroVpnService(16036): Forwarded 438 bytes for 10.0.0.2:42672-149.154.166.111:443
+12-13 15:48:23.323 D/ZeroVpnService(16036): Forwarded 153 bytes for 10.0.0.2:52770-149.154.167.91:443
+12-13 15:48:23.674 D/ZeroVpnService(16036): ← Received 73 bytes from server for 10.0.0.2:42672-149.154.166.111:443
+12-13 15:48:23.674 D/ZeroVpnService(16036): Built TCP response: seq=402144542, ack=2169926768, len=73
+12-13 15:48:23.675 D/ZeroVpnService(16036): → Sent 113 byte response packet to VPN
+12-13 15:48:23.676 D/ZeroVpnService(16036): Forwarded 418 bytes for 10.0.0.2:42672-149.154.166.111:443
+12-13 15:48:23.857 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:38202-8.8.8.8:853
+12-13 15:48:23.858 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.858 D/ZeroVpnService(16036): Built TCP response: seq=402149886, ack=2383098981, len=1500
+12-13 15:48:23.859 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:23.859 D/ZeroVpnService(16036): ← Received 89 bytes from server for 10.0.0.2:52770-149.154.167.91:443
+12-13 15:48:23.859 D/ZeroVpnService(16036): Built TCP response: seq=402138841, ack=1613723259, len=89
+12-13 15:48:23.859 D/ZeroVpnService(16036): → Sent 129 byte response packet to VPN
+12-13 15:48:23.859 D/ZeroVpnService(16036): ← Received 258 bytes from server for 10.0.0.2:42672-149.154.166.111:443
+12-13 15:48:23.860 D/ZeroVpnService(16036): Built TCP response: seq=402144615, ack=2169927186, len=258
+12-13 15:48:23.860 D/ZeroVpnService(16036): → Sent 298 byte response packet to VPN
+12-13 15:48:23.861 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.861 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.861 D/ZeroVpnService(16036): Built TCP response: seq=402151386, ack=2383109701, len=1500
+12-13 15:48:23.862 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:23.862 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.862 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.863 D/ZeroVpnService(16036): Built TCP response: seq=402152886, ack=2383110237, len=1500
+12-13 15:48:23.863 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:23.863 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.863 D/ZeroVpnService(16036): Built TCP response: seq=402154386, ack=2383110237, len=1500
+12-13 15:48:23.864 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:23.865 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.865 D/ZeroVpnService(16036): Built TCP response: seq=402155886, ack=2383110237, len=1500
+12-13 15:48:23.866 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:23.866 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.866 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.866 D/ZeroVpnService(16036): Built TCP response: seq=402157386, ack=2383110773, len=1500
+12-13 15:48:23.866 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:23.866 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.866 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.867 D/ZeroVpnService(16036): Built TCP response: seq=402158886, ack=2383111309, len=1500
+12-13 15:48:23.867 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:23.867 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.867 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.867 D/ZeroVpnService(16036): Built TCP response: seq=402160386, ack=2383111845, len=1500
+12-13 15:48:23.867 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:23.868 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.868 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.868 D/ZeroVpnService(16036): Built TCP response: seq=402161886, ack=2383112381, len=1500
+12-13 15:48:23.868 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:23.868 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.868 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.868 D/ZeroVpnService(16036): Built TCP response: seq=402163386, ack=2383112917, len=1500
+12-13 15:48:23.869 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:23.869 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.869 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.869 D/ZeroVpnService(16036): Built TCP response: seq=402164886, ack=2383113453, len=1500
+12-13 15:48:23.869 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:23.869 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.869 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.870 D/ZeroVpnService(16036): Built TCP response: seq=402166386, ack=2383113989, len=1500
+12-13 15:48:23.870 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:23.870 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.870 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.870 D/ZeroVpnService(16036): Built TCP response: seq=402167886, ack=2383114525, len=1500
+12-13 15:48:23.870 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:23.870 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.871 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.871 D/ZeroVpnService(16036): Built TCP response: seq=402169386, ack=2383115061, len=1500
+12-13 15:48:23.871 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:23.871 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.871 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.871 D/ZeroVpnService(16036): Built TCP response: seq=402170886, ack=2383115597, len=1500
+12-13 15:48:23.871 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:23.872 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.872 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.872 D/ZeroVpnService(16036): Built TCP response: seq=402172386, ack=2383116133, len=1500
+12-13 15:48:23.872 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:23.872 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.873 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.873 D/ZeroVpnService(16036): Built TCP response: seq=402173886, ack=2383116669, len=1500
+12-13 15:48:23.873 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:23.873 D/ZeroVpnService(16036): Forwarded 142 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.873 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.873 D/ZeroVpnService(16036): Built TCP response: seq=402175386, ack=2383116811, len=1500
+12-13 15:48:23.873 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:23.873 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.873 D/ZeroVpnService(16036): Built TCP response: seq=402176886, ack=2383116811, len=1500
+12-13 15:48:23.874 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:23.874 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.874 D/ZeroVpnService(16036): Built TCP response: seq=402178386, ack=2383116811, len=1500
+12-13 15:48:23.874 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:23.874 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.874 D/ZeroVpnService(16036): Built TCP response: seq=402179886, ack=2383116811, len=1500
+12-13 15:48:23.874 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:23.874 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.874 D/ZeroVpnService(16036): Built TCP response: seq=402181386, ack=2383116811, len=1500
+12-13 15:48:23.874 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:23.875 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.875 D/ZeroVpnService(16036): Built TCP response: seq=402182886, ack=2383116811, len=1500
+12-13 15:48:23.875 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:23.875 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.875 D/ZeroVpnService(16036): Built TCP response: seq=402184386, ack=2383116811, len=1500
+12-13 15:48:23.875 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:23.875 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.875 D/ZeroVpnService(16036): Built TCP response: seq=402185886, ack=2383116811, len=1500
+12-13 15:48:23.875 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:23.875 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.876 D/ZeroVpnService(16036): Built TCP response: seq=402187386, ack=2383116811, len=1500
+12-13 15:48:23.876 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:23.876 D/ZeroVpnService(16036): ← Received 1177 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.876 D/ZeroVpnService(16036): Built TCP response: seq=402188886, ack=2383116811, len=1177
+12-13 15:48:23.876 D/ZeroVpnService(16036): → Sent 1217 byte response packet to VPN
+12-13 15:48:23.877 D/ZeroVpnService(16036): Forwarded 297 bytes for 10.0.0.2:52770-149.154.167.91:443
+12-13 15:48:23.877 D/ZeroVpnService(16036): Forwarded 201 bytes for 10.0.0.2:42672-149.154.166.111:443
+12-13 15:48:23.916 D/ZeroVpnService(16036): ← Received 179 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.917 D/ZeroVpnService(16036): Built TCP response: seq=402190063, ack=2383116811, len=179
+12-13 15:48:23.917 D/ZeroVpnService(16036): → Sent 219 byte response packet to VPN
+12-13 15:48:23.918 D/ZeroVpnService(16036): Forwarded 39 bytes for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.968 D/ZeroVpnService(16036): ← Received 24 bytes from server for 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:23.968 D/ZeroVpnService(16036): Built TCP response: seq=402190242, ack=2383116850, len=24
+12-13 15:48:23.968 D/ZeroVpnService(16036): → Sent 64 byte response packet to VPN
+12-13 15:48:24.120 D/ZeroVpnService(16036): ✓ Socket connected: 10.0.0.2:52512-142.251.37.246:443
+12-13 15:48:24.121 D/ZeroVpnService(16036): ✓ Built SYN-ACK: seq=402145464, ack=1123273073
+12-13 15:48:24.122 D/ZeroVpnService(16036): ✓ Sent SYN-ACK for 10.0.0.2:52512-142.251.37.246:443
+12-13 15:48:24.123 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:24.254 D/ZeroVpnService(16036): ✓ Socket connected: 10.0.0.2:38858-216.239.38.223:443
+12-13 15:48:24.255 D/ZeroVpnService(16036): ✓ Built SYN-ACK: seq=402145598, ack=3758626975
+12-13 15:48:24.255 D/ZeroVpnService(16036): ✓ Sent SYN-ACK for 10.0.0.2:38858-216.239.38.223:443
+12-13 15:48:24.256 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:33586-8.8.4.4:853
+12-13 15:48:24.256 D/ZeroVpnService(16036): Connection established: 10.0.0.2:52512-142.251.37.246:443
+12-13 15:48:24.256 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:52512-142.251.37.246:443
+12-13 15:48:24.257 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:52512-142.251.37.246:443
+12-13 15:48:24.257 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:52512-142.251.37.246:443
+12-13 15:48:24.257 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:52512-142.251.37.246:443
+12-13 15:48:24.258 D/ZeroVpnService(16036): Forwarded 92 bytes for 10.0.0.2:52512-142.251.37.246:443
+12-13 15:48:24.336 D/ZeroVpnService(16036): ✓ Socket connected: 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:24.336 D/ZeroVpnService(16036): ✓ Built SYN-ACK: seq=402145680, ack=1228751600
+12-13 15:48:24.337 D/ZeroVpnService(16036): ✓ Sent SYN-ACK for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:24.337 D/ZeroVpnService(16036): Connection established: 10.0.0.2:38858-216.239.38.223:443
+12-13 15:48:24.338 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38858-216.239.38.223:443
+12-13 15:48:24.339 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38858-216.239.38.223:443
+12-13 15:48:24.340 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38858-216.239.38.223:443
+12-13 15:48:24.341 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38858-216.239.38.223:443
+12-13 15:48:24.341 D/ZeroVpnService(16036): Forwarded 148 bytes for 10.0.0.2:38858-216.239.38.223:443
+12-13 15:48:24.415 D/ZeroVpnService(16036): ✓ Socket connected: 10.0.0.2:52528-142.251.37.246:443
+12-13 15:48:24.415 D/ZeroVpnService(16036): ✓ Built SYN-ACK: seq=402145759, ack=373786280
+12-13 15:48:24.415 D/ZeroVpnService(16036): ✓ Sent SYN-ACK for 10.0.0.2:52528-142.251.37.246:443
+12-13 15:48:24.416 D/ZeroVpnService(16036): Connection established: 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:24.417 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:24.417 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:24.417 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:24.418 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:24.418 D/ZeroVpnService(16036): Forwarded 84 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:24.420 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:38172-8.8.8.8:853
+12-13 15:48:24.420 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:38188-8.8.8.8:853
+12-13 15:48:24.420 D/ZeroVpnService(16036): Connection established: 10.0.0.2:52528-142.251.37.246:443
+12-13 15:48:24.421 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:52528-142.251.37.246:443
+12-13 15:48:24.422 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:52528-142.251.37.246:443
+12-13 15:48:24.422 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:52528-142.251.37.246:443
+12-13 15:48:24.423 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:52528-142.251.37.246:443
+12-13 15:48:24.423 D/ZeroVpnService(16036): Forwarded 124 bytes for 10.0.0.2:52528-142.251.37.246:443
+12-13 15:48:24.593 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:52512-142.251.37.246:443
+12-13 15:48:24.593 D/ZeroVpnService(16036): ← Received 1460 bytes from server for 10.0.0.2:52512-142.251.37.246:443
+12-13 15:48:24.593 D/ZeroVpnService(16036): Built TCP response: seq=402145465, ack=1123273609, len=1460
+12-13 15:48:24.594 D/ZeroVpnService(16036): → Sent 1500 byte response packet to VPN
+12-13 15:48:24.594 D/ZeroVpnService(16036): ← Received 1472 bytes from server for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:24.594 D/ZeroVpnService(16036): Built TCP response: seq=402145681, ack=1228753828, len=1472
+12-13 15:48:24.594 D/ZeroVpnService(16036): → Sent 1512 byte response packet to VPN
+12-13 15:48:24.594 D/ZeroVpnService(16036): ← Received 1472 bytes from server for 10.0.0.2:38858-216.239.38.223:443
+12-13 15:48:24.595 D/ZeroVpnService(16036): Built TCP response: seq=402145599, ack=3758629267, len=1472
+12-13 15:48:24.595 D/ZeroVpnService(16036): → Sent 1512 byte response packet to VPN
+12-13 15:48:24.595 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:52512-142.251.37.246:443
+12-13 15:48:24.596 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:52512-142.251.37.246:443
+12-13 15:48:24.598 D/ZeroVpnService(16036): Forwarded 74 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:24.600 D/ZeroVpnService(16036): Forwarded 74 bytes for 10.0.0.2:38858-216.239.38.223:443
+12-13 15:48:24.601 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:38858-216.239.38.223:443
+12-13 15:48:24.602 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:52528-142.251.37.246:443
+12-13 15:48:24.602 D/ZeroVpnService(16036): Forwarded 92 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:24.602 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:24.603 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:24.603 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:24.603 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:24.604 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:24.604 D/ZeroVpnService(16036): Forwarded 381 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:24.605 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:24.605 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:24.771 D/ZeroVpnService(16036): ← Received 24 bytes from server for 10.0.0.2:52512-142.251.37.246:443
+12-13 15:48:24.771 D/ZeroVpnService(16036): Built TCP response: seq=402146925, ack=1123274681, len=24
+12-13 15:48:24.771 D/ZeroVpnService(16036): → Sent 64 byte response packet to VPN
+12-13 15:48:24.771 D/ZeroVpnService(16036): ← Received 1007 bytes from server for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:24.772 D/ZeroVpnService(16036): Built TCP response: seq=402147153, ack=1228758127, len=1007
+12-13 15:48:24.772 D/ZeroVpnService(16036): → Sent 1047 byte response packet to VPN
+12-13 15:48:24.775 E/ZeroVpnService(16036): TCP packet error
+12-13 15:48:24.775 E/ZeroVpnService(16036): java.io.IOException: Broken pipe
+12-13 15:48:24.775 E/ZeroVpnService(16036): 	at sun.nio.ch.FileDispatcherImpl.write0(Native Method)
+12-13 15:48:24.775 E/ZeroVpnService(16036): 	at sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:55)
+12-13 15:48:24.775 E/ZeroVpnService(16036): 	at sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:93)
+12-13 15:48:24.775 E/ZeroVpnService(16036): 	at sun.nio.ch.IOUtil.write(IOUtil.java:65)
+12-13 15:48:24.775 E/ZeroVpnService(16036): 	at sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:512)
+12-13 15:48:24.775 E/ZeroVpnService(16036): 	at zerotrack.minapronetvpn.com.eg.ZeroVpnService.handleTcpPacket(ZeroVpnService.kt:408)
+12-13 15:48:24.775 E/ZeroVpnService(16036): 	at zerotrack.minapronetvpn.com.eg.ZeroVpnService.runVpnLoop(ZeroVpnService.kt:157)
+12-13 15:48:24.775 E/ZeroVpnService(16036): 	at zerotrack.minapronetvpn.com.eg.ZeroVpnService.startVpn$lambda$0(ZeroVpnService.kt:93)
+12-13 15:48:24.775 E/ZeroVpnService(16036): 	at zerotrack.minapronetvpn.com.eg.ZeroVpnService.$r8$lambda$oP_ESc-PnSPutI5rhsMWdGAsOn0(Unknown Source:0)
+12-13 15:48:24.775 E/ZeroVpnService(16036): 	at zerotrack.minapronetvpn.com.eg.ZeroVpnService$$ExternalSyntheticLambda0.run(Unknown Source:2)
+12-13 15:48:24.775 E/ZeroVpnService(16036): 	at java.lang.Thread.run(Thread.java:1119)
+12-13 15:48:24.776 D/ZeroVpnService(16036): Socket closed by remote: 10.0.0.2:52512-142.251.37.246:443
+12-13 15:48:24.777 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:24.777 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:24.777 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:24.777 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:24.777 D/ZeroVpnService(16036): Forwarded 126 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:24.777 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:52512-142.251.37.246:443
+12-13 15:48:24.778 D/ZeroVpnService(16036): Forwarded 31 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:24.912 D/ZeroVpnService(16036): Forwarded 201 bytes for 10.0.0.2:42672-149.154.166.111:443
+12-13 15:48:25.236 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:25.361 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:25.398 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:47236-149.154.166.111:443
+12-13 15:48:25.457 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:38858-216.239.38.223:443
+12-13 15:48:25.681 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:25.682 D/ZeroVpnService(16036): Built TCP response: seq=402148160, ack=1228758663, len=1500
+12-13 15:48:25.682 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:25.683 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:25.683 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:25.684 D/ZeroVpnService(16036): Built TCP response: seq=402149660, ack=1228760964, len=1500
+12-13 15:48:25.684 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:25.685 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:25.685 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:25.685 D/ZeroVpnService(16036): Built TCP response: seq=402151160, ack=1228761500, len=1500
+12-13 15:48:25.686 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:25.686 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:25.687 D/ZeroVpnService(16036): Built TCP response: seq=402152660, ack=1228761500, len=1500
+12-13 15:48:25.687 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:25.688 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:25.688 D/ZeroVpnService(16036): Built TCP response: seq=402154160, ack=1228761500, len=1500
+12-13 15:48:25.689 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:25.689 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:25.689 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:25.690 D/ZeroVpnService(16036): Built TCP response: seq=402155660, ack=1228762036, len=1500
+12-13 15:48:25.690 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:25.690 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:25.690 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:25.690 D/ZeroVpnService(16036): Built TCP response: seq=402157160, ack=1228762572, len=1500
+12-13 15:48:25.690 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:25.691 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:25.691 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:25.691 D/ZeroVpnService(16036): Built TCP response: seq=402158660, ack=1228763108, len=1500
+12-13 15:48:25.691 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:25.691 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:25.691 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:25.692 D/ZeroVpnService(16036): Built TCP response: seq=402160160, ack=1228763644, len=1500
+12-13 15:48:25.692 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:25.692 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:25.692 D/ZeroVpnService(16036): ← Received 917 bytes from server for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:25.692 D/ZeroVpnService(16036): Built TCP response: seq=402161660, ack=1228764180, len=917
+12-13 15:48:25.692 D/ZeroVpnService(16036): → Sent 957 byte response packet to VPN
+12-13 15:48:25.693 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:25.693 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:25.693 D/ZeroVpnService(16036): Forwarded 342 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:25.794 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:25.794 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:25.794 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:25.795 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:25.795 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:25.795 D/ZeroVpnService(16036): Forwarded 386 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:25.795 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:25.796 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:25.796 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:25.796 D/ZeroVpnService(16036): Forwarded 482 bytes for 10.0.0.2:38866-216.239.38.223:443
+12-13 15:48:27.185 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:38858-216.239.38.223:443
+12-13 15:48:28.208 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:30.770 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:38858-216.239.38.223:443
+12-13 15:48:30.771 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:33576-8.8.4.4:853
+12-13 15:48:33.329 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:33574-8.8.4.4:853
+12-13 15:48:33.330 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:38202-8.8.8.8:853
+12-13 15:48:33.841 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:38820-216.239.38.223:443
+12-13 15:48:35.377 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:33586-8.8.4.4:853
+12-13 15:48:36.148 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:38188-8.8.8.8:853
+12-13 15:48:36.768 D/ZeroVpnService(16036): ✓ Socket connected: 10.0.0.2:46468-149.154.167.91:443
+12-13 15:48:36.768 D/ZeroVpnService(16036): ✓ Built SYN-ACK: seq=402158112, ack=3400855226
+12-13 15:48:36.769 D/ZeroVpnService(16036): ✓ Sent SYN-ACK for 10.0.0.2:46468-149.154.167.91:443
+12-13 15:48:36.770 D/ZeroVpnService(16036): Connection established: 10.0.0.2:46468-149.154.167.91:443
+12-13 15:48:36.770 D/ZeroVpnService(16036): Forwarded 361 bytes for 10.0.0.2:46468-149.154.167.91:443
+12-13 15:48:37.169 D/ZeroVpnService(16036): ← Received 828 bytes from server for 10.0.0.2:46468-149.154.167.91:443
+12-13 15:48:37.169 D/ZeroVpnService(16036): Built TCP response: seq=402158113, ack=3400855587, len=828
+12-13 15:48:37.170 D/ZeroVpnService(16036): → Sent 868 byte response packet to VPN
+12-13 15:48:37.180 D/ZeroVpnService(16036): Forwarded 153 bytes for 10.0.0.2:46468-149.154.167.91:443
+12-13 15:48:37.190 D/ZeroVpnService(16036): Forwarded 169 bytes for 10.0.0.2:46468-149.154.167.91:443
+12-13 15:48:37.680 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:38858-216.239.38.223:443
+12-13 15:48:37.877 D/ZeroVpnService(16036): ← Received 636 bytes from server for 10.0.0.2:46468-149.154.167.91:443
+12-13 15:48:37.877 D/ZeroVpnService(16036): Built TCP response: seq=402158941, ack=3400855909, len=636
+12-13 15:48:37.878 D/ZeroVpnService(16036): → Sent 676 byte response packet to VPN
+12-13 15:48:37.883 D/ZeroVpnService(16036): Forwarded 482 bytes for 10.0.0.2:46468-149.154.167.91:443
+12-13 15:48:38.192 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:38172-8.8.8.8:853
+12-13 15:48:38.193 D/ZeroVpnService(16036): ← Received 89 bytes from server for 10.0.0.2:46468-149.154.167.91:443
+12-13 15:48:38.193 D/ZeroVpnService(16036): Built TCP response: seq=402159577, ack=3400856391, len=89
+12-13 15:48:38.193 D/ZeroVpnService(16036): → Sent 129 byte response packet to VPN
+12-13 15:48:50.224 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:33576-8.8.4.4:853
+12-13 15:48:50.876 D/ZeroVpnService(16036): ✓ Socket connected: 10.0.0.2:37826-149.154.167.91:443
+12-13 15:48:50.876 D/ZeroVpnService(16036): ✓ Built SYN-ACK: seq=402172220, ack=1743875353
+12-13 15:48:50.877 D/ZeroVpnService(16036): ✓ Sent SYN-ACK for 10.0.0.2:37826-149.154.167.91:443
+12-13 15:48:50.877 D/ZeroVpnService(16036): Connection established: 10.0.0.2:37826-149.154.167.91:443
+12-13 15:48:50.878 D/ZeroVpnService(16036): Forwarded 265 bytes for 10.0.0.2:37826-149.154.167.91:443
+12-13 15:48:51.036 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:37826-149.154.167.91:443
+12-13 15:48:51.036 D/ZeroVpnService(16036): Built TCP response: seq=402172221, ack=1743875618, len=1500
+12-13 15:48:51.036 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:51.037 D/ZeroVpnService(16036): ← Received 204 bytes from server for 10.0.0.2:37826-149.154.167.91:443
+12-13 15:48:51.037 D/ZeroVpnService(16036): Built TCP response: seq=402173721, ack=1743875618, len=204
+12-13 15:48:51.037 D/ZeroVpnService(16036): → Sent 244 byte response packet to VPN
+12-13 15:48:51.050 D/ZeroVpnService(16036): Forwarded 249 bytes for 10.0.0.2:37826-149.154.167.91:443
+12-13 15:48:51.665 D/ZeroVpnService(16036): Forwarded 249 bytes for 10.0.0.2:37826-149.154.167.91:443
+12-13 15:48:51.918 D/ZeroVpnService(16036): ← Received 5 bytes from server for 10.0.0.2:37826-149.154.167.91:443
+12-13 15:48:51.919 D/ZeroVpnService(16036): Built TCP response: seq=402173925, ack=1743875867, len=5
+12-13 15:48:51.920 D/ZeroVpnService(16036): → Sent 45 byte response packet to VPN
+12-13 15:48:51.921 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:37826-149.154.167.91:443
+12-13 15:48:52.514 D/ZeroVpnService(16036): ✓ Socket connected: 10.0.0.2:47012-5.28.195.2:443
+12-13 15:48:52.515 D/ZeroVpnService(16036): ✓ Built SYN-ACK: seq=402173859, ack=3142454056
+12-13 15:48:52.516 D/ZeroVpnService(16036): ✓ Sent SYN-ACK for 10.0.0.2:47012-5.28.195.2:443
+12-13 15:48:52.520 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:38202-8.8.8.8:853
+12-13 15:48:52.521 D/ZeroVpnService(16036): Connection established: 10.0.0.2:47012-5.28.195.2:443
+12-13 15:48:52.521 D/ZeroVpnService(16036): Forwarded 517 bytes for 10.0.0.2:47012-5.28.195.2:443
+12-13 15:48:53.105 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:37826-149.154.167.91:443
+12-13 15:48:53.105 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:47012-5.28.195.2:443
+12-13 15:48:53.106 D/ZeroVpnService(16036): Built TCP response: seq=402173860, ack=3142454573, len=1500
+12-13 15:48:53.106 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:53.107 D/ZeroVpnService(16036): ← Received 1500 bytes from server for 10.0.0.2:47012-5.28.195.2:443
+12-13 15:48:53.107 D/ZeroVpnService(16036): Built TCP response: seq=402175360, ack=3142454573, len=1500
+12-13 15:48:53.107 D/ZeroVpnService(16036): → Sent 1540 byte response packet to VPN
+12-13 15:48:53.108 D/ZeroVpnService(16036): ← Received 380 bytes from server for 10.0.0.2:47012-5.28.195.2:443
+12-13 15:48:53.108 D/ZeroVpnService(16036): Built TCP response: seq=402176860, ack=3142454573, len=380
+12-13 15:48:53.108 D/ZeroVpnService(16036): → Sent 420 byte response packet to VPN
+12-13 15:48:53.109 D/ZeroVpnService(16036): Forwarded 239 bytes for 10.0.0.2:47012-5.28.195.2:443
+12-13 15:48:53.480 D/ZeroVpnService(16036): ← Received 126 bytes from server for 10.0.0.2:47012-5.28.195.2:443
+12-13 15:48:53.481 D/ZeroVpnService(16036): Built TCP response: seq=402177240, ack=3142454812, len=126
+12-13 15:48:53.481 D/ZeroVpnService(16036): → Sent 166 byte response packet to VPN
+12-13 15:48:53.572 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:47012-5.28.195.2:443
+12-13 15:48:53.572 D/ZeroVpnService(16036): Forwarded 178 bytes for 10.0.0.2:47012-5.28.195.2:443
+12-13 15:48:54.923 D/ZeroVpnService(16036): ← Received 672 bytes from server for 10.0.0.2:47012-5.28.195.2:443
+12-13 15:48:54.923 D/ZeroVpnService(16036): Built TCP response: seq=402177366, ack=3142455526, len=672
+12-13 15:48:54.923 D/ZeroVpnService(16036): → Sent 712 byte response packet to VPN
+12-13 15:48:54.954 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:47012-5.28.195.2:443
+12-13 15:48:54.955 D/ZeroVpnService(16036): Forwarded 24 bytes for 10.0.0.2:47012-5.28.195.2:443
+12-13 15:48:55.365 D/ZeroVpnService(16036): ← Received 105 bytes from server for 10.0.0.2:47012-5.28.195.2:443
+12-13 15:48:55.365 D/ZeroVpnService(16036): Built TCP response: seq=402178038, ack=3142456086, len=105
+12-13 15:48:55.366 D/ZeroVpnService(16036): → Sent 145 byte response packet to VPN
+12-13 15:48:55.368 D/ZeroVpnService(16036): Forwarded 536 bytes for 10.0.0.2:47012-5.28.195.2:443
+12-13 15:48:55.368 D/ZeroVpnService(16036): Forwarded 101 bytes for 10.0.0.2:47012-5.28.195.2:443
+12-13 15:48:55.601 D/ZeroVpnService(16036): Connection closed: 10.0.0.2:37826-149.154.167.91:443
+12-13 15:48:55.856 D/ZeroVpnService(16036): VPN loop interrupted (normal shutdown)
+12-13 16:18:54.357 D/ZeroVpnService(27039): VPN loop started
+12-13 16:18:54.772 D/ZeroVpnService(27039): ✓ Socket connected: 10.0.0.2:57886-8.8.4.4:853
+12-13 16:18:54.773 D/ZeroVpnService(27039): ✓ Built SYN-ACK: seq=403976117, ack=726922448
+12-13 16:18:54.774 D/ZeroVpnService(27039): ✓ Sent SYN-ACK for 10.0.0.2:57886-8.8.4.4:853
+12-13 16:18:55.019 D/ZeroVpnService(27039): ✓ Socket connected: 10.0.0.2:49996-8.8.8.8:853
+12-13 16:18:55.019 D/ZeroVpnService(27039): ✓ Built SYN-ACK: seq=403976363, ack=2665228073
+12-13 16:18:55.019 D/ZeroVpnService(27039): ✓ Sent SYN-ACK for 10.0.0.2:49996-8.8.8.8:853
+12-13 16:18:55.170 D/ZeroVpnService(27039): ✓ Socket connected: 10.0.0.2:35792-157.240.196.61:5222
+12-13 16:18:55.170 D/ZeroVpnService(27039): ✓ Built SYN-ACK: seq=403976514, ack=2104536147
+12-13 16:18:55.171 D/ZeroVpnService(27039): ✓ Sent SYN-ACK for 10.0.0.2:35792-157.240.196.61:5222
+12-13 16:18:55.172 D/ZeroVpnService(27039): Connection closed: 100.88.174.6:36182-216.58.205.196:443
+12-13 16:18:55.172 D/ZeroVpnService(27039): Connection closed: 100.88.174.6:36198-216.58.205.196:443
+12-13 16:18:55.172 D/ZeroVpnService(27039): Connection established: 10.0.0.2:57886-8.8.4.4:853
+12-13 16:18:55.172 D/ZeroVpnService(27039): Forwarded 228 bytes for 10.0.0.2:57886-8.8.4.4:853
+12-13 16:18:55.172 D/ZeroVpnService(27039): Connection established: 10.0.0.2:49996-8.8.8.8:853
+12-13 16:18:55.173 D/ZeroVpnService(27039): Forwarded 228 bytes for 10.0.0.2:49996-8.8.8.8:853
+12-13 16:18:55.173 D/ZeroVpnService(27039): Connection established: 10.0.0.2:35792-157.240.196.61:5222
+12-13 16:18:55.177 D/ZeroVpnService(27039): Forwarded 4 bytes for 10.0.0.2:35792-157.240.196.61:5222
+12-13 16:18:55.413 D/ZeroVpnService(27039): ← Received 1500 bytes from server for 10.0.0.2:49996-8.8.8.8:853
+12-13 16:18:55.414 D/ZeroVpnService(27039): Built TCP response: seq=403976364, ack=2665228301, len=1500
+12-13 16:18:55.415 D/ZeroVpnService(27039): → Sent 1540 byte response packet to VPN
+12-13 16:18:55.415 D/ZeroVpnService(27039): ← Received 1500 bytes from server for 10.0.0.2:57886-8.8.4.4:853
+12-13 16:18:55.415 D/ZeroVpnService(27039): Built TCP response: seq=403976118, ack=726922676, len=1500
+12-13 16:18:55.416 D/ZeroVpnService(27039): → Sent 1540 byte response packet to VPN
+12-13 16:18:55.416 D/ZeroVpnService(27039): ← Received 1500 bytes from server for 10.0.0.2:49996-8.8.8.8:853
+12-13 16:18:55.417 D/ZeroVpnService(27039): Built TCP response: seq=403977864, ack=2665228301, len=1500
+12-13 16:18:55.417 D/ZeroVpnService(27039): → Sent 1540 byte response packet to VPN
+12-13 16:18:55.417 D/ZeroVpnService(27039): ← Received 1500 bytes from server for 10.0.0.2:57886-8.8.4.4:853
+12-13 16:18:55.417 D/ZeroVpnService(27039): Built TCP response: seq=403977618, ack=726922676, len=1500
+12-13 16:18:55.417 D/ZeroVpnService(27039): → Sent 1540 byte response packet to VPN
+12-13 16:18:55.418 D/ZeroVpnService(27039): ← Received 1500 bytes from server for 10.0.0.2:49996-8.8.8.8:853
+12-13 16:18:55.418 D/ZeroVpnService(27039): Built TCP response: seq=403979364, ack=2665228301, len=1500
+12-13 16:18:55.418 D/ZeroVpnService(27039): → Sent 1540 byte response packet to VPN
+12-13 16:18:55.418 D/ZeroVpnService(27039): ← Received 1500 bytes from server for 10.0.0.2:57886-8.8.4.4:853
+12-13 16:18:55.419 D/ZeroVpnService(27039): Built TCP response: seq=403979118, ack=726922676, len=1500
+12-13 16:18:55.419 D/ZeroVpnService(27039): → Sent 1540 byte response packet to VPN
+12-13 16:18:55.419 D/ZeroVpnService(27039): ← Received 123 bytes from server for 10.0.0.2:49996-8.8.8.8:853
+12-13 16:18:55.419 D/ZeroVpnService(27039): Built TCP response: seq=403980864, ack=2665228301, len=123
+12-13 16:18:55.420 D/ZeroVpnService(27039): → Sent 163 byte response packet to VPN
+12-13 16:18:55.420 D/ZeroVpnService(27039): ← Received 123 bytes from server for 10.0.0.2:57886-8.8.4.4:853
+12-13 16:18:55.421 D/ZeroVpnService(27039): Built TCP response: seq=403980618, ack=726922676, len=123
+12-13 16:18:55.421 D/ZeroVpnService(27039): → Sent 163 byte response packet to VPN
+12-13 16:18:55.427 D/ZeroVpnService(27039): Forwarded 64 bytes for 10.0.0.2:57886-8.8.4.4:853
+12-13 16:18:55.427 D/ZeroVpnService(27039): Forwarded 64 bytes for 10.0.0.2:49996-8.8.8.8:853
+12-13 16:18:56.401 D/ZeroVpnService(27039): Connection closed: 100.88.174.6:36198-216.58.205.196:443
+12-13 16:18:56.560 D/ZeroVpnService(27039): Connection closed: 100.88.174.6:36182-216.58.205.196:443
+12-13 16:18:56.689 D/ZeroVpnService(27039): Forwarded 64 bytes for 10.0.0.2:57886-8.8.4.4:853
+12-13 16:18:57.297 D/ZeroVpnService(27039): Forwarded 64 bytes for 10.0.0.2:49996-8.8.8.8:853
+12-13 16:18:57.297 D/ZeroVpnService(27039): ← Received 536 bytes from server for 10.0.0.2:57886-8.8.4.4:853
+12-13 16:18:57.297 D/ZeroVpnService(27039): Built TCP response: seq=403980741, ack=726922740, len=536
+12-13 16:18:57.298 D/ZeroVpnService(27039): → Sent 576 byte response packet to VPN
+12-13 16:18:57.305 E/ZeroVpnService(27039): TCP packet error
+12-13 16:18:57.305 E/ZeroVpnService(27039): java.io.IOException: Connection reset by peer
+12-13 16:18:57.305 E/ZeroVpnService(27039): 	at sun.nio.ch.FileDispatcherImpl.write0(Native Method)
+12-13 16:18:57.305 E/ZeroVpnService(27039): 	at sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:55)
+12-13 16:18:57.305 E/ZeroVpnService(27039): 	at sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:93)
+12-13 16:18:57.305 E/ZeroVpnService(27039): 	at sun.nio.ch.IOUtil.write(IOUtil.java:65)
+12-13 16:18:57.305 E/ZeroVpnService(27039): 	at sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:512)
+12-13 16:18:57.305 E/ZeroVpnService(27039): 	at zerotrack.minapronetvpn.com.eg.ZeroVpnService.handleTcpPacket(ZeroVpnService.kt:408)
+12-13 16:18:57.305 E/ZeroVpnService(27039): 	at zerotrack.minapronetvpn.com.eg.ZeroVpnService.runVpnLoop(ZeroVpnService.kt:157)
+12-13 16:18:57.305 E/ZeroVpnService(27039): 	at zerotrack.minapronetvpn.com.eg.ZeroVpnService.startVpn$lambda$0(ZeroVpnService.kt:93)
+12-13 16:18:57.305 E/ZeroVpnService(27039): 	at zerotrack.minapronetvpn.com.eg.ZeroVpnService.$r8$lambda$oP_ESc-PnSPutI5rhsMWdGAsOn0(Unknown Source:0)
+12-13 16:18:57.305 E/ZeroVpnService(27039): 	at zerotrack.minapronetvpn.com.eg.ZeroVpnService$$ExternalSyntheticLambda0.run(Unknown Source:2)
+12-13 16:18:57.305 E/ZeroVpnService(27039): 	at java.lang.Thread.run(Thread.java:1119)
+12-13 16:18:57.305 D/ZeroVpnService(27039): Socket closed by remote: 10.0.0.2:57886-8.8.4.4:853
+12-13 16:18:57.305 D/ZeroVpnService(27039): Connection closed: 10.0.0.2:57886-8.8.4.4:853
+12-13 16:18:57.434 D/ZeroVpnService(27039): ✓ Socket connected: 10.0.0.2:57900-8.8.4.4:853
+12-13 16:18:57.434 D/ZeroVpnService(27039): ✓ Built SYN-ACK: seq=403978778, ack=2628008955
+12-13 16:18:57.434 D/ZeroVpnService(27039): ✓ Sent SYN-ACK for 10.0.0.2:57900-8.8.4.4:853
+12-13 16:18:57.434 D/ZeroVpnService(27039): ← Received 536 bytes from server for 10.0.0.2:49996-8.8.8.8:853
+12-13 16:18:57.435 D/ZeroVpnService(27039): Built TCP response: seq=403980987, ack=2665228365, len=536
+12-13 16:18:57.435 D/ZeroVpnService(27039): → Sent 576 byte response packet to VPN
+12-13 16:18:57.438 D/ZeroVpnService(27039): Connection established: 10.0.0.2:57900-8.8.4.4:853
+12-13 16:18:57.438 D/ZeroVpnService(27039): Forwarded 517 bytes for 10.0.0.2:57900-8.8.4.4:853
+12-13 16:18:57.439 D/ZeroVpnService(27039): Connection closed: 10.0.0.2:49996-8.8.8.8:853
+12-13 16:18:57.691 D/ZeroVpnService(27039): ✓ Socket connected: 10.0.0.2:50006-8.8.8.8:853
+12-13 16:18:57.692 D/ZeroVpnService(27039): ✓ Built SYN-ACK: seq=403979036, ack=4061885359
+12-13 16:18:57.692 D/ZeroVpnService(27039): ✓ Sent SYN-ACK for 10.0.0.2:50006-8.8.8.8:853
+12-13 16:18:57.693 D/ZeroVpnService(27039): Forwarded 4 bytes for 10.0.0.2:35792-157.240.196.61:5222
+12-13 16:18:57.694 D/ZeroVpnService(27039): Connection established: 10.0.0.2:50006-8.8.8.8:853
+12-13 16:18:57.694 D/ZeroVpnService(27039): Forwarded 517 bytes for 10.0.0.2:50006-8.8.8.8:853
+12-13 16:18:57.842 D/ZeroVpnService(27039): Forwarded 517 bytes for 10.0.0.2:57900-8.8.4.4:853
+12-13 16:18:57.842 D/ZeroVpnService(27039): ← Received 203 bytes from server for 10.0.0.2:57900-8.8.4.4:853
+12-13 16:18:57.843 D/ZeroVpnService(27039): Built TCP response: seq=403978779, ack=2628009472, len=203
+12-13 16:18:57.843 D/ZeroVpnService(27039): → Sent 243 byte response packet to VPN
+12-13 16:18:57.846 D/ZeroVpnService(27039): Forwarded 64 bytes for 10.0.0.2:57900-8.8.4.4:853
+12-13 16:18:58.449 D/ZeroVpnService(27039): Forwarded 517 bytes for 10.0.0.2:50006-8.8.8.8:853
+12-13 16:18:58.449 D/ZeroVpnService(27039): ← Received 203 bytes from server for 10.0.0.2:50006-8.8.8.8:853
+12-13 16:18:58.450 D/ZeroVpnService(27039): Built TCP response: seq=403979037, ack=4061885876, len=203
+12-13 16:18:58.450 D/ZeroVpnService(27039): → Sent 243 byte response packet to VPN
+12-13 16:18:58.450 D/ZeroVpnService(27039): ← Received 24 bytes from server for 10.0.0.2:57900-8.8.4.4:853
+12-13 16:18:58.450 D/ZeroVpnService(27039): Built TCP response: seq=403978982, ack=2628009536, len=24
+12-13 16:18:58.450 D/ZeroVpnService(27039): → Sent 64 byte response packet to VPN
+12-13 16:18:58.452 D/ZeroVpnService(27039): Connection closed: 10.0.0.2:57900-8.8.4.4:853
+12-13 16:18:58.453 D/ZeroVpnService(27039): Forwarded 64 bytes for 10.0.0.2:50006-8.8.8.8:853
+12-13 16:18:58.615 D/ZeroVpnService(27039): ✓ Socket connected: 10.0.0.2:57910-8.8.4.4:853
+12-13 16:18:58.616 D/ZeroVpnService(27039): ✓ Built SYN-ACK: seq=403979959, ack=1046852973
+12-13 16:18:58.616 D/ZeroVpnService(27039): ✓ Sent SYN-ACK for 10.0.0.2:57910-8.8.4.4:853
+12-13 16:18:58.617 D/ZeroVpnService(27039): Connection established: 10.0.0.2:57910-8.8.4.4:853
+12-13 16:18:58.617 D/ZeroVpnService(27039): Forwarded 517 bytes for 10.0.0.2:57910-8.8.4.4:853
+12-13 16:18:58.775 D/ZeroVpnService(27039): ← Received 24 bytes from server for 10.0.0.2:50006-8.8.8.8:853
+12-13 16:18:58.775 D/ZeroVpnService(27039): Built TCP response: seq=403979240, ack=4061885940, len=24
+12-13 16:18:58.775 D/ZeroVpnService(27039): → Sent 64 byte response packet to VPN
+12-13 16:18:58.776 E/ZeroVpnService(27039): TCP packet error
+12-13 16:18:58.776 E/ZeroVpnService(27039): java.io.IOException: Connection reset by peer
+12-13 16:18:58.776 E/ZeroVpnService(27039): 	at sun.nio.ch.FileDispatcherImpl.write0(Native Method)
+12-13 16:18:58.776 E/ZeroVpnService(27039): 	at sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:55)
+12-13 16:18:58.776 E/ZeroVpnService(27039): 	at sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:93)
+12-13 16:18:58.776 E/ZeroVpnService(27039): 	at sun.nio.ch.IOUtil.write(IOUtil.java:65)
+12-13 16:18:58.776 E/ZeroVpnService(27039): 	at sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:512)
+12-13 16:18:58.776 E/ZeroVpnService(27039): 	at zerotrack.minapronetvpn.com.eg.ZeroVpnService.handleTcpPacket(ZeroVpnService.kt:408)
+12-13 16:18:58.776 E/ZeroVpnService(27039): 	at zerotrack.minapronetvpn.com.eg.ZeroVpnService.runVpnLoop(ZeroVpnService.kt:157)
+12-13 16:18:58.776 E/ZeroVpnService(27039): 	at zerotrack.minapronetvpn.com.eg.ZeroVpnService.startVpn$lambda$0(ZeroVpnService.kt:93)
+12-13 16:18:58.776 E/ZeroVpnService(27039): 	at zerotrack.minapronetvpn.com.eg.ZeroVpnService.$r8$lambda$oP_ESc-PnSPutI5rhsMWdGAsOn0(Unknown Source:0)
+12-13 16:18:58.776 E/ZeroVpnService(27039): 	at zerotrack.minapronetvpn.com.eg.ZeroVpnService$$ExternalSyntheticLambda0.run(Unknown Source:2)
+12-13 16:18:58.776 E/ZeroVpnService(27039): 	at java.lang.Thread.run(Thread.java:1119)
+12-13 16:18:58.776 D/ZeroVpnService(27039): Socket closed by remote: 10.0.0.2:50006-8.8.8.8:853
+12-13 16:18:58.778 D/ZeroVpnService(27039): Connection closed: 10.0.0.2:50006-8.8.8.8:853
+12-13 16:18:58.930 D/ZeroVpnService(27039): ✓ Socket connected: 10.0.0.2:50018-8.8.8.8:853
+12-13 16:18:58.930 D/ZeroVpnService(27039): ✓ Built SYN-ACK: seq=403980274, ack=2270523743
+12-13 16:18:58.931 D/ZeroVpnService(27039): ✓ Sent SYN-ACK for 10.0.0.2:50018-8.8.8.8:853
+12-13 16:18:58.931 D/ZeroVpnService(27039): ← Received 1500 bytes from server for 10.0.0.2:57910-8.8.4.4:853
+12-13 16:18:58.931 D/ZeroVpnService(27039): Built TCP response: seq=403979960, ack=1046853490, len=1500
+12-13 16:18:58.931 D/ZeroVpnService(27039): → Sent 1540 byte response packet to VPN
+12-13 16:18:58.931 D/ZeroVpnService(27039): ← Received 1500 bytes from server for 10.0.0.2:57910-8.8.4.4:853
+12-13 16:18:58.932 D/ZeroVpnService(27039): Built TCP response: seq=403981460, ack=1046853490, len=1500
+12-13 16:18:58.932 D/ZeroVpnService(27039): → Sent 1540 byte response packet to VPN
+12-13 16:18:58.932 D/ZeroVpnService(27039): ← Received 1500 bytes from server for 10.0.0.2:57910-8.8.4.4:853
+12-13 16:18:58.932 D/ZeroVpnService(27039): Built TCP response: seq=403982960, ack=1046853490, len=1500
+12-13 16:18:58.932 D/ZeroVpnService(27039): → Sent 1540 byte response packet to VPN
+12-13 16:18:58.932 D/ZeroVpnService(27039): ← Received 123 bytes from server for 10.0.0.2:57910-8.8.4.4:853
+12-13 16:18:58.932 D/ZeroVpnService(27039): Built TCP response: seq=403984460, ack=1046853490, len=123
+12-13 16:18:58.932 D/ZeroVpnService(27039): → Sent 163 byte response packet to VPN
+12-13 16:18:58.933 D/ZeroVpnService(27039): Connection established: 10.0.0.2:50018-8.8.8.8:853
+12-13 16:18:58.934 D/ZeroVpnService(27039): Forwarded 517 bytes for 10.0.0.2:50018-8.8.8.8:853
+12-13 16:18:58.935 D/ZeroVpnService(27039): Forwarded 64 bytes for 10.0.0.2:57910-8.8.4.4:853
+12-13 16:18:59.316 D/ZeroVpnService(27039): Connection closed: 10.0.0.2:57900-8.8.4.4:853
+12-13 16:18:59.316 D/ZeroVpnService(27039): ← Received 1500 bytes from server for 10.0.0.2:50018-8.8.8.8:853
+12-13 16:18:59.317 D/ZeroVpnService(27039): Built TCP response: seq=403980275, ack=2270524260, len=1500
+12-13 16:18:59.317 D/ZeroVpnService(27039): → Sent 1540 byte response packet to VPN
+12-13 16:18:59.317 D/ZeroVpnService(27039): ← Received 1500 bytes from server for 10.0.0.2:50018-8.8.8.8:853
+12-13 16:18:59.317 D/ZeroVpnService(27039): Built TCP response: seq=403981775, ack=2270524260, len=1500
+12-13 16:18:59.318 D/ZeroVpnService(27039): → Sent 1540 byte response packet to VPN
+12-13 16:18:59.318 D/ZeroVpnService(27039): ← Received 1500 bytes from server for 10.0.0.2:50018-8.8.8.8:853
+12-13 16:18:59.318 D/ZeroVpnService(27039): Built TCP response: seq=403983275, ack=2270524260, len=1500
+12-13 16:18:59.318 D/ZeroVpnService(27039): → Sent 1540 byte response packet to VPN
+12-13 16:18:59.318 D/ZeroVpnService(27039): ← Received 123 bytes from server for 10.0.0.2:50018-8.8.8.8:853
+12-13 16:18:59.318 D/ZeroVpnService(27039): Built TCP response: seq=403984775, ack=2270524260, len=123
+12-13 16:18:59.318 D/ZeroVpnService(27039): → Sent 163 byte response packet to VPN
+12-13 16:18:59.320 D/ZeroVpnService(27039): Forwarded 64 bytes for 10.0.0.2:50018-8.8.8.8:853
+12-13 16:18:59.536 D/ZeroVpnService(27039): Connection closed: 10.0.0.2:50006-8.8.8.8:853
+12-13 16:18:59.537 D/ZeroVpnService(27039): Forwarded 64 bytes for 10.0.0.2:57910-8.8.4.4:853
+12-13 16:18:59.888 D/ZeroVpnService(27039): Connection closed: 10.0.0.2:57886-8.8.4.4:853
+12-13 16:18:59.888 D/ZeroVpnService(27039): ← Received 536 bytes from server for 10.0.0.2:57910-8.8.4.4:853
+12-13 16:18:59.889 D/ZeroVpnService(27039): Built TCP response: seq=403984583, ack=1046853554, len=536
+12-13 16:18:59.889 D/ZeroVpnService(27039): → Sent 576 byte response packet to VPN
+12-13 16:18:59.889 D/ZeroVpnService(27039): Connection closed: 100.88.174.6:36198-216.58.205.196:443
+12-13 16:18:59.890 D/ZeroVpnService(27039): Connection closed: 10.0.0.2:57910-8.8.4.4:853
+12-13 16:18:59.985 D/ZeroVpnService(27039): Forwarded 64 bytes for 10.0.0.2:50018-8.8.8.8:853
+12-13 16:19:00.146 D/ZeroVpnService(27039): Connection closed: 100.88.174.6:36182-216.58.205.196:443
+12-13 16:19:00.413 D/ZeroVpnService(27039): ← Received 536 bytes from server for 10.0.0.2:50018-8.8.8.8:853
+12-13 16:19:00.414 D/ZeroVpnService(27039): Built TCP response: seq=403984898, ack=2270524324, len=536
+12-13 16:19:00.414 D/ZeroVpnService(27039): → Sent 576 byte response packet to VPN
+12-13 16:19:00.415 E/ZeroVpnService(27039): TCP packet error
+12-13 16:19:00.415 E/ZeroVpnService(27039): java.io.IOException: Connection reset by peer
+12-13 16:19:00.415 E/ZeroVpnService(27039): 	at sun.nio.ch.FileDispatcherImpl.write0(Native Method)
+12-13 16:19:00.415 E/ZeroVpnService(27039): 	at sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:55)
+12-13 16:19:00.415 E/ZeroVpnService(27039): 	at sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:93)
+12-13 16:19:00.415 E/ZeroVpnService(27039): 	at sun.nio.ch.IOUtil.write(IOUtil.java:65)
+12-13 16:19:00.415 E/ZeroVpnService(27039): 	at sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:512)
+12-13 16:19:00.415 E/ZeroVpnService(27039): 	at zerotrack.minapronetvpn.com.eg.ZeroVpnService.handleTcpPacket(ZeroVpnService.kt:408)
+12-13 16:19:00.415 E/ZeroVpnService(27039): 	at zerotrack.minapronetvpn.com.eg.ZeroVpnService.runVpnLoop(ZeroVpnService.kt:157)
+12-13 16:19:00.415 E/ZeroVpnService(27039): 	at zerotrack.minapronetvpn.com.eg.ZeroVpnService.startVpn$lambda$0(ZeroVpnService.kt:93)
+12-13 16:19:00.415 E/ZeroVpnService(27039): 	at zerotrack.minapronetvpn.com.eg.ZeroVpnService.$r8$lambda$oP_ESc-PnSPutI5rhsMWdGAsOn0(Unknown Source:0)
+12-13 16:19:00.415 E/ZeroVpnService(27039): 	at zerotrack.minapronetvpn.com.eg.ZeroVpnService$$ExternalSyntheticLambda0.run(Unknown Source:2)
+12-13 16:19:00.415 E/ZeroVpnService(27039): 	at java.lang.Thread.run(Thread.java:1119)
+12-13 16:19:00.415 D/ZeroVpnService(27039): Socket closed by remote: 10.0.0.2:50018-8.8.8.8:853
+12-13 16:19:00.416 D/ZeroVpnService(27039): Connection closed: 10.0.0.2:50018-8.8.8.8:853
+12-13 16:19:01.073 D/ZeroVpnService(27039): Connection closed: 10.0.0.2:50006-8.8.8.8:853
+12-13 16:19:01.075 D/ZeroVpnService(27039): Connection closed: 10.0.0.2:57910-8.8.4.4:853
+12-13 16:19:01.075 D/ZeroVpnService(27039): Connection closed: 10.0.0.2:57900-8.8.4.4:853
+12-13 16:19:01.170 D/ZeroVpnService(27039): Connection closed: 10.0.0.2:49996-8.8.8.8:853
+12-13 16:19:01.713 D/ZeroVpnService(27039): Connection closed: 10.0.0.2:50018-8.8.8.8:853
+12-13 16:19:03.473 D/ZeroVpnService(27039): Connection closed: 10.0.0.2:57910-8.8.4.4:853
+12-13 16:19:04.242 D/ZeroVpnService(27039): Connection closed: 10.0.0.2:50006-8.8.8.8:853
+12-13 16:19:04.501 D/ZeroVpnService(27039): Connection closed: 10.0.0.2:50018-8.8.8.8:853
+12-13 16:19:04.753 D/ZeroVpnService(27039): Connection closed: 10.0.0.2:57900-8.8.4.4:853
+12-13 16:19:05.009 D/ZeroVpnService(27039): Connection closed: 10.0.0.2:57886-8.8.4.4:853
+12-13 16:19:06.802 D/ZeroVpnService(27039): Connection closed: 100.88.174.6:36198-216.58.205.196:443
+12-13 16:19:07.057 D/ZeroVpnService(27039): Connection closed: 100.88.174.6:36182-216.58.205.196:443
+12-13 16:19:08.338 D/ZeroVpnService(27039): Connection closed: 10.0.0.2:57910-8.8.4.4:853
+12-13 16:19:08.849 D/ZeroVpnService(27039): Connection closed: 10.0.0.2:49996-8.8.8.8:853
+12-13 16:19:09.874 D/ZeroVpnService(27039): Connection closed: 10.0.0.2:50018-8.8.8.8:853
+12-13 16:19:10.386 D/ZeroVpnService(27039): Connection closed: 10.0.0.2:50006-8.8.8.8:853
+12-13 16:19:11.666 D/ZeroVpnService(27039): Connection closed: 10.0.0.2:57900-8.8.4.4:853
+12-13 16:19:15.250 D/ZeroVpnService(27039): Connection closed: 10.0.0.2:57886-8.8.4.4:853
+12-13 16:19:17.813 D/ZeroVpnService(27039): Connection closed: 10.0.0.2:57910-8.8.4.4:853
+12-13 16:19:20.370 D/ZeroVpnService(27039): Connection closed: 10.0.0.2:50018-8.8.8.8:853
+12-13 16:19:20.371 D/ZeroVpnService(27039): Connection closed: 100.88.174.6:36198-216.58.205.196:443
+12-13 16:19:20.626 D/ZeroVpnService(27039): Connection closed: 100.88.174.6:36182-216.58.205.196:443
+12-13 16:19:22.256 D/ZeroVpnService(27039): VPN loop interrupted (normal shutdown)
+
+============================================================
+Total lines: 723
+============================================================
