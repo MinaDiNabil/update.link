@@ -1,0 +1,1009 @@
+============================================================
+ZeroTrack VPN - Debug Logs
+Generated: 2025-12-13 23:01:54
+============================================================
+
+--------- beginning of main
+12-13 23:00:55.092 D/ZeroVpnService(26480): VPN loop started
+12-13 23:00:55.186 D/ZeroVpnService(26480): <<< Received IP packet: 192.168.8.2 -> 216.58.212.106, protocol=6, len=52
+12-13 23:00:55.186 D/ZeroVpnService(26480): >>> TCP Packet: 192.168.8.2:47490-216.58.212.106:443, flags=0x14, dataLen=0
+12-13 23:00:55.186 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:00:55.190 D/ZeroVpnService(26480): <<< Received IP packet: 192.168.8.2 -> 142.250.200.234, protocol=6, len=52
+12-13 23:00:55.190 D/ZeroVpnService(26480): >>> TCP Packet: 192.168.8.2:40058-142.250.200.234:443, flags=0x14, dataLen=0
+12-13 23:00:55.190 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:00:55.191 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=6, len=64
+12-13 23:00:55.191 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37692-8.8.8.8:853, flags=0x2, dataLen=0
+12-13 23:00:55.196 D/ZeroVpnService(26480): ✓ Socket connecting: 10.0.0.2:37692-8.8.8.8:853
+12-13 23:00:55.197 D/ZeroVpnService(26480): ✓ Built SYN-ACK: seq=428096540, ack=1589572904
+12-13 23:00:55.197 D/ZeroVpnService(26480): ✓ Sent SYN-ACK for 10.0.0.2:37692-8.8.8.8:853
+12-13 23:00:55.197 D/ZeroVpnService(26480): ✓ Socket connected (async): 10.0.0.2:37692-8.8.8.8:853
+12-13 23:00:55.197 D/ZeroVpnService(26480): Removed disconnected socket: 10.0.0.2:37692-8.8.8.8:853
+12-13 23:00:55.197 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=6, len=64
+12-13 23:00:55.197 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37022-8.8.4.4:853, flags=0x2, dataLen=0
+12-13 23:00:55.198 D/ZeroVpnService(26480): ✓ Socket connecting: 10.0.0.2:37022-8.8.4.4:853
+12-13 23:00:55.198 D/ZeroVpnService(26480): ✓ Built SYN-ACK: seq=428096542, ack=1333301871
+12-13 23:00:55.198 D/ZeroVpnService(26480): ✓ Sent SYN-ACK for 10.0.0.2:37022-8.8.4.4:853
+12-13 23:00:55.198 D/ZeroVpnService(26480): ✓ Socket connected (async): 10.0.0.2:37022-8.8.4.4:853
+12-13 23:00:55.198 D/ZeroVpnService(26480): Removed disconnected socket: 10.0.0.2:37022-8.8.4.4:853
+12-13 23:00:55.199 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=6, len=40
+12-13 23:00:55.199 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37692-8.8.8.8:853, flags=0x10, dataLen=0
+12-13 23:00:55.199 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:00:55.199 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=62
+12-13 23:00:55.199 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=6, len=40
+12-13 23:00:55.199 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37022-8.8.4.4:853, flags=0x10, dataLen=0
+12-13 23:00:55.199 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:00:55.208 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=6, len=268
+12-13 23:00:55.208 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37022-8.8.4.4:853, flags=0x18, dataLen=228
+12-13 23:00:55.208 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:00:55.208 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=6, len=268
+12-13 23:00:55.208 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37692-8.8.8.8:853, flags=0x18, dataLen=228
+12-13 23:00:55.208 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:00:55.228 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=1228
+12-13 23:00:55.415 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=6, len=268
+12-13 23:00:55.415 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37022-8.8.4.4:853, flags=0x18, dataLen=228
+12-13 23:00:55.415 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:00:55.415 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=6, len=268
+12-13 23:00:55.415 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37692-8.8.8.8:853, flags=0x18, dataLen=228
+12-13 23:00:55.415 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:00:55.858 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=6, len=268
+12-13 23:00:55.859 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37692-8.8.8.8:853, flags=0x18, dataLen=228
+12-13 23:00:55.859 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:00:55.859 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=6, len=268
+12-13 23:00:55.859 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37022-8.8.4.4:853, flags=0x18, dataLen=228
+12-13 23:00:55.859 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:00:55.860 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=576
+12-13 23:00:55.860 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=135
+12-13 23:00:55.860 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=576
+12-13 23:00:55.860 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=576
+12-13 23:00:56.227 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=1228
+12-13 23:00:56.690 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=6, len=268
+12-13 23:00:56.690 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37022-8.8.4.4:853, flags=0x18, dataLen=228
+12-13 23:00:56.690 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:00:56.691 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=6, len=268
+12-13 23:00:56.691 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37692-8.8.8.8:853, flags=0x18, dataLen=228
+12-13 23:00:56.691 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:00:56.691 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=576
+12-13 23:00:56.691 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=576
+12-13 23:00:56.702 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=70
+12-13 23:00:58.203 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=62
+12-13 23:00:58.205 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=142
+12-13 23:00:58.226 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=1228
+12-13 23:00:58.227 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=1228
+12-13 23:00:58.354 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=6, len=268
+12-13 23:00:58.355 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37692-8.8.8.8:853, flags=0x18, dataLen=228
+12-13 23:00:58.355 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:00:58.355 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=6, len=268
+12-13 23:00:58.355 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37022-8.8.4.4:853, flags=0x18, dataLen=228
+12-13 23:00:58.355 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:00:59.076 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=17, len=1278
+12-13 23:00:59.077 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=17, len=1278
+12-13 23:00:59.077 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=135
+12-13 23:00:59.077 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=576
+12-13 23:00:59.078 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=576
+12-13 23:00:59.079 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=17, len=108
+12-13 23:00:59.083 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=6, len=60
+12-13 23:00:59.083 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:47592-216.239.34.223:443, flags=0x2, dataLen=0
+12-13 23:00:59.085 D/ZeroVpnService(26480): ✓ Socket connecting: 10.0.0.2:47592-216.239.34.223:443
+12-13 23:00:59.086 D/ZeroVpnService(26480): ✓ Built SYN-ACK: seq=428100429, ack=870924432
+12-13 23:00:59.086 D/ZeroVpnService(26480): ✓ Sent SYN-ACK for 10.0.0.2:47592-216.239.34.223:443
+12-13 23:00:59.086 D/ZeroVpnService(26480): ✓ Socket connected (async): 10.0.0.2:47592-216.239.34.223:443
+12-13 23:00:59.086 D/ZeroVpnService(26480): Removed disconnected socket: 10.0.0.2:47592-216.239.34.223:443
+12-13 23:00:59.086 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=6, len=60
+12-13 23:00:59.086 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:47606-216.239.34.223:443, flags=0x2, dataLen=0
+12-13 23:00:59.088 D/ZeroVpnService(26480): ✓ Socket connecting: 10.0.0.2:47606-216.239.34.223:443
+12-13 23:00:59.088 D/ZeroVpnService(26480): ✓ Built SYN-ACK: seq=428100432, ack=122894667
+12-13 23:00:59.088 D/ZeroVpnService(26480): ✓ Sent SYN-ACK for 10.0.0.2:47606-216.239.34.223:443
+12-13 23:00:59.088 D/ZeroVpnService(26480): ✓ Socket connected (async): 10.0.0.2:47606-216.239.34.223:443
+12-13 23:00:59.088 D/ZeroVpnService(26480): Removed disconnected socket: 10.0.0.2:47606-216.239.34.223:443
+12-13 23:00:59.088 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=6, len=40
+12-13 23:00:59.088 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:47592-216.239.34.223:443, flags=0x10, dataLen=0
+12-13 23:00:59.089 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:00:59.089 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=69
+12-13 23:00:59.089 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=6, len=576
+12-13 23:00:59.089 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:47592-216.239.34.223:443, flags=0x10, dataLen=536
+12-13 23:00:59.089 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:00:59.089 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=6, len=576
+12-13 23:00:59.089 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:47592-216.239.34.223:443, flags=0x10, dataLen=536
+12-13 23:00:59.089 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:00:59.089 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=6, len=576
+12-13 23:00:59.089 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:47592-216.239.34.223:443, flags=0x10, dataLen=536
+12-13 23:00:59.089 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:00:59.089 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=6, len=197
+12-13 23:00:59.089 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:47592-216.239.34.223:443, flags=0x18, dataLen=157
+12-13 23:00:59.089 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:00:59.089 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=6, len=40
+12-13 23:00:59.089 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:47606-216.239.34.223:443, flags=0x10, dataLen=0
+12-13 23:00:59.089 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:00:59.089 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=6, len=576
+12-13 23:00:59.089 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:47606-216.239.34.223:443, flags=0x10, dataLen=536
+12-13 23:00:59.089 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:00:59.089 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=6, len=576
+12-13 23:00:59.090 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:47606-216.239.34.223:443, flags=0x10, dataLen=536
+12-13 23:00:59.090 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:00:59.090 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=6, len=576
+12-13 23:00:59.090 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:47606-216.239.34.223:443, flags=0x10, dataLen=536
+12-13 23:00:59.090 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:00:59.090 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=6, len=197
+12-13 23:00:59.090 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:47606-216.239.34.223:443, flags=0x18, dataLen=157
+12-13 23:00:59.090 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:00:59.192 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=69
+12-13 23:00:59.263 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=77
+12-13 23:00:59.290 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=6, len=576
+12-13 23:00:59.290 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:47592-216.239.34.223:443, flags=0x10, dataLen=536
+12-13 23:00:59.290 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:00:59.291 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=6, len=576
+12-13 23:00:59.291 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:47606-216.239.34.223:443, flags=0x10, dataLen=536
+12-13 23:00:59.291 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:00:59.291 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=1, len=96
+12-13 23:00:59.585 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=17, len=1278
+12-13 23:00:59.586 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=17, len=1278
+12-13 23:00:59.586 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=17, len=1278
+12-13 23:00:59.586 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=17, len=1278
+12-13 23:00:59.587 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=1, len=576
+12-13 23:00:59.587 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=1, len=576
+12-13 23:00:59.588 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=1, len=576
+12-13 23:00:59.588 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=1, len=576
+12-13 23:00:59.588 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=1, len=576
+12-13 23:00:59.698 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=6, len=576
+12-13 23:00:59.698 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:47606-216.239.34.223:443, flags=0x10, dataLen=536
+12-13 23:00:59.698 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:00:59.699 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=6, len=576
+12-13 23:00:59.699 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:47592-216.239.34.223:443, flags=0x10, dataLen=536
+12-13 23:00:59.699 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:00:59.706 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=70
+12-13 23:01:00.206 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=69
+12-13 23:01:00.274 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=77
+12-13 23:01:00.530 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=6, len=576
+12-13 23:01:00.530 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:47606-216.239.34.223:443, flags=0x10, dataLen=536
+12-13 23:01:00.530 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:00.531 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=6, len=576
+12-13 23:01:00.531 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:47592-216.239.34.223:443, flags=0x10, dataLen=536
+12-13 23:01:00.531 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:00.531 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=1, len=576
+12-13 23:01:00.531 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=142
+12-13 23:01:00.531 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=161
+12-13 23:01:00.531 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=361
+12-13 23:01:00.603 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=17, len=1278
+12-13 23:01:00.645 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=60
+12-13 23:01:01.207 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=62
+12-13 23:01:01.210 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=104
+12-13 23:01:01.218 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=69
+12-13 23:01:01.285 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=77
+12-13 23:01:01.658 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=60
+12-13 23:01:01.659 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=135
+12-13 23:01:01.659 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=361
+12-13 23:01:01.659 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=161
+12-13 23:01:01.811 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=6, len=268
+12-13 23:01:01.811 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37022-8.8.4.4:853, flags=0x18, dataLen=228
+12-13 23:01:01.811 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:01.812 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=6, len=268
+12-13 23:01:01.813 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37692-8.8.8.8:853, flags=0x18, dataLen=228
+12-13 23:01:01.813 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:02.087 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=69
+12-13 23:01:02.166 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=6, len=576
+12-13 23:01:02.166 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:47606-216.239.34.223:443, flags=0x10, dataLen=536
+12-13 23:01:02.166 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:02.166 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=6, len=576
+12-13 23:01:02.166 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:47592-216.239.34.223:443, flags=0x10, dataLen=536
+12-13 23:01:02.166 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:02.223 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=1228
+12-13 23:01:02.224 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=1228
+12-13 23:01:02.638 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=17, len=1278
+12-13 23:01:02.639 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=161
+12-13 23:01:02.640 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=576
+12-13 23:01:02.672 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=60
+12-13 23:01:02.710 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=70
+12-13 23:01:03.076 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=17, len=1278
+12-13 23:01:03.077 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=1, len=576
+12-13 23:01:03.077 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=142
+12-13 23:01:03.077 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=1, len=576
+12-13 23:01:03.078 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=104
+12-13 23:01:03.242 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=69
+12-13 23:01:03.308 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=77
+12-13 23:01:04.214 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=62
+12-13 23:01:04.217 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=161
+12-13 23:01:04.219 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=345
+12-13 23:01:04.697 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=60
+12-13 23:01:04.699 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=135
+12-13 23:01:05.092 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=69
+12-13 23:01:05.095 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=104
+12-13 23:01:05.336 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=77
+12-13 23:01:05.652 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=6, len=576
+12-13 23:01:05.652 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:47592-216.239.34.223:443, flags=0x10, dataLen=536
+12-13 23:01:05.652 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:05.653 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=6, len=576
+12-13 23:01:05.653 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:47606-216.239.34.223:443, flags=0x10, dataLen=536
+12-13 23:01:05.654 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:05.714 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=70
+12-13 23:01:06.731 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=60
+12-13 23:01:06.735 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=142
+12-13 23:01:07.216 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=62
+12-13 23:01:07.217 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=104
+12-13 23:01:08.097 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=69
+12-13 23:01:08.099 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=135
+12-13 23:01:08.344 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=77
+12-13 23:01:08.346 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=161
+12-13 23:01:08.468 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=6, len=268
+12-13 23:01:08.468 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37692-8.8.8.8:853, flags=0x18, dataLen=228
+12-13 23:01:08.468 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:08.469 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=6, len=268
+12-13 23:01:08.469 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37022-8.8.4.4:853, flags=0x18, dataLen=228
+12-13 23:01:08.469 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:09.735 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=60
+12-13 23:01:09.738 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=361
+12-13 23:01:10.218 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=1228
+12-13 23:01:10.219 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=1228
+12-13 23:01:10.220 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=104
+12-13 23:01:10.221 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=62
+12-13 23:01:10.229 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=70
+12-13 23:01:11.103 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=69
+12-13 23:01:11.104 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=69
+12-13 23:01:11.104 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=69
+12-13 23:01:11.105 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=142
+12-13 23:01:11.105 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=135
+12-13 23:01:11.105 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=576
+12-13 23:01:11.105 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=576
+12-13 23:01:11.268 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=69
+12-13 23:01:11.269 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=161
+12-13 23:01:11.348 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=77
+12-13 23:01:12.310 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=6, len=576
+12-13 23:01:12.310 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:47606-216.239.34.223:443, flags=0x10, dataLen=536
+12-13 23:01:12.310 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:12.311 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=6, len=576
+12-13 23:01:12.311 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:47592-216.239.34.223:443, flags=0x10, dataLen=536
+12-13 23:01:12.311 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:12.311 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=161
+12-13 23:01:12.330 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=68
+12-13 23:01:12.330 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.24, protocol=6, len=60
+12-13 23:01:12.330 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:33922-157.240.196.24:443, flags=0x2, dataLen=0
+12-13 23:01:12.336 D/ZeroVpnService(26480): ✓ Socket connecting: 10.0.0.2:33922-157.240.196.24:443
+12-13 23:01:12.336 D/ZeroVpnService(26480): ✓ Built SYN-ACK: seq=428113680, ack=2292756104
+12-13 23:01:12.337 D/ZeroVpnService(26480): ✓ Sent SYN-ACK for 10.0.0.2:33922-157.240.196.24:443
+12-13 23:01:12.337 D/ZeroVpnService(26480): ✓ Socket connected (async): 10.0.0.2:33922-157.240.196.24:443
+12-13 23:01:12.337 D/ZeroVpnService(26480): Removed disconnected socket: 10.0.0.2:33922-157.240.196.24:443
+12-13 23:01:12.337 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.24, protocol=6, len=40
+12-13 23:01:12.337 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:33922-157.240.196.24:443, flags=0x10, dataLen=0
+12-13 23:01:12.337 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:12.338 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.24, protocol=6, len=422
+12-13 23:01:12.338 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:33922-157.240.196.24:443, flags=0x18, dataLen=382
+12-13 23:01:12.338 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:12.341 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.24, protocol=6, len=576
+12-13 23:01:12.341 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:33922-157.240.196.24:443, flags=0x10, dataLen=536
+12-13 23:01:12.341 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:12.341 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.24, protocol=6, len=523
+12-13 23:01:12.342 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:33922-157.240.196.24:443, flags=0x18, dataLen=483
+12-13 23:01:12.342 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:12.356 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.24, protocol=6, len=124
+12-13 23:01:12.356 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:33922-157.240.196.24:443, flags=0x18, dataLen=84
+12-13 23:01:12.365 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:12.368 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=60
+12-13 23:01:12.368 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:32792-157.240.196.2:443, flags=0x2, dataLen=0
+12-13 23:01:12.369 D/ZeroVpnService(26480): ✓ Socket connecting: 10.0.0.2:32792-157.240.196.2:443
+12-13 23:01:12.369 D/ZeroVpnService(26480): ✓ Built SYN-ACK: seq=428113713, ack=1432073656
+12-13 23:01:12.370 D/ZeroVpnService(26480): ✓ Sent SYN-ACK for 10.0.0.2:32792-157.240.196.2:443
+12-13 23:01:12.370 D/ZeroVpnService(26480): ✓ Socket connected (async): 10.0.0.2:32792-157.240.196.2:443
+12-13 23:01:12.370 D/ZeroVpnService(26480): Removed disconnected socket: 10.0.0.2:32792-157.240.196.2:443
+12-13 23:01:12.370 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=40
+12-13 23:01:12.370 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:32792-157.240.196.2:443, flags=0x10, dataLen=0
+12-13 23:01:12.370 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:12.370 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=66
+12-13 23:01:12.370 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=454
+12-13 23:01:12.371 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:32792-157.240.196.2:443, flags=0x18, dataLen=414
+12-13 23:01:12.371 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:12.393 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=73
+12-13 23:01:12.398 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=60
+12-13 23:01:12.398 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:56882-157.240.196.33:5222, flags=0x2, dataLen=0
+12-13 23:01:12.402 D/ZeroVpnService(26480): ✓ Socket connecting: 10.0.0.2:56882-157.240.196.33:5222
+12-13 23:01:12.402 D/ZeroVpnService(26480): ✓ Built SYN-ACK: seq=428113746, ack=1353022873
+12-13 23:01:12.403 D/ZeroVpnService(26480): ✓ Sent SYN-ACK for 10.0.0.2:56882-157.240.196.33:5222
+12-13 23:01:12.403 D/ZeroVpnService(26480): ✓ Socket connected (async): 10.0.0.2:56882-157.240.196.33:5222
+12-13 23:01:12.403 D/ZeroVpnService(26480): Removed disconnected socket: 10.0.0.2:56882-157.240.196.33:5222
+12-13 23:01:12.403 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=40
+12-13 23:01:12.403 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:56882-157.240.196.33:5222, flags=0x10, dataLen=0
+12-13 23:01:12.403 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:12.404 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=44
+12-13 23:01:12.404 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:56882-157.240.196.33:5222, flags=0x18, dataLen=4
+12-13 23:01:12.404 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:12.406 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=49
+12-13 23:01:12.406 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:56882-157.240.196.33:5222, flags=0x18, dataLen=9
+12-13 23:01:12.406 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:12.406 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=44
+12-13 23:01:12.406 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:56882-157.240.196.33:5222, flags=0x18, dataLen=4
+12-13 23:01:12.406 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:12.414 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=576
+12-13 23:01:12.414 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:56882-157.240.196.33:5222, flags=0x10, dataLen=536
+12-13 23:01:12.414 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:12.415 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=576
+12-13 23:01:12.415 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:56882-157.240.196.33:5222, flags=0x18, dataLen=536
+12-13 23:01:12.415 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:12.415 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=576
+12-13 23:01:12.415 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:56882-157.240.196.33:5222, flags=0x10, dataLen=536
+12-13 23:01:12.415 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:12.415 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=539
+12-13 23:01:12.415 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:56882-157.240.196.33:5222, flags=0x18, dataLen=499
+12-13 23:01:12.415 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:12.448 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=17, len=1260
+12-13 23:01:12.450 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=17, len=1260
+12-13 23:01:12.451 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=17, len=1260
+12-13 23:01:12.451 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=17, len=998
+12-13 23:01:12.457 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=64
+12-13 23:01:12.532 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.24, protocol=6, len=259
+12-13 23:01:12.535 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:33922-157.240.196.24:443, flags=0x18, dataLen=219
+12-13 23:01:12.535 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:12.543 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.24, protocol=6, len=422
+12-13 23:01:12.543 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:33922-157.240.196.24:443, flags=0x18, dataLen=382
+12-13 23:01:12.543 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:12.560 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=17, len=1260
+12-13 23:01:12.574 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=454
+12-13 23:01:12.574 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:32792-157.240.196.2:443, flags=0x18, dataLen=414
+12-13 23:01:12.574 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:12.612 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=17, len=1260
+12-13 23:01:12.613 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=17, len=1260
+12-13 23:01:12.613 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=17, len=1260
+12-13 23:01:12.613 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=17, len=1260
+12-13 23:01:12.614 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=17, len=1260
+12-13 23:01:12.614 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=17, len=1260
+12-13 23:01:12.614 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=1, len=576
+12-13 23:01:12.614 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=1, len=256
+12-13 23:01:12.614 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=1, len=104
+12-13 23:01:12.614 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=1, len=136
+12-13 23:01:12.614 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=57
+12-13 23:01:12.614 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:56882-157.240.196.33:5222, flags=0x18, dataLen=17
+12-13 23:01:12.614 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:12.614 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=1, len=104
+12-13 23:01:12.650 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=6, len=60
+12-13 23:01:12.650 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:44948-157.240.196.17:443, flags=0x2, dataLen=0
+12-13 23:01:12.653 D/ZeroVpnService(26480): ✓ Socket connecting: 10.0.0.2:44948-157.240.196.17:443
+12-13 23:01:12.653 D/ZeroVpnService(26480): ✓ Built SYN-ACK: seq=428113997, ack=4057880552
+12-13 23:01:12.653 D/ZeroVpnService(26480): ✓ Sent SYN-ACK for 10.0.0.2:44948-157.240.196.17:443
+12-13 23:01:12.653 D/ZeroVpnService(26480): ✓ Socket connected (async): 10.0.0.2:44948-157.240.196.17:443
+12-13 23:01:12.653 D/ZeroVpnService(26480): Removed disconnected socket: 10.0.0.2:44948-157.240.196.17:443
+12-13 23:01:12.654 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=6, len=40
+12-13 23:01:12.654 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:44948-157.240.196.17:443, flags=0x10, dataLen=0
+12-13 23:01:12.654 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:12.654 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=1, len=576
+12-13 23:01:12.654 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=6, len=452
+12-13 23:01:12.654 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:44948-157.240.196.17:443, flags=0x18, dataLen=412
+12-13 23:01:12.654 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:12.738 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=60
+12-13 23:01:12.747 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=60
+12-13 23:01:12.747 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:32794-157.240.196.2:443, flags=0x2, dataLen=0
+12-13 23:01:12.749 D/ZeroVpnService(26480): ✓ Socket connecting: 10.0.0.2:32794-157.240.196.2:443
+12-13 23:01:12.750 D/ZeroVpnService(26480): ✓ Built SYN-ACK: seq=428114093, ack=2292484576
+12-13 23:01:12.750 D/ZeroVpnService(26480): ✓ Sent SYN-ACK for 10.0.0.2:32794-157.240.196.2:443
+12-13 23:01:12.751 D/ZeroVpnService(26480): ✓ Socket connected (async): 10.0.0.2:32794-157.240.196.2:443
+12-13 23:01:12.751 D/ZeroVpnService(26480): Removed disconnected socket: 10.0.0.2:32794-157.240.196.2:443
+12-13 23:01:12.752 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=60
+12-13 23:01:12.752 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:32800-157.240.196.2:443, flags=0x2, dataLen=0
+12-13 23:01:12.753 D/ZeroVpnService(26480): ✓ Socket connecting: 10.0.0.2:32800-157.240.196.2:443
+12-13 23:01:12.753 D/ZeroVpnService(26480): ✓ Built SYN-ACK: seq=428114097, ack=2268914268
+12-13 23:01:12.754 D/ZeroVpnService(26480): ✓ Sent SYN-ACK for 10.0.0.2:32800-157.240.196.2:443
+12-13 23:01:12.754 D/ZeroVpnService(26480): ✓ Socket connected (async): 10.0.0.2:32800-157.240.196.2:443
+12-13 23:01:12.754 D/ZeroVpnService(26480): Removed disconnected socket: 10.0.0.2:32800-157.240.196.2:443
+12-13 23:01:12.754 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=40
+12-13 23:01:12.754 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:32794-157.240.196.2:443, flags=0x10, dataLen=0
+12-13 23:01:12.754 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:12.754 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=454
+12-13 23:01:12.754 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:32794-157.240.196.2:443, flags=0x18, dataLen=414
+12-13 23:01:12.754 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:12.754 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=40
+12-13 23:01:12.754 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:32800-157.240.196.2:443, flags=0x10, dataLen=0
+12-13 23:01:12.754 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:12.754 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=454
+12-13 23:01:12.754 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:32800-157.240.196.2:443, flags=0x18, dataLen=414
+12-13 23:01:12.754 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:12.770 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=17, len=1260
+12-13 23:01:12.771 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=77
+12-13 23:01:12.771 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=17, len=1260
+12-13 23:01:12.771 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=17, len=966
+12-13 23:01:12.778 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=17, len=1260
+12-13 23:01:12.778 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=17, len=1260
+12-13 23:01:12.778 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=17, len=831
+12-13 23:01:12.823 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=17, len=1260
+12-13 23:01:12.854 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=6, len=452
+12-13 23:01:12.854 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:44948-157.240.196.17:443, flags=0x18, dataLen=412
+12-13 23:01:12.854 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:12.855 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=1, len=576
+12-13 23:01:12.855 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=1, len=256
+12-13 23:01:12.855 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=1, len=136
+12-13 23:01:12.884 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=17, len=1260
+12-13 23:01:12.884 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=1, len=576
+12-13 23:01:12.885 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=1, len=552
+12-13 23:01:12.885 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=1, len=576
+12-13 23:01:12.962 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=454
+12-13 23:01:12.963 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:32794-157.240.196.2:443, flags=0x18, dataLen=414
+12-13 23:01:12.963 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:12.963 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=454
+12-13 23:01:12.963 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:32800-157.240.196.2:443, flags=0x18, dataLen=414
+12-13 23:01:12.963 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:12.971 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=6, len=60
+12-13 23:01:12.971 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:39478-196.135.221.18:443, flags=0x2, dataLen=0
+12-13 23:01:12.973 D/ZeroVpnService(26480): ✓ Socket connecting: 10.0.0.2:39478-196.135.221.18:443
+12-13 23:01:12.973 D/ZeroVpnService(26480): ✓ Built SYN-ACK: seq=428114317, ack=105091992
+12-13 23:01:12.973 D/ZeroVpnService(26480): ✓ Sent SYN-ACK for 10.0.0.2:39478-196.135.221.18:443
+12-13 23:01:12.973 D/ZeroVpnService(26480): ✓ Socket connected (async): 10.0.0.2:39478-196.135.221.18:443
+12-13 23:01:12.974 D/ZeroVpnService(26480): Removed disconnected socket: 10.0.0.2:39478-196.135.221.18:443
+12-13 23:01:12.974 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=6, len=40
+12-13 23:01:12.974 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:39478-196.135.221.18:443, flags=0x10, dataLen=0
+12-13 23:01:12.974 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:12.974 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=6, len=475
+12-13 23:01:12.974 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:39478-196.135.221.18:443, flags=0x18, dataLen=435
+12-13 23:01:12.974 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:12.978 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.24, protocol=6, len=422
+12-13 23:01:12.978 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:33922-157.240.196.24:443, flags=0x18, dataLen=382
+12-13 23:01:12.978 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:13.010 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=454
+12-13 23:01:13.010 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:32792-157.240.196.2:443, flags=0x18, dataLen=414
+12-13 23:01:13.010 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:13.042 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=57
+12-13 23:01:13.042 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:56882-157.240.196.33:5222, flags=0x18, dataLen=17
+12-13 23:01:13.042 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:13.095 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=17, len=1260
+12-13 23:01:13.174 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=6, len=475
+12-13 23:01:13.174 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:39478-196.135.221.18:443, flags=0x18, dataLen=435
+12-13 23:01:13.175 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:13.223 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=62
+12-13 23:01:13.232 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=70
+12-13 23:01:13.235 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=17, len=1260
+12-13 23:01:13.270 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=6, len=452
+12-13 23:01:13.270 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:44948-157.240.196.17:443, flags=0x18, dataLen=412
+12-13 23:01:13.270 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:13.394 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=454
+12-13 23:01:13.394 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:32794-157.240.196.2:443, flags=0x18, dataLen=414
+12-13 23:01:13.394 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:13.395 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=454
+12-13 23:01:13.395 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:32800-157.240.196.2:443, flags=0x18, dataLen=414
+12-13 23:01:13.395 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:13.395 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=104
+12-13 23:01:13.507 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=17, len=1260
+12-13 23:01:13.586 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=6, len=475
+12-13 23:01:13.587 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:39478-196.135.221.18:443, flags=0x18, dataLen=435
+12-13 23:01:13.587 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:13.810 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.24, protocol=6, len=422
+12-13 23:01:13.810 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:33922-157.240.196.24:443, flags=0x18, dataLen=382
+12-13 23:01:13.810 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:13.811 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=1, len=256
+12-13 23:01:13.842 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=454
+12-13 23:01:13.843 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:32792-157.240.196.2:443, flags=0x18, dataLen=414
+12-13 23:01:13.843 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:13.907 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=57
+12-13 23:01:13.907 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:56882-157.240.196.33:5222, flags=0x18, dataLen=17
+12-13 23:01:13.907 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:14.048 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=17, len=1260
+12-13 23:01:14.049 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=1, len=576
+12-13 23:01:14.098 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=6, len=452
+12-13 23:01:14.098 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:44948-157.240.196.17:443, flags=0x18, dataLen=412
+12-13 23:01:14.098 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:14.106 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=69
+12-13 23:01:14.108 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=69
+12-13 23:01:14.109 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=69
+12-13 23:01:14.226 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=454
+12-13 23:01:14.227 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:32794-157.240.196.2:443, flags=0x18, dataLen=414
+12-13 23:01:14.227 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:14.227 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=454
+12-13 23:01:14.227 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:32800-157.240.196.2:443, flags=0x18, dataLen=414
+12-13 23:01:14.227 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:14.271 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=69
+12-13 23:01:14.318 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=17, len=1260
+12-13 23:01:14.351 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=77
+12-13 23:01:14.418 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=6, len=475
+12-13 23:01:14.418 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:39478-196.135.221.18:443, flags=0x18, dataLen=435
+12-13 23:01:14.418 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:15.333 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=68
+12-13 23:01:15.337 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=1, len=576
+12-13 23:01:15.373 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=66
+12-13 23:01:15.398 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=73
+12-13 23:01:15.455 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=64
+12-13 23:01:15.474 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=454
+12-13 23:01:15.475 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:32792-157.240.196.2:443, flags=0x18, dataLen=414
+12-13 23:01:15.475 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:15.475 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.24, protocol=6, len=422
+12-13 23:01:15.475 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:33922-157.240.196.24:443, flags=0x18, dataLen=382
+12-13 23:01:15.476 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:15.603 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=57
+12-13 23:01:15.603 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:56882-157.240.196.33:5222, flags=0x18, dataLen=17
+12-13 23:01:15.603 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:15.660 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=17, len=1260
+12-13 23:01:15.661 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=1, len=576
+12-13 23:01:15.731 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=6, len=452
+12-13 23:01:15.731 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:44948-157.240.196.17:443, flags=0x18, dataLen=412
+12-13 23:01:15.731 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:15.742 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=60
+12-13 23:01:15.774 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=77
+12-13 23:01:15.891 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=454
+12-13 23:01:15.891 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:32800-157.240.196.2:443, flags=0x18, dataLen=414
+12-13 23:01:15.891 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:15.892 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=454
+12-13 23:01:15.893 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:32794-157.240.196.2:443, flags=0x18, dataLen=414
+12-13 23:01:15.893 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:15.924 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=17, len=1260
+12-13 23:01:15.926 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=135
+12-13 23:01:16.052 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=6, len=475
+12-13 23:01:16.052 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:39478-196.135.221.18:443, flags=0x18, dataLen=435
+12-13 23:01:16.052 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:16.226 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=62
+12-13 23:01:16.227 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=1, len=576
+12-13 23:01:16.236 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=70
+12-13 23:01:16.236 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=1, len=576
+12-13 23:01:16.340 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=62
+12-13 23:01:17.110 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=69
+12-13 23:01:17.111 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=69
+12-13 23:01:17.112 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=69
+12-13 23:01:17.112 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=1, len=104
+12-13 23:01:17.112 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=1, len=576
+12-13 23:01:17.113 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=161
+12-13 23:01:17.113 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=161
+12-13 23:01:17.113 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=161
+12-13 23:01:17.274 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=69
+12-13 23:01:17.289 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=6, len=40
+12-13 23:01:17.289 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:47606-216.239.34.223:443, flags=0x14, dataLen=0
+12-13 23:01:17.289 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:17.289 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 216.239.34.223, protocol=6, len=40
+12-13 23:01:17.289 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:47592-216.239.34.223:443, flags=0x14, dataLen=0
+12-13 23:01:17.289 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:18.337 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=68
+12-13 23:01:18.340 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=1, len=104
+12-13 23:01:18.342 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=1, len=576
+12-13 23:01:18.377 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=66
+12-13 23:01:18.400 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=73
+12-13 23:01:18.456 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=64
+12-13 23:01:18.459 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=161
+12-13 23:01:18.460 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=361
+12-13 23:01:18.461 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=136
+12-13 23:01:18.462 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=133
+12-13 23:01:18.775 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=77
+12-13 23:01:18.866 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=17, len=1260
+12-13 23:01:18.867 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=1, len=576
+12-13 23:01:18.962 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.24, protocol=6, len=422
+12-13 23:01:18.963 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:33922-157.240.196.24:443, flags=0x18, dataLen=382
+12-13 23:01:18.963 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:18.963 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=454
+12-13 23:01:18.963 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:32792-157.240.196.2:443, flags=0x18, dataLen=414
+12-13 23:01:18.963 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:19.127 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=17, len=1260
+12-13 23:01:19.219 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=6, len=452
+12-13 23:01:19.219 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:44948-157.240.196.17:443, flags=0x18, dataLen=412
+12-13 23:01:19.219 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:19.220 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=454
+12-13 23:01:19.220 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:32794-157.240.196.2:443, flags=0x18, dataLen=414
+12-13 23:01:19.220 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:19.220 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=454
+12-13 23:01:19.220 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:32800-157.240.196.2:443, flags=0x18, dataLen=414
+12-13 23:01:19.220 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:19.221 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=57
+12-13 23:01:19.221 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:56882-157.240.196.33:5222, flags=0x18, dataLen=17
+12-13 23:01:19.221 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:19.221 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=1, len=576
+12-13 23:01:19.239 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=70
+12-13 23:01:19.341 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=62
+12-13 23:01:19.479 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=6, len=475
+12-13 23:01:19.479 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:39478-196.135.221.18:443, flags=0x18, dataLen=435
+12-13 23:01:19.479 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:19.480 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=135
+12-13 23:01:19.480 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=142
+12-13 23:01:21.342 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=68
+12-13 23:01:21.349 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=161
+12-13 23:01:21.350 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=161
+12-13 23:01:21.351 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=161
+12-13 23:01:21.352 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=161
+12-13 23:01:21.353 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=133
+12-13 23:01:21.353 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=136
+12-13 23:01:21.378 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=66
+12-13 23:01:21.404 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=73
+12-13 23:01:21.459 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=64
+12-13 23:01:21.460 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=1, len=576
+12-13 23:01:21.461 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=1, len=576
+12-13 23:01:21.461 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=1, len=576
+12-13 23:01:21.779 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=6, len=268
+12-13 23:01:21.780 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37022-8.8.4.4:853, flags=0x18, dataLen=228
+12-13 23:01:21.780 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:21.781 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=77
+12-13 23:01:21.783 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=6, len=268
+12-13 23:01:21.783 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37692-8.8.8.8:853, flags=0x18, dataLen=228
+12-13 23:01:21.784 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:21.785 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=142
+12-13 23:01:21.785 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=158
+12-13 23:01:21.786 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=1, len=576
+12-13 23:01:21.787 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=1, len=256
+12-13 23:01:22.321 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.24, protocol=6, len=40
+12-13 23:01:22.321 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:33922-157.240.196.24:443, flags=0x14, dataLen=0
+12-13 23:01:22.321 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:23.136 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=73
+12-13 23:01:23.138 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=136
+12-13 23:01:23.138 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=151
+12-13 23:01:23.763 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=70
+12-13 23:01:24.303 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=62
+12-13 23:01:24.305 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=150
+12-13 23:01:24.306 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=142
+12-13 23:01:24.358 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=40
+12-13 23:01:24.358 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:56882-157.240.196.33:5222, flags=0x14, dataLen=0
+12-13 23:01:24.358 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:24.388 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=66
+12-13 23:01:24.469 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=64
+12-13 23:01:24.472 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=135
+12-13 23:01:24.786 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=77
+12-13 23:01:25.236 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=6, len=40
+12-13 23:01:25.236 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37692-8.8.8.8:853, flags=0x11, dataLen=0
+12-13 23:01:25.236 D/ZeroVpnService(26480): Connection closed: 10.0.0.2:37692-8.8.8.8:853
+12-13 23:01:25.241 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=6, len=40
+12-13 23:01:25.242 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37022-8.8.4.4:853, flags=0x11, dataLen=0
+12-13 23:01:25.242 D/ZeroVpnService(26480): Connection closed: 10.0.0.2:37022-8.8.4.4:853
+12-13 23:01:25.274 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=17, len=1260
+12-13 23:01:25.367 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.24, protocol=6, len=60
+12-13 23:01:25.367 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37516-157.240.196.24:443, flags=0x2, dataLen=0
+12-13 23:01:25.371 D/ZeroVpnService(26480): ✓ Socket connecting: 10.0.0.2:37516-157.240.196.24:443
+12-13 23:01:25.371 D/ZeroVpnService(26480): ✓ Built SYN-ACK: seq=428126715, ack=381990764
+12-13 23:01:25.371 D/ZeroVpnService(26480): ✓ Sent SYN-ACK for 10.0.0.2:37516-157.240.196.24:443
+12-13 23:01:25.371 D/ZeroVpnService(26480): ✓ Socket connected (async): 10.0.0.2:37516-157.240.196.24:443
+12-13 23:01:25.372 D/ZeroVpnService(26480): Removed disconnected socket: 10.0.0.2:37516-157.240.196.24:443
+12-13 23:01:25.372 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=68
+12-13 23:01:25.372 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=60
+12-13 23:01:25.372 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:39102-157.240.196.33:80, flags=0x2, dataLen=0
+12-13 23:01:25.373 D/ZeroVpnService(26480): ✓ Socket connecting: 10.0.0.2:39102-157.240.196.33:80
+12-13 23:01:25.373 D/ZeroVpnService(26480): ✓ Built SYN-ACK: seq=428126717, ack=1174716966
+12-13 23:01:25.374 D/ZeroVpnService(26480): ✓ Sent SYN-ACK for 10.0.0.2:39102-157.240.196.33:80
+12-13 23:01:25.374 D/ZeroVpnService(26480): ✓ Socket connected (async): 10.0.0.2:39102-157.240.196.33:80
+12-13 23:01:25.374 D/ZeroVpnService(26480): Removed disconnected socket: 10.0.0.2:39102-157.240.196.33:80
+12-13 23:01:25.374 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.24, protocol=6, len=40
+12-13 23:01:25.374 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37516-157.240.196.24:443, flags=0x10, dataLen=0
+12-13 23:01:25.374 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:25.374 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.24, protocol=6, len=422
+12-13 23:01:25.374 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37516-157.240.196.24:443, flags=0x18, dataLen=382
+12-13 23:01:25.374 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:25.374 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.24, protocol=6, len=576
+12-13 23:01:25.374 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37516-157.240.196.24:443, flags=0x10, dataLen=536
+12-13 23:01:25.374 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:25.374 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.24, protocol=6, len=523
+12-13 23:01:25.374 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37516-157.240.196.24:443, flags=0x18, dataLen=483
+12-13 23:01:25.374 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:25.374 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=40
+12-13 23:01:25.374 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:39102-157.240.196.33:80, flags=0x10, dataLen=0
+12-13 23:01:25.374 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:25.374 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=197
+12-13 23:01:25.375 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:39102-157.240.196.33:80, flags=0x18, dataLen=157
+12-13 23:01:25.375 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:25.383 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=43
+12-13 23:01:25.383 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:39102-157.240.196.33:80, flags=0x18, dataLen=3
+12-13 23:01:25.383 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:25.383 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=44
+12-13 23:01:25.383 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:39102-157.240.196.33:80, flags=0x18, dataLen=4
+12-13 23:01:25.383 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:25.383 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=42
+12-13 23:01:25.383 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:39102-157.240.196.33:80, flags=0x18, dataLen=2
+12-13 23:01:25.383 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:25.383 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=43
+12-13 23:01:25.383 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:39102-157.240.196.33:80, flags=0x18, dataLen=3
+12-13 23:01:25.383 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:25.383 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=49
+12-13 23:01:25.383 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:39102-157.240.196.33:80, flags=0x18, dataLen=9
+12-13 23:01:25.383 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:25.383 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=42
+12-13 23:01:25.383 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:39102-157.240.196.33:80, flags=0x18, dataLen=2
+12-13 23:01:25.383 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:25.383 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=43
+12-13 23:01:25.383 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:39102-157.240.196.33:80, flags=0x18, dataLen=3
+12-13 23:01:25.383 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:25.383 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=44
+12-13 23:01:25.383 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:39102-157.240.196.33:80, flags=0x18, dataLen=4
+12-13 23:01:25.384 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:25.384 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=42
+12-13 23:01:25.384 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:39102-157.240.196.33:80, flags=0x18, dataLen=2
+12-13 23:01:25.384 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:25.536 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=17, len=1260
+12-13 23:01:25.538 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=1, len=576
+12-13 23:01:25.578 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.24, protocol=6, len=422
+12-13 23:01:25.579 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37516-157.240.196.24:443, flags=0x18, dataLen=382
+12-13 23:01:25.579 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:25.580 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=136
+12-13 23:01:25.583 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=229
+12-13 23:01:25.583 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:39102-157.240.196.33:80, flags=0x18, dataLen=189
+12-13 23:01:25.583 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:25.623 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=454
+12-13 23:01:25.623 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:32792-157.240.196.2:443, flags=0x18, dataLen=414
+12-13 23:01:25.623 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:25.875 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=454
+12-13 23:01:25.875 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:32794-157.240.196.2:443, flags=0x18, dataLen=414
+12-13 23:01:25.875 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:25.876 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=454
+12-13 23:01:25.876 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:32800-157.240.196.2:443, flags=0x18, dataLen=414
+12-13 23:01:25.876 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:25.877 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=6, len=452
+12-13 23:01:25.877 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:44948-157.240.196.17:443, flags=0x18, dataLen=412
+12-13 23:01:25.877 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:25.877 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=1, len=576
+12-13 23:01:25.878 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=1, len=576
+12-13 23:01:25.879 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=1, len=256
+12-13 23:01:25.879 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=1, len=256
+12-13 23:01:25.880 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=1, len=576
+12-13 23:01:25.880 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=1, len=576
+12-13 23:01:25.881 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=1, len=104
+12-13 23:01:25.881 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=1, len=576
+12-13 23:01:26.003 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.24, protocol=6, len=422
+12-13 23:01:26.003 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37516-157.240.196.24:443, flags=0x18, dataLen=382
+12-13 23:01:26.003 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:26.003 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=229
+12-13 23:01:26.003 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:39102-157.240.196.33:80, flags=0x18, dataLen=189
+12-13 23:01:26.003 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:26.131 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=6, len=475
+12-13 23:01:26.131 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:39478-196.135.221.18:443, flags=0x18, dataLen=435
+12-13 23:01:26.131 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:26.140 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=73
+12-13 23:01:26.205 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=1228
+12-13 23:01:26.207 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=1228
+12-13 23:01:26.769 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=70
+12-13 23:01:26.773 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=150
+12-13 23:01:26.775 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=576
+12-13 23:01:26.835 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=229
+12-13 23:01:26.835 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:39102-157.240.196.33:80, flags=0x18, dataLen=189
+12-13 23:01:26.835 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:26.835 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.24, protocol=6, len=422
+12-13 23:01:26.835 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37516-157.240.196.24:443, flags=0x18, dataLen=382
+12-13 23:01:26.835 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:27.308 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=62
+12-13 23:01:27.312 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=142
+12-13 23:01:27.392 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=66
+12-13 23:01:27.473 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=64
+12-13 23:01:27.477 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=135
+12-13 23:01:27.789 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=77
+12-13 23:01:27.792 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=133
+12-13 23:01:28.372 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=68
+12-13 23:01:28.374 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=121
+12-13 23:01:28.499 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.24, protocol=6, len=422
+12-13 23:01:28.499 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37516-157.240.196.24:443, flags=0x18, dataLen=382
+12-13 23:01:28.499 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:28.499 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=229
+12-13 23:01:28.500 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:39102-157.240.196.33:80, flags=0x18, dataLen=189
+12-13 23:01:28.500 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:29.144 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=73
+12-13 23:01:29.146 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=136
+12-13 23:01:29.772 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=70
+12-13 23:01:29.774 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=150
+12-13 23:01:30.215 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 192.168.8.1, protocol=17, len=56
+12-13 23:01:30.216 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 192.168.8.1, protocol=17, len=56
+12-13 23:01:30.216 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=142
+12-13 23:01:30.217 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 192.168.8.1, protocol=17, len=69
+12-13 23:01:30.218 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 192.168.8.1, protocol=17, len=69
+12-13 23:01:30.218 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 192.168.8.1, protocol=17, len=60
+12-13 23:01:30.219 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 192.168.8.1, protocol=17, len=60
+12-13 23:01:30.220 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 192.168.8.1, protocol=17, len=62
+12-13 23:01:30.221 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 192.168.8.1, protocol=17, len=62
+12-13 23:01:30.274 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=56
+12-13 23:01:30.275 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 192.168.8.1, protocol=1, len=161
+12-13 23:01:30.278 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=56
+12-13 23:01:30.279 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=56
+12-13 23:01:30.280 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=56
+12-13 23:01:30.280 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 192.168.8.1, protocol=1, len=113
+12-13 23:01:30.280 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 192.168.8.1, protocol=1, len=104
+12-13 23:01:30.280 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 192.168.8.1, protocol=1, len=196
+12-13 23:01:30.282 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=56
+12-13 23:01:30.282 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=56
+12-13 23:01:30.302 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=60
+12-13 23:01:30.303 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=60
+12-13 23:01:30.304 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 192.168.8.1, protocol=1, len=171
+12-13 23:01:30.304 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 192.168.8.1, protocol=1, len=100
+12-13 23:01:30.311 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=62
+12-13 23:01:30.395 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=66
+12-13 23:01:30.475 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=64
+12-13 23:01:30.476 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=116
+12-13 23:01:30.476 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=116
+12-13 23:01:30.792 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=77
+12-13 23:01:31.286 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=56
+12-13 23:01:31.288 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=56
+12-13 23:01:31.289 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=56
+12-13 23:01:31.290 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=56
+12-13 23:01:31.293 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=56
+12-13 23:01:31.294 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=56
+12-13 23:01:31.313 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=60
+12-13 23:01:31.314 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=60
+12-13 23:01:31.374 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=68
+12-13 23:01:32.020 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.24, protocol=6, len=422
+12-13 23:01:32.020 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37516-157.240.196.24:443, flags=0x18, dataLen=382
+12-13 23:01:32.020 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:32.022 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=229
+12-13 23:01:32.022 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:39102-157.240.196.33:80, flags=0x18, dataLen=189
+12-13 23:01:32.022 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:32.022 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=160
+12-13 23:01:32.023 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=116
+12-13 23:01:32.061 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=60
+12-13 23:01:32.062 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=60
+12-13 23:01:32.062 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=66
+12-13 23:01:32.062 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=136
+12-13 23:01:32.063 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=66
+12-13 23:01:32.147 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=73
+12-13 23:01:32.300 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=56
+12-13 23:01:32.302 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=56
+12-13 23:01:32.303 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=56
+12-13 23:01:32.304 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=56
+12-13 23:01:32.305 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=153
+12-13 23:01:32.305 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=56
+12-13 23:01:32.305 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=56
+12-13 23:01:32.324 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=60
+12-13 23:01:32.325 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=60
+12-13 23:01:32.360 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=62
+12-13 23:01:32.774 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=70
+12-13 23:01:32.775 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=116
+12-13 23:01:32.807 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=65
+12-13 23:01:32.808 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=65
+12-13 23:01:33.075 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=60
+12-13 23:01:33.078 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=60
+12-13 23:01:33.079 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=66
+12-13 23:01:33.079 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=66
+12-13 23:01:33.314 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=62
+12-13 23:01:33.397 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=66
+12-13 23:01:33.398 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=197
+12-13 23:01:33.479 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=64
+12-13 23:01:33.481 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=142
+12-13 23:01:33.795 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=77
+12-13 23:01:33.820 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=65
+12-13 23:01:33.821 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=65
+12-13 23:01:34.092 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=60
+12-13 23:01:34.093 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=60
+12-13 23:01:34.095 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=66
+12-13 23:01:34.096 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=66
+12-13 23:01:34.323 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=56
+12-13 23:01:34.325 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=56
+12-13 23:01:34.327 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=56
+12-13 23:01:34.328 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=56
+12-13 23:01:34.330 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=197
+12-13 23:01:34.330 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=56
+12-13 23:01:34.331 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=56
+12-13 23:01:34.347 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=62
+12-13 23:01:34.348 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=62
+12-13 23:01:34.349 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=60
+12-13 23:01:34.351 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=60
+12-13 23:01:34.375 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=68
+12-13 23:01:34.834 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=65
+12-13 23:01:34.837 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=65
+12-13 23:01:34.838 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=160
+12-13 23:01:35.160 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=73
+12-13 23:01:35.163 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=116
+12-13 23:01:35.363 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=62
+12-13 23:01:35.365 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=62
+12-13 23:01:35.367 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=62
+12-13 23:01:35.387 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.33, protocol=6, len=40
+12-13 23:01:35.387 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:39102-157.240.196.33:80, flags=0x14, dataLen=0
+12-13 23:01:35.387 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:36.111 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=60
+12-13 23:01:36.112 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=60
+12-13 23:01:36.113 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=66
+12-13 23:01:36.113 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=66
+12-13 23:01:36.114 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=125
+12-13 23:01:36.114 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=132
+12-13 23:01:36.346 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=56
+12-13 23:01:36.349 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=125
+12-13 23:01:36.374 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=62
+12-13 23:01:36.376 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=62
+12-13 23:01:36.377 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=60
+12-13 23:01:36.406 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.203.38, protocol=6, len=60
+12-13 23:01:36.406 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:51348-157.240.203.38:5222, flags=0x2, dataLen=0
+12-13 23:01:36.410 D/ZeroVpnService(26480): ✓ Socket connecting: 10.0.0.2:51348-157.240.203.38:5222
+12-13 23:01:36.411 D/ZeroVpnService(26480): ✓ Built SYN-ACK: seq=428137755, ack=1643640763
+12-13 23:01:36.411 D/ZeroVpnService(26480): ✓ Sent SYN-ACK for 10.0.0.2:51348-157.240.203.38:5222
+12-13 23:01:36.411 D/ZeroVpnService(26480): ✓ Socket connected (async): 10.0.0.2:51348-157.240.203.38:5222
+12-13 23:01:36.411 D/ZeroVpnService(26480): Removed disconnected socket: 10.0.0.2:51348-157.240.203.38:5222
+12-13 23:01:36.412 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=82
+12-13 23:01:36.413 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=66
+12-13 23:01:36.413 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.203.38, protocol=6, len=40
+12-13 23:01:36.413 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:51348-157.240.203.38:5222, flags=0x10, dataLen=0
+12-13 23:01:36.413 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:36.414 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.203.38, protocol=6, len=44
+12-13 23:01:36.414 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:51348-157.240.203.38:5222, flags=0x18, dataLen=4
+12-13 23:01:36.414 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:36.414 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.203.38, protocol=6, len=49
+12-13 23:01:36.414 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:51348-157.240.203.38:5222, flags=0x18, dataLen=9
+12-13 23:01:36.414 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:36.414 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.203.38, protocol=6, len=44
+12-13 23:01:36.415 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:51348-157.240.203.38:5222, flags=0x18, dataLen=4
+12-13 23:01:36.415 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:36.415 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.203.38, protocol=6, len=576
+12-13 23:01:36.415 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:51348-157.240.203.38:5222, flags=0x10, dataLen=536
+12-13 23:01:36.415 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:36.415 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.203.38, protocol=6, len=576
+12-13 23:01:36.415 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:51348-157.240.203.38:5222, flags=0x10, dataLen=536
+12-13 23:01:36.415 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:36.415 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.203.38, protocol=6, len=576
+12-13 23:01:36.415 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:51348-157.240.203.38:5222, flags=0x18, dataLen=536
+12-13 23:01:36.415 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:36.416 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.203.38, protocol=6, len=539
+12-13 23:01:36.416 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:51348-157.240.203.38:5222, flags=0x18, dataLen=499
+12-13 23:01:36.416 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:36.489 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=64
+12-13 23:01:36.619 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.203.38, protocol=6, len=57
+12-13 23:01:36.619 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:51348-157.240.203.38:5222, flags=0x18, dataLen=17
+12-13 23:01:36.619 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:36.806 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=77
+12-13 23:01:36.858 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=65
+12-13 23:01:36.859 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=65
+12-13 23:01:37.043 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.203.38, protocol=6, len=57
+12-13 23:01:37.044 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:51348-157.240.203.38:5222, flags=0x18, dataLen=17
+12-13 23:01:37.044 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:37.288 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=70
+12-13 23:01:37.327 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=64
+12-13 23:01:37.328 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=132
+12-13 23:01:37.876 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.203.38, protocol=6, len=57
+12-13 23:01:37.876 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:51348-157.240.203.38:5222, flags=0x18, dataLen=17
+12-13 23:01:37.877 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:37.878 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=121
+12-13 23:01:38.079 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=17, len=1260
+12-13 23:01:38.081 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=17, len=1260
+12-13 23:01:38.139 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=60
+12-13 23:01:38.140 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=66
+12-13 23:01:38.164 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=73
+12-13 23:01:38.341 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=17, len=1260
+12-13 23:01:38.343 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=1, len=576
+12-13 23:01:38.344 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=1, len=86
+12-13 23:01:38.345 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=150
+12-13 23:01:38.368 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=62
+12-13 23:01:38.370 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=104
+12-13 23:01:38.400 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=62
+12-13 23:01:38.401 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=62
+12-13 23:01:38.676 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.24, protocol=6, len=422
+12-13 23:01:38.676 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:37516-157.240.196.24:443, flags=0x18, dataLen=382
+12-13 23:01:38.676 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:38.677 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=1, len=576
+12-13 23:01:38.678 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=1, len=256
+12-13 23:01:38.679 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=1, len=576
+12-13 23:01:38.679 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=1, len=104
+12-13 23:01:38.680 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=1, len=576
+12-13 23:01:38.681 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=1, len=256
+12-13 23:01:38.681 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=1, len=104
+12-13 23:01:38.682 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=1, len=104
+12-13 23:01:38.683 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=1, len=576
+12-13 23:01:38.887 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=65
+12-13 23:01:38.931 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.17, protocol=6, len=452
+12-13 23:01:38.932 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:44948-157.240.196.17:443, flags=0x18, dataLen=412
+12-13 23:01:38.932 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:38.932 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=454
+12-13 23:01:38.932 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:32792-157.240.196.2:443, flags=0x18, dataLen=414
+12-13 23:01:38.933 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:39.187 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=454
+12-13 23:01:39.188 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:32800-157.240.196.2:443, flags=0x18, dataLen=414
+12-13 23:01:39.188 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:39.190 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 196.135.221.18, protocol=6, len=475
+12-13 23:01:39.191 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:39478-196.135.221.18:443, flags=0x18, dataLen=435
+12-13 23:01:39.191 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:39.191 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=454
+12-13 23:01:39.192 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:32794-157.240.196.2:443, flags=0x18, dataLen=414
+12-13 23:01:39.192 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:39.350 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=56
+12-13 23:01:39.379 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=60
+12-13 23:01:39.410 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=82
+12-13 23:01:39.413 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=66
+12-13 23:01:39.494 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=64
+12-13 23:01:39.496 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=116
+12-13 23:01:39.539 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.203.38, protocol=6, len=57
+12-13 23:01:39.539 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:51348-157.240.203.38:5222, flags=0x18, dataLen=17
+12-13 23:01:39.539 D/ZeroVpnService(26480): Data handler check: socket=false, tracker=false, socketOpen=null, trackerState=null
+12-13 23:01:39.810 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=77
+12-13 23:01:40.295 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=70
+12-13 23:01:40.299 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=133
+12-13 23:01:40.331 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=64
+12-13 23:01:40.426 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=62
+12-13 23:01:41.144 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=60
+12-13 23:01:41.149 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=66
+12-13 23:01:41.151 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=220
+12-13 23:01:41.152 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=125
+12-13 23:01:41.167 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=73
+12-13 23:01:41.372 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=62
+12-13 23:01:41.374 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=1, len=150
+12-13 23:01:41.895 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=17, len=65
+12-13 23:01:42.355 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=56
+12-13 23:01:42.357 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.4.4, protocol=1, len=158
+12-13 23:01:42.375 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=40
+12-13 23:01:42.375 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:32792-157.240.196.2:443, flags=0x11, dataLen=0
+12-13 23:01:42.375 D/ZeroVpnService(26480): Connection closed: 10.0.0.2:32792-157.240.196.2:443
+12-13 23:01:42.382 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=60
+12-13 23:01:42.413 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=82
+12-13 23:01:42.415 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 8.8.8.8, protocol=17, len=66
+12-13 23:01:42.434 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=60
+12-13 23:01:42.434 D/ZeroVpnService(26480): >>> TCP Packet: 10.0.0.2:54946-157.240.196.2:443, flags=0x2, dataLen=0
+12-13 23:01:42.436 D/ZeroVpnService(26480): ✓ Socket connecting: 10.0.0.2:54946-157.240.196.2:443
+12-13 23:01:42.437 D/ZeroVpnService(26480): ✓ Built SYN-ACK: seq=428143781, ack=1675037973
+12-13 23:01:42.437 D/ZeroVpnService(26480): ✓ Sent SYN-ACK for 10.0.0.2:54946-157.240.196.2:443
+12-13 23:01:42.437 D/ZeroVpnService(26480): ✓ Socket connected (async): 10.0.0.2:54946-157.240.196.2:443
+12-13 23:01:42.437 D/ZeroVpnService(26480): Removed disconnected socket: 10.0.0.2:54946-157.240.196.2:443
+12-13 23:01:42.437 D/ZeroVpnService(26480): <<< Received IP packet: 10.0.0.2 -> 157.240.196.2, protocol=6, len=40
+
+============================================================
+Total lines: 1000
+============================================================
