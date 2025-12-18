@@ -1,0 +1,85 @@
+=== ZeroTrack VPN Log ===
+Time: 2025-12-18 02:40:44
+Android SDK: 36
+Device: samsung SM-S928B
+ABI: arm64-v8a
+
+=== LAST CRASH ===
+ForegroundServiceDidNotStartInTimeException: Context.startForegroundService() did not then call Service.startForeground(): ServiceRecord{8611db2 u0 fastdns.minapronetvpn.com.eg/zerotrack.minapronetvpn.com.v2ray.VrayService c:fastdns.minapronetvpn.com.eg}
+
+Stack Trace:
+android.app.RemoteServiceException$ForegroundServiceDidNotStartInTimeException: Context.startForegroundService() did not then call Service.startForeground(): ServiceRecord{8611db2 u0 fastdns.minapronetvpn.com.eg/zerotrack.minapronetvpn.com.v2ray.VrayService c:fastdns.minapronetvpn.com.eg}
+	at android.app.ActivityThread.generateForegroundServiceDidNotStartInTimeException(ActivityThread.java:2675)
+	at android.app.ActivityThread.throwRemoteServiceException(ActivityThread.java:2643)
+	at android.app.ActivityThread.-$$Nest$mthrowRemoteServiceException(Unknown Source:0)
+	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:3068)
+	at android.os.Handler.dispatchMessage(Handler.java:110)
+	at android.os.Looper.loopOnce(Looper.java:273)
+	at android.os.Looper.loop(Looper.java:363)
+	at android.app.ActivityThread.main(ActivityThread.java:10060)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:632)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:975)
+Caused by: android.app.StackTrace: Last startServiceCommon() call for this service was made here
+	at android.app.ContextImpl.startServiceCommon(ContextImpl.java:2131)
+	at android.app.ContextImpl.startForegroundService(ContextImpl.java:2075)
+	at android.content.ContextWrapper.startForegroundService(ContextWrapper.java:877)
+	at zerotrack.minapronetvpn.com.v2ray.ChzV2rayController$stopV2RayNow$1.invokeSuspend(ChzV2rayController.kt:203)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+
+
+=== APP LOGS ===
+02:39:28.639 D/ZeroTrackApp: === ZeroTrack Application Starting ===
+02:39:28.641 D/ZeroTrackApp: Android SDK: 36
+02:39:28.641 D/ZeroTrackApp: Device: samsung SM-S928B
+02:39:28.645 D/ZeroTrackApp: ABI: arm64-v8a
+02:39:28.646 D/ZeroTrackApp: === Application Started ===
+02:40:20.109 D/MainActivity: >>> startVpnConnection() called
+02:40:22.727 D/MainActivity: Server: 🇩🇪[openproxylist.com] vless-DE, protocol=vless, address=91.107.178.246:41647
+02:40:22.727 D/MainActivity: Creating server JSON for: 🇩🇪[openproxylist.com] vless-DE
+02:40:22.730 D/MainActivity: Server JSON created, starting VPN service...
+02:40:22.733 D/MainActivity: startService() completed
+02:40:22.734 D/MainActivity: V2Ray service started, waiting for connection broadcast...
+02:40:22.758 D/V2RayService: V2Ray Service onCreate
+02:40:22.760 D/V2RayService: >>> Starting connection to 🇩🇪[openproxylist.com] vless-DE
+02:40:22.765 D/V2RayService: >>> V2Ray started via ChzV2rayController
+02:40:37.452 D/MainActivity: >>> startVpnConnection() called
+02:40:40.164 D/MainActivity: >>> startVpnConnection() called
+02:40:40.168 D/MainActivity: Server: 🇩🇪[openproxylist.com] vless-DE, protocol=vless, address=91.107.178.246:41647
+02:40:40.168 D/MainActivity: Creating server JSON for: 🇩🇪[openproxylist.com] vless-DE
+02:40:40.171 D/MainActivity: Server JSON created, starting VPN service...
+02:40:40.174 D/MainActivity: startService() completed
+02:40:40.174 D/MainActivity: V2Ray service started, waiting for connection broadcast...
+02:40:40.234 D/MainActivity: Server: 🇩🇪[openproxylist.com] vless-DE, protocol=vless, address=91.107.178.246:41647
+02:40:40.236 D/MainActivity: Creating server JSON for: 🇩🇪[openproxylist.com] vless-DE
+02:40:40.239 D/MainActivity: Server JSON created, starting VPN service...
+02:40:40.241 D/MainActivity: startService() completed
+02:40:40.241 D/MainActivity: V2Ray service started, waiting for connection broadcast...
+02:40:44.867 E/ZeroTrackApp: !!! UNCAUGHT EXCEPTION - APP CRASHED !!!
+02:40:44.868 E/ZeroTrackApp: Thread: main
+02:40:44.868 E/ZeroTrackApp: Exception: android.app.RemoteServiceException$ForegroundServiceDidNotStartInTimeException
+02:40:44.868 E/ZeroTrackApp: Message: Context.startForegroundService() did not then call Service.startForeground(): ServiceRecord{8611db2 u0 fastdns.minapronetvpn.com.eg/zerotrack.minapronetvpn.com.v2ray.VrayService c:fastdns.minapronetvpn.com.eg}
+02:40:44.869 E/ZeroTrackApp:   at android.app.ActivityThread.generateForegroundServiceDidNotStartInTimeException(ActivityThread.java:2675)
+02:40:44.869 E/ZeroTrackApp:   at android.app.ActivityThread.throwRemoteServiceException(ActivityThread.java:2643)
+02:40:44.869 E/ZeroTrackApp:   at android.app.ActivityThread.-$$Nest$mthrowRemoteServiceException(Unknown Source:0)
+02:40:44.869 E/ZeroTrackApp:   at android.app.ActivityThread$H.handleMessage(ActivityThread.java:3068)
+02:40:44.869 E/ZeroTrackApp:   at android.os.Handler.dispatchMessage(Handler.java:110)
+02:40:44.870 E/ZeroTrackApp:   at android.os.Looper.loopOnce(Looper.java:273)
+02:40:44.870 E/ZeroTrackApp:   at android.os.Looper.loop(Looper.java:363)
+02:40:44.870 E/ZeroTrackApp:   at android.app.ActivityThread.main(ActivityThread.java:10060)
+02:40:44.871 E/ZeroTrackApp:   at java.lang.reflect.Method.invoke(Native Method)
+02:40:44.871 E/ZeroTrackApp:   at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:632)
+02:40:44.871 E/ZeroTrackApp:   at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:975)
+02:40:44.871 E/ZeroTrackApp: Cause 1: android.app.StackTrace: Last startServiceCommon() call for this service was made here
+02:40:44.871 E/ZeroTrackApp:     at android.app.ContextImpl.startServiceCommon(ContextImpl.java:2131)
+02:40:44.872 E/ZeroTrackApp:     at android.app.ContextImpl.startForegroundService(ContextImpl.java:2075)
+02:40:44.872 E/ZeroTrackApp:     at android.content.ContextWrapper.startForegroundService(ContextWrapper.java:877)
+02:40:44.872 E/ZeroTrackApp:     at zerotrack.minapronetvpn.com.v2ray.ChzV2rayController$stopV2RayNow$1.invokeSuspend(ChzV2rayController.kt:203)
+02:40:44.872 E/ZeroTrackApp:     at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
