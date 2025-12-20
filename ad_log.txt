@@ -1,0 +1,79 @@
+[2025-12-21 01:10:08.182] [VPN: OFF] [Network: Mobile Data] AdLogger initialized - Path: /storage/emulated/0/Download/MinaProNetVPN/ad_log.txt
+========== DEVICE INFO ==========
+Device: samsung SM-S928B
+Android: 16 (SDK 36)
+Package: vpn.minapronet.com.eg
+Log Path: /storage/emulated/0/Download/MinaProNetVPN/ad_log.txt
+================================
+[2025-12-21 01:10:08.408] [VPN: OFF] [Network: Mobile Data] 🚀 SDK INITIALIZED | com.google.android.gms.ads.MobileAds: , 
+[2025-12-21 01:10:08.549] [VPN: OFF] [Network: Mobile Data] ⚠️ App Open Ad: Not ready yet
+[2025-12-21 01:10:08.618] [VPN: OFF] [Network: Mobile Data] 📥 LOADING Interstitial Ad | Unit: 4341566774
+[2025-12-21 01:10:08.623] [VPN: OFF] [Network: Mobile Data] 📥 LOADING Rewarded Interstitial Ad | Unit: 3277430871
+[2025-12-21 01:10:45.857] [VPN: ON (V2Ray)] [Network: Mobile Data] 📥 LOADING Interstitial Ad | Unit: 4341566774
+[2025-12-21 01:10:45.865] [VPN: ON (V2Ray)] [Network: Mobile Data] ⚠️ Interstitial Ad not ready, attempting to load
+[2025-12-21 01:10:45.871] [VPN: ON (V2Ray)] [Network: Mobile Data] 📥 LOADING Interstitial Ad | Unit: 4341566774
+[2025-12-21 01:10:45.887] [VPN: ON (V2Ray)] [Network: Mobile Data] ⚠️ Rewarded Interstitial Ad not ready, proceeding without ad
+[2025-12-21 01:10:45.896] [VPN: ON (V2Ray)] [Network: Mobile Data] 📥 LOADING Rewarded Interstitial Ad | Unit: 3277430871
+[2025-12-21 01:10:46.603] [VPN: ON (V2Ray)] [Network: Mobile Data] ❌ FAILED Rewarded Interstitial Ad | Code: 0 | Domain: com.google.android.gms.ads | Message: Error while connecting to ad server: Unable to resolve host "googleads.g.doubleclick.net": No address associated with hostname
+[2025-12-21 01:10:46.611] [VPN: ON (V2Ray)] [Network: Mobile Data] ❌ FAILED Interstitial Ad | Code: 0 | Domain: com.google.android.gms.ads | Message: Error while connecting to ad server: Unable to resolve host "googleads.g.doubleclick.net": No address associated with hostname
+[2025-12-21 01:10:46.626] [VPN: ON (V2Ray)] [Network: Mobile Data] ❌ FAILED Rewarded Interstitial Ad | Code: 0 | Domain: com.google.android.gms.ads | Message: Error while connecting to ad server: Unable to resolve host "googleads.g.doubleclick.net": No address associated with hostname
+[2025-12-21 01:10:52.467] [VPN: OFF] [Network: Mobile Data] 📥 LOADING Interstitial Ad | Unit: 4341566774
+[2025-12-21 01:10:52.476] [VPN: OFF] [Network: Mobile Data] ⚠️ Interstitial Ad not ready, attempting to load
+[2025-12-21 01:10:52.480] [VPN: OFF] [Network: Mobile Data] 📥 LOADING Interstitial Ad | Unit: 4341566774
+[2025-12-21 01:10:54.940] [VPN: OFF] [Network: Mobile Data] ❌ FAILED Interstitial Ad | Code: 0 | Domain: com.google.android.gms.ads | Message: Error while connecting to ad server: Unable to resolve host "googleads.g.doubleclick.net": No address associated with hostname
+[2025-12-21 01:11:11.546] [VPN: OFF] [Network: Mobile Data] ⚠️ App Open Ad: Not ready yet
+[2025-12-21 01:11:11.561] [VPN: OFF] [Network: Mobile Data] 📥 LOADING App Open Ad | Unit: 8463650663
+[2025-12-21 01:11:12.942] [VPN: OFF] [Network: Mobile Data] ❌ FAILED Interstitial Ad | Code: 0 | Domain: com.google.android.gms.ads | Message: Error while connecting to ad server: Unable to resolve host "googleads.g.doubleclick.net": No address associated with hostname
+[2025-12-21 01:11:19.590] [VPN: OFF] [Network: Mobile Data] ❌ FAILED Interstitial Ad | Code: 0 | Domain: com.google.android.gms.ads | Message: Error while connecting to ad server: Unable to resolve host "googleads.g.doubleclick.net": No address associated with hostname
+[2025-12-21 01:11:20.096] [VPN: ON (V2Ray)] [Network: Mobile Data] 📥 LOADING Interstitial Ad | Unit: 4341566774
+[2025-12-21 01:11:20.103] [VPN: ON (V2Ray)] [Network: Mobile Data] ⚠️ Interstitial Ad not ready, attempting to load
+[2025-12-21 01:11:20.112] [VPN: ON (V2Ray)] [Network: Mobile Data] 📥 LOADING Interstitial Ad | Unit: 4341566774
+[2025-12-21 01:11:20.133] [VPN: ON (V2Ray)] [Network: Mobile Data] ⚠️ Rewarded Interstitial Ad not ready, proceeding without ad
+[2025-12-21 01:11:20.140] [VPN: ON (V2Ray)] [Network: Mobile Data] 📥 LOADING Rewarded Interstitial Ad | Unit: 3277430871
+[2025-12-21 01:11:20.179] [VPN: ON (V2Ray)] [Network: Mobile Data] ❌ FAILED Interstitial Ad | Code: 0 | Domain: com.google.android.gms.ads | Message: Error while connecting to ad server: Unable to resolve host "googleads.g.doubleclick.net": No address associated with hostname
+[2025-12-21 01:11:20.801] [VPN: ON (V2Ray)] [Network: Mobile Data] ❌ FAILED Interstitial Ad | Code: 0 | Domain: com.google.android.gms.ads | Message: Error while connecting to ad server: Unable to resolve host "googleads.g.doubleclick.net": No address associated with hostname
+[2025-12-21 01:11:27.934] [VPN: ON (V2Ray)] [Network: Mobile Data] 📥 LOADING Rewarded Ad | Unit: 5463076758
+[2025-12-21 01:11:38.665] [VPN: ON (V2Ray)] [Network: Mobile Data] ❌ FAILED App Open Ad | Code: 0 | Domain: com.google.android.gms.ads | Message: Error while connecting to ad server: Unable to resolve host "googleads.g.doubleclick.net": No address associated with hostname
+[2025-12-21 01:11:38.682] [VPN: ON (V2Ray)] [Network: Mobile Data] 🔄 Retrying App Open Ad in 2000ms (Attempt 2/3)
+[2025-12-21 01:11:40.694] [VPN: ON (V2Ray)] [Network: Mobile Data] 📥 LOADING App Open Ad | Unit: 8463650663
+[2025-12-21 01:11:45.618] [VPN: ON (V2Ray)] [Network: Mobile Data] ⚠️ App Open Ad: Not ready yet
+[2025-12-21 01:12:09.867] [VPN: ON (V2Ray)] [Network: Mobile Data] ⚠️ App Open Ad: Not ready yet
+[2025-12-21 01:12:16.737] [VPN: ON (V2Ray)] [Network: Mobile Data] ✅ LOADED Interstitial Ad | Time: 56625ms
+[2025-12-21 01:12:16.857] [VPN: ON (V2Ray)] [Network: Mobile Data] ✅ LOADED App Open Ad | Time: 36163ms
+[2025-12-21 01:12:22.688] [VPN: ON (V2Ray)] [Network: Mobile Data] ❌ FAILED Rewarded Interstitial Ad | Code: 0 | Domain: com.google.android.gms.ads | Message: Internal error.
+[2025-12-21 01:12:31.194] [VPN: ON (V2Ray)] [Network: Mobile Data] ❌ FAILED Rewarded Ad | Code: 0 | Domain: com.google.android.gms.ads | Message: Internal error.
+[2025-12-21 01:12:33.992] [VPN: OFF] [Network: Mobile Data] 📥 LOADING Interstitial Ad | Unit: 4341566774
+[2025-12-21 01:12:34.001] [VPN: OFF] [Network: Mobile Data] 📺 Attempting to show Interstitial Ad
+[2025-12-21 01:12:34.058] [VPN: OFF] [Network: Mobile Data] 📺 SHOWN Interstitial Ad
+[2025-12-21 01:12:34.063] [VPN: OFF] [Network: Mobile Data] 📊 IMPRESSION Interstitial Ad
+[2025-12-21 01:12:38.128] [VPN: OFF] [Network: Mobile Data] ✅ DISMISSED Interstitial Ad
+[2025-12-21 01:12:38.141] [VPN: OFF] [Network: Mobile Data] 📥 LOADING Interstitial Ad | Unit: 4341566774
+[2025-12-21 01:12:54.996] [VPN: ON (CHZProxy, SSH)] [Network: Mobile Data] ⚠️ Rewarded Interstitial Ad not ready, proceeding without ad
+[2025-12-21 01:12:55.008] [VPN: ON (CHZProxy, SSH)] [Network: Mobile Data] 📥 LOADING Rewarded Interstitial Ad | Unit: 3277430871
+[2025-12-21 01:12:55.015] [VPN: ON (CHZProxy, SSH)] [Network: Mobile Data] 📥 LOADING Interstitial Ad | Unit: 4341566774
+[2025-12-21 01:12:55.025] [VPN: ON (CHZProxy, SSH)] [Network: Mobile Data] ⚠️ Interstitial Ad not ready, attempting to load
+[2025-12-21 01:12:55.032] [VPN: ON (CHZProxy, SSH)] [Network: Mobile Data] 📥 LOADING Interstitial Ad | Unit: 4341566774
+[2025-12-21 01:12:59.616] [VPN: ON (CHZProxy, SSH)] [Network: VPN Transport] 📥 LOADING Rewarded Ad | Unit: 5463076758
+[2025-12-21 01:13:01.151] [VPN: ON (CHZProxy, SSH)] [Network: VPN Transport] ❌ FAILED Interstitial Ad | Code: 0 | Domain: com.google.android.gms.ads | Message: Error while connecting to ad server: Unable to resolve host "googleads.g.doubleclick.net": No address associated with hostname
+[2025-12-21 01:13:01.193] [VPN: ON (CHZProxy, SSH)] [Network: VPN Transport] ❌ FAILED Rewarded Ad | Code: 0 | Domain: com.google.android.gms.ads | Message: Error while connecting to ad server: Unable to resolve host "googleads.g.doubleclick.net": No address associated with hostname
+[2025-12-21 01:13:04.423] [VPN: ON (CHZProxy, SSH)] [Network: VPN Transport] 📥 LOADING Rewarded Ad | Unit: 5463076758
+[2025-12-21 01:13:10.837] [VPN: ON (CHZProxy, SSH)] [Network: VPN Transport] ❌ FAILED Interstitial Ad | Code: 0 | Domain: com.google.android.gms.ads | Message: Error while connecting to ad server: Unable to resolve host "googleads.g.doubleclick.net": No address associated with hostname
+[2025-12-21 01:13:20.805] [VPN: ON (CHZProxy, SSH)] [Network: VPN Transport] 📺 SHOWN App Open Ad
+[2025-12-21 01:13:20.893] [VPN: ON (CHZProxy, SSH)] [Network: VPN Transport] 📊 IMPRESSION App Open Ad
+[2025-12-21 01:13:23.587] [VPN: ON (CHZProxy, SSH)] [Network: VPN Transport] ✅ DISMISSED App Open Ad
+[2025-12-21 01:13:23.594] [VPN: ON (CHZProxy, SSH)] [Network: VPN Transport] 📥 LOADING App Open Ad | Unit: 8463650663
+[2025-12-21 01:13:55.045] [VPN: ON (CHZProxy, SSH)] [Network: VPN Transport] ❌ FAILED Rewarded Interstitial Ad | Code: 2 | Domain: com.google.android.gms.ads | Message: Network error.
+[2025-12-21 01:13:55.063] [VPN: ON (CHZProxy, SSH)] [Network: VPN Transport] ❌ FAILED Interstitial Ad | Code: 2 | Domain: com.google.android.gms.ads | Message: Network error.
+[2025-12-21 01:13:55.073] [VPN: ON (CHZProxy, SSH)] [Network: VPN Transport] ❌ FAILED Interstitial Ad | Code: 2 | Domain: com.google.android.gms.ads | Message: Network error.
+[2025-12-21 01:14:04.449] [VPN: ON (CHZProxy, SSH)] [Network: VPN Transport] ❌ FAILED Rewarded Ad | Code: 2 | Domain: com.google.android.gms.ads | Message: Network error.
+[2025-12-21 01:14:08.585] [VPN: ON (SSH)] [Network: Mobile Data] 📥 LOADING Interstitial Ad | Unit: 4341566774
+[2025-12-21 01:14:08.614] [VPN: ON (SSH)] [Network: Mobile Data] ⚠️ Interstitial Ad not ready, attempting to load
+[2025-12-21 01:14:08.630] [VPN: ON (SSH)] [Network: Mobile Data] 📥 LOADING Interstitial Ad | Unit: 4341566774
+[2025-12-21 01:14:39.363] [VPN: OFF] [Network: Disconnected] AdLogger initialized - Path: /storage/emulated/0/Download/MinaProNetVPN/ad_log.txt
+========== DEVICE INFO ==========
+Device: samsung SM-S928B
+Android: 16 (SDK 36)
+Package: vpn.minapronet.com.eg
+Log Path: /storage/emulated/0/Download/MinaProNetVPN/ad_log.txt
+================================
+[2025-12-21 01:14:39.737] [VPN: OFF] [Network: WiFi] 🚀 SDK INITIALIZED | com.google.android.gms.ads.MobileAds: , 
