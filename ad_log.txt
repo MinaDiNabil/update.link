@@ -1,0 +1,83 @@
+[2025-12-21 01:45:35.759] [VPN: OFF] [Network: Mobile Data] AdLogger initialized - Path: /storage/emulated/0/Download/MinaProNetVPN/ad_log.txt
+========== DEVICE INFO ==========
+Device: samsung SM-S928B
+Android: 16 (SDK 36)
+Package: vpn.minapronet.com.eg
+Log Path: /storage/emulated/0/Download/MinaProNetVPN/ad_log.txt
+================================
+[2025-12-21 01:45:36.032] [VPN: OFF] [Network: Mobile Data] 🚀 SDK INITIALIZED | com.google.android.gms.ads.MobileAds: , 
+[2025-12-21 01:45:36.190] [VPN: OFF] [Network: Mobile Data] ⚠️ App Open Ad: Not ready yet
+[2025-12-21 01:45:36.262] [VPN: OFF] [Network: Mobile Data] 📥 LOADING Interstitial Ad | Unit: 4341566774
+[2025-12-21 01:45:36.270] [VPN: OFF] [Network: Mobile Data] 📥 LOADING Rewarded Interstitial Ad | Unit: 3277430871
+[2025-12-21 01:45:49.200] [VPN: OFF] [Network: Mobile Data] AdLogger initialized - Path: /storage/emulated/0/Download/MinaProNetVPN/ad_log.txt
+========== DEVICE INFO ==========
+Device: samsung SM-S928B
+Android: 16 (SDK 36)
+Package: vpn.minapronet.com.eg
+Log Path: /storage/emulated/0/Download/MinaProNetVPN/ad_log.txt
+================================
+[2025-12-21 01:45:49.420] [VPN: OFF] [Network: Mobile Data] 🚀 SDK INITIALIZED | com.google.android.gms.ads.MobileAds: , 
+[2025-12-21 01:45:49.548] [VPN: OFF] [Network: Mobile Data] ⚠️ App Open Ad: Not ready yet
+[2025-12-21 01:45:49.612] [VPN: OFF] [Network: Mobile Data] 📥 LOADING Interstitial Ad | Unit: 4341566774
+[2025-12-21 01:45:49.619] [VPN: OFF] [Network: Mobile Data] 📥 LOADING Rewarded Interstitial Ad | Unit: 3277430871
+[2025-12-21 01:45:54.155] [VPN: ON (V2Ray)] [Network: Mobile Data] 📥 LOADING Interstitial Ad | Unit: 4341566774
+[2025-12-21 01:45:54.166] [VPN: ON (V2Ray)] [Network: Mobile Data] ⚠️ Interstitial Ad not ready, attempting to load
+[2025-12-21 01:45:54.176] [VPN: ON (V2Ray)] [Network: Mobile Data] 📥 LOADING Interstitial Ad | Unit: 4341566774
+[2025-12-21 01:45:54.214] [VPN: ON (V2Ray)] [Network: Mobile Data] ⚠️ Rewarded Interstitial Ad not ready, proceeding without ad
+[2025-12-21 01:45:54.226] [VPN: ON (V2Ray)] [Network: Mobile Data] 📥 LOADING Rewarded Interstitial Ad | Unit: 3277430871
+[2025-12-21 01:46:01.000] [VPN: ON (V2Ray)] [Network: Mobile Data] 📥 LOADING Rewarded Ad | Unit: 5463076758
+[2025-12-21 01:46:23.632] [VPN: ON (V2Ray)] [Network: Mobile Data] ⚠️ App Open Ad: Not ready yet
+[2025-12-21 01:46:23.641] [VPN: ON (V2Ray)] [Network: Mobile Data] 📥 LOADING App Open Ad | Unit: 8463650663
+[2025-12-21 01:46:49.688] [VPN: ON (V2Ray)] [Network: Mobile Data] ❌ FAILED Rewarded Interstitial Ad | Code: 2 | Domain: com.google.android.gms.ads | Message: Network error.
+[2025-12-21 01:46:49.699] [VPN: ON (V2Ray)] [Network: Mobile Data] ❌ FAILED Interstitial Ad | Code: 2 | Domain: com.google.android.gms.ads | Message: Network error.
+[2025-12-21 01:46:54.191] [VPN: ON (V2Ray)] [Network: Mobile Data] ❌ FAILED Interstitial Ad | Code: 2 | Domain: com.google.android.gms.ads | Message: Network error.
+[2025-12-21 01:46:54.209] [VPN: ON (V2Ray)] [Network: Mobile Data] ❌ FAILED Interstitial Ad | Code: 2 | Domain: com.google.android.gms.ads | Message: Network error.
+[2025-12-21 01:46:54.265] [VPN: ON (V2Ray)] [Network: Mobile Data] ❌ FAILED Rewarded Interstitial Ad | Code: 2 | Domain: com.google.android.gms.ads | Message: Network error.
+[2025-12-21 01:47:01.038] [VPN: ON (V2Ray)] [Network: Mobile Data] ❌ FAILED Rewarded Ad | Code: 2 | Domain: com.google.android.gms.ads | Message: Network error.
+[2025-12-21 01:47:03.642] [VPN: OFF] [Network: Mobile Data] 📥 LOADING Interstitial Ad | Unit: 4341566774
+[2025-12-21 01:47:03.660] [VPN: OFF] [Network: Mobile Data] ⚠️ Interstitial Ad not ready, attempting to load
+[2025-12-21 01:47:03.687] [VPN: OFF] [Network: Mobile Data] 📥 LOADING Interstitial Ad | Unit: 4341566774
+[2025-12-21 01:47:16.603] [VPN: ON (CHZProxy, SSH)] [Network: Mobile Data] ⚠️ Rewarded Interstitial Ad not ready, proceeding without ad
+[2025-12-21 01:47:16.618] [VPN: ON (CHZProxy, SSH)] [Network: Mobile Data] 📥 LOADING Rewarded Interstitial Ad | Unit: 3277430871
+[2025-12-21 01:47:16.629] [VPN: ON (CHZProxy, SSH)] [Network: Mobile Data] 📥 LOADING Interstitial Ad | Unit: 4341566774
+[2025-12-21 01:47:16.637] [VPN: ON (CHZProxy, SSH)] [Network: Mobile Data] ⚠️ Interstitial Ad not ready, attempting to load
+[2025-12-21 01:47:16.654] [VPN: ON (CHZProxy, SSH)] [Network: Mobile Data] 📥 LOADING Interstitial Ad | Unit: 4341566774
+[2025-12-21 01:47:22.849] [VPN: ON (CHZProxy, SSH)] [Network: VPN Transport] 📥 LOADING Rewarded Ad | Unit: 5463076758
+[2025-12-21 01:47:48.382] [VPN: ON (CHZProxy, SSH)] [Network: VPN Transport] ✅ LOADED Interstitial Ad | Time: 44695ms
+[2025-12-21 01:47:48.463] [VPN: ON (CHZProxy, SSH)] [Network: VPN Transport] ✅ LOADED App Open Ad | Time: 84821ms
+[2025-12-21 01:48:08.295] [VPN: ON (CHZProxy, SSH)] [Network: VPN Transport] ✅ LOADED Interstitial Ad | Time: 64653ms
+[2025-12-21 01:48:16.659] [VPN: ON (CHZProxy, SSH)] [Network: VPN Transport] ❌ FAILED Rewarded Interstitial Ad | Code: 2 | Domain: com.google.android.gms.ads | Message: Network error.
+[2025-12-21 01:48:16.673] [VPN: ON (CHZProxy, SSH)] [Network: VPN Transport] ❌ FAILED Interstitial Ad | Code: 2 | Domain: com.google.android.gms.ads | Message: Network error.
+[2025-12-21 01:48:16.717] [VPN: ON (CHZProxy, SSH)] [Network: VPN Transport] ❌ FAILED Interstitial Ad | Code: 2 | Domain: com.google.android.gms.ads | Message: Network error.
+[2025-12-21 01:48:22.884] [VPN: ON (CHZProxy, SSH)] [Network: VPN Transport] ❌ FAILED Rewarded Ad | Code: 2 | Domain: com.google.android.gms.ads | Message: Network error.
+[2025-12-21 01:48:26.197] [VPN: OFF] [Network: VPN Transport] 📥 LOADING Interstitial Ad | Unit: 4341566774
+[2025-12-21 01:48:26.209] [VPN: OFF] [Network: VPN Transport] ⚠️ Interstitial Ad not ready, attempting to load
+[2025-12-21 01:48:26.217] [VPN: OFF] [Network: VPN Transport] 📥 LOADING Interstitial Ad | Unit: 4341566774
+[2025-12-21 01:48:38.834] [VPN: ON (V2Ray)] [Network: Mobile Data] 📥 LOADING Interstitial Ad | Unit: 4341566774
+[2025-12-21 01:48:38.845] [VPN: ON (V2Ray)] [Network: Mobile Data] ⚠️ Interstitial Ad not ready, attempting to load
+[2025-12-21 01:48:38.853] [VPN: ON (V2Ray)] [Network: Mobile Data] 📥 LOADING Interstitial Ad | Unit: 4341566774
+[2025-12-21 01:48:38.874] [VPN: ON (V2Ray)] [Network: Mobile Data] ⚠️ Rewarded Interstitial Ad not ready, proceeding without ad
+[2025-12-21 01:48:38.883] [VPN: ON (V2Ray)] [Network: Mobile Data] 📥 LOADING Rewarded Interstitial Ad | Unit: 3277430871
+[2025-12-21 01:48:43.486] [VPN: ON (V2Ray)] [Network: Mobile Data] 📥 LOADING Rewarded Ad | Unit: 5463076758
+[2025-12-21 01:48:57.094] [VPN: ON (V2Ray)] [Network: Mobile Data] 📺 SHOWN App Open Ad
+[2025-12-21 01:48:57.173] [VPN: ON (V2Ray)] [Network: Mobile Data] 📊 IMPRESSION App Open Ad
+[2025-12-21 01:48:59.725] [VPN: ON (V2Ray)] [Network: Mobile Data] ✅ DISMISSED App Open Ad
+[2025-12-21 01:48:59.740] [VPN: ON (V2Ray)] [Network: Mobile Data] 📥 LOADING App Open Ad | Unit: 8463650663
+[2025-12-21 01:49:07.717] [VPN: ON (V2Ray)] [Network: Mobile Data] ⚠️ App Open Ad: Not ready yet
+[2025-12-21 01:49:26.247] [VPN: ON (V2Ray)] [Network: Mobile Data] ❌ FAILED Interstitial Ad | Code: 2 | Domain: com.google.android.gms.ads | Message: Network error.
+[2025-12-21 01:49:26.271] [VPN: ON (V2Ray)] [Network: Mobile Data] ❌ FAILED Interstitial Ad | Code: 2 | Domain: com.google.android.gms.ads | Message: Network error.
+[2025-12-21 01:49:38.881] [VPN: ON (V2Ray)] [Network: Mobile Data] ❌ FAILED Interstitial Ad | Code: 2 | Domain: com.google.android.gms.ads | Message: Network error.
+[2025-12-21 01:49:38.906] [VPN: ON (V2Ray)] [Network: Mobile Data] ❌ FAILED Interstitial Ad | Code: 2 | Domain: com.google.android.gms.ads | Message: Network error.
+[2025-12-21 01:49:38.917] [VPN: ON (V2Ray)] [Network: Mobile Data] ❌ FAILED Rewarded Interstitial Ad | Code: 2 | Domain: com.google.android.gms.ads | Message: Network error.
+[2025-12-21 01:49:43.524] [VPN: ON (V2Ray)] [Network: Mobile Data] ❌ FAILED Rewarded Ad | Code: 2 | Domain: com.google.android.gms.ads | Message: Network error.
+[2025-12-21 01:49:48.016] [VPN: OFF] [Network: Mobile Data] 📥 LOADING Interstitial Ad | Unit: 4341566774
+[2025-12-21 01:49:48.032] [VPN: OFF] [Network: Mobile Data] ⚠️ Interstitial Ad not ready, attempting to load
+[2025-12-21 01:49:48.041] [VPN: OFF] [Network: Mobile Data] 📥 LOADING Interstitial Ad | Unit: 4341566774
+[2025-12-21 01:50:30.614] [VPN: OFF] [Network: Disconnected] AdLogger initialized - Path: /storage/emulated/0/Download/MinaProNetVPN/ad_log.txt
+========== DEVICE INFO ==========
+Device: samsung SM-S928B
+Android: 16 (SDK 36)
+Package: vpn.minapronet.com.eg
+Log Path: /storage/emulated/0/Download/MinaProNetVPN/ad_log.txt
+================================
+[2025-12-21 01:50:31.056] [VPN: OFF] [Network: WiFi] 🚀 SDK INITIALIZED | com.google.android.gms.ads.MobileAds: , 
