@@ -47,7 +47,10 @@ case "$ARCH" in
   armv7l)  HY_ARCH="armv7" ;;
   *)       die "معمارية غير مدعومة: $ARCH" ;;
 esac
-HYSTERIA_URL="https://github.com/apernet/hysteria/releases/download/${HYSTERIA_VERSION}/hysteria-linux-${HY_ARCH}"
+# روابط تحميل بديلة (primary + fallback)
+HYSTERIA_URL_PRIMARY="https://github.com/apernet/hysteria/releases/download/${HYSTERIA_VERSION}/hysteria-linux-${HY_ARCH}"
+HYSTERIA_URL_FALLBACK="https://download.fastgit.org/apernet/hysteria/releases/download/${HYSTERIA_VERSION}/hysteria-linux-${HY_ARCH}"
+HYSTERIA_URL="$HYSTERIA_URL_PRIMARY"
 
 # ══════════════════════════════════════════════════════════════════════════════
 #  0. التحقق من الصلاحيات
@@ -139,18 +142,34 @@ if [[ -f "$HYSTERIA_BIN" ]]; then
 fi
 
 if $NEEDS_DOWNLOAD; then
-    info "جاري التحميل من: $HYSTERIA_URL"
     TMP_BIN=$(mktemp)
-    if ! curl -L --retry 5 --retry-delay 3 --connect-timeout 30 \
-              -o "$TMP_BIN" "$HYSTERIA_URL"; then
+    info "جاري التحميل (المصدر الأساسي) …"
+    DOWNLOAD_OK=false
+    if curl -L --retry 3 --retry-delay 2 --connect-timeout 30 \
+            -o "$TMP_BIN" "$HYSTERIA_URL_PRIMARY" 2>/dev/null; then
+        DOWNLOAD_OK=true
+    else
+        warn "فشل المصدر الأساسي – جاري المحاولة عبر المصدر البديل …"
+        if curl -L --retry 3 --retry-delay 2 --connect-timeout 30 \
+                -o "$TMP_BIN" "$HYSTERIA_URL_FALLBACK"; then
+            DOWNLOAD_OK=true
+        fi
+    fi
+    if ! $DOWNLOAD_OK; then
         rm -f "$TMP_BIN"
-        die "فشل تحميل Hysteria – تحقق من الاتصال"
+        die "فشل تحميل Hysteria من جميع المصادر – تحقق من الاتصال"
     fi
     chmod +x "$TMP_BIN"
-    # التحقق من الملف
-    if ! "$TMP_BIN" version &>/dev/null; then
+    # التحقق من الملف – Hysteria v1 يستخدم --version وليس version
+    FILE_SIZE=$(stat -c%s "$TMP_BIN" 2>/dev/null || echo 0)
+    if [[ "$FILE_SIZE" -lt 1048576 ]]; then
         rm -f "$TMP_BIN"
-        die "الملف المحمّل تالف أو غير متوافق"
+        die "الملف المحمّل صغير جداً (${FILE_SIZE} bytes) – محتمل تالف"
+    fi
+    # تحقق إضافي: ELF binary صالح
+    if ! file "$TMP_BIN" 2>/dev/null | grep -q "ELF"; then
+        rm -f "$TMP_BIN"
+        die "الملف المحمّل ليس ELF binary صالح"
     fi
     # إيقاف الخدمة قبل استبدال الملف (إن وُجدت)
     systemctl stop hysteria 2>/dev/null || true
