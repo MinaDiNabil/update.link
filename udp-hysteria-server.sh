@@ -85,12 +85,12 @@ install_hysteria() {
     fi
     chmod +x "$HYSTERIA_BIN"
 
-    # Verify binary works
-    if ! "$HYSTERIA_BIN" version > /dev/null 2>&1; then
+    # Verify binary is executable (v1 uses -h, not "version")
+    if ! "$HYSTERIA_BIN" -h > /dev/null 2>&1; then
         print_err "Downloaded binary is not working"
         exit 1
     fi
-    print_msg "Hysteria v1 installed ($($HYSTERIA_BIN version 2>/dev/null | head -1))"
+    print_msg "Hysteria v1 installed at ${HYSTERIA_BIN}"
 }
 
 generate_cert() {
@@ -178,12 +178,6 @@ create_config() {
 EOF
     chmod 600 "$HYSTERIA_CONFIG"
 
-    # Validate config with hysteria
-    if "$HYSTERIA_BIN" server --config "$HYSTERIA_CONFIG" --dry-run > /dev/null 2>&1; then
-        print_msg "Configuration valid"
-    else
-        print_warn "Could not validate config (dry-run not supported), continuing..."
-    fi
     print_msg "Configuration created"
 }
 
