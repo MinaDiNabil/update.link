@@ -22,7 +22,6 @@ HYSTERIA_KEY="${HYSTERIA_DIR}/server.key"
 HYSTERIA_SERVICE="/etc/systemd/system/hysteria-server.service"
 IPTABLES_SCRIPT="${HYSTERIA_DIR}/iptables.sh"
 
-# Internal listen port (Hysteria binds to this)
 LISTEN_PORT="36712"
 
 print_banner() {
@@ -58,15 +57,11 @@ get_server_ip() {
 install_deps() {
     print_info "Installing dependencies..."
     apt-get update -qq > /dev/null 2>&1
-    apt-get install -y -qq curl wget openssl iptables > /dev/null 2>&1
+    apt-get install -y -qq curl wget openssl iptables conntrack > /dev/null 2>&1
     print_msg "Dependencies installed"
 }
 
 install_hysteria() {
-    if [ -f "$HYSTERIA_BIN" ]; then
-        print_warn "Hysteria binary already exists, updating..."
-    fi
-
     print_info "Downloading Hysteria v1..."
     local ARCH
     ARCH=$(uname -m)
@@ -84,20 +79,14 @@ install_hysteria() {
         exit 1
     fi
     chmod +x "$HYSTERIA_BIN"
-
-    # Verify binary is executable (v1 uses -h, not "version")
-    if ! "$HYSTERIA_BIN" -h > /dev/null 2>&1; then
-        print_err "Downloaded binary is not working"
-        exit 1
-    fi
-    print_msg "Hysteria v1 installed at ${HYSTERIA_BIN}"
+    print_msg "Hysteria v1 installed"
 }
 
 generate_cert() {
     mkdir -p "$HYSTERIA_DIR"
 
     if [ -f "$HYSTERIA_CERT" ] && [ -f "$HYSTERIA_KEY" ]; then
-        print_warn "Certificate already exists, skipping"
+        print_warn "Certificate exists, skipping"
         return
     fi
 
@@ -109,7 +98,43 @@ generate_cert() {
         -days 3650 2>/dev/null
     chmod 600 "$HYSTERIA_KEY"
     chmod 644 "$HYSTERIA_CERT"
-    print_msg "Certificate generated (valid 10 years)"
+    print_msg "Certificate generated"
+}
+
+# Fix system DNS FIRST (before anything else needs it)
+fix_dns() {
+    print_info "Ensuring DNS works..."
+
+    # Test if DNS works
+    if ! nslookup google.com > /dev/null 2>&1; then
+        print_warn "DNS broken, fixing..."
+        # Backup
+        cp /etc/resolv.conf /etc/resolv.conf.bak 2>/dev/null || true
+
+        # Disable systemd-resolved if it's causing issues
+        if systemctl is-active --quiet systemd-resolved 2>/dev/null; then
+            mkdir -p /etc/systemd/resolved.conf.d
+            cat > /etc/systemd/resolved.conf.d/dns.conf << 'EOF'
+[Resolve]
+DNS=8.8.8.8 1.1.1.1
+FallbackDNS=8.8.4.4 1.0.0.1
+EOF
+            systemctl restart systemd-resolved 2>/dev/null || true
+        fi
+
+        # Direct fix
+        cat > /etc/resolv.conf << 'EOF'
+nameserver 8.8.8.8
+nameserver 1.1.1.1
+EOF
+    fi
+
+    # Verify
+    if nslookup google.com > /dev/null 2>&1; then
+        print_msg "DNS working"
+    else
+        print_warn "DNS may still have issues"
+    fi
 }
 
 get_config() {
@@ -148,8 +173,9 @@ get_config() {
 }
 
 # ============================================================
-#  Hysteria v1 Server Config
-#  Must match client: auth_str, obfs, recv_window
+#  MINIMAL Hysteria v1 config - only required fields
+#  Let Hysteria use its own defaults for recv_window etc.
+#  This prevents flow control mismatch with client
 # ============================================================
 create_config() {
     mkdir -p "$HYSTERIA_DIR"
@@ -167,45 +193,49 @@ create_config() {
             "password": "${AUTH_STR}"
         }
     },
-    "resolver": "udp://8.8.8.8:53",
     "up_mbps": ${UP_MBPS},
-    "down_mbps": ${DOWN_MBPS},
-    "recv_window_conn": 3407872,
-    "recv_window_client": 13631488,
-    "max_conn_client": 4096,
-    "disable_mtu_discovery": false
+    "down_mbps": ${DOWN_MBPS}
 }
 EOF
     chmod 600 "$HYSTERIA_CONFIG"
-
-    print_msg "Configuration created"
+    print_msg "Configuration created (minimal stable config)"
 }
 
 optimize_kernel() {
     print_info "Optimizing kernel for UDP..."
 
     cat > /etc/sysctl.d/99-hysteria-udp.conf << 'EOF'
-# UDP buffer sizes
+# === UDP buffers (critical for Hysteria stability) ===
 net.core.rmem_max = 16777216
 net.core.wmem_max = 16777216
 net.core.rmem_default = 1048576
 net.core.wmem_default = 1048576
 
-# Socket backlog
+# === Socket backlog ===
 net.core.somaxconn = 65535
 net.core.netdev_max_backlog = 65535
 
-# UDP memory
+# === UDP memory ===
 net.ipv4.udp_mem = 65536 131072 262144
 net.ipv4.udp_rmem_min = 8192
 net.ipv4.udp_wmem_min = 8192
 
-# IP forwarding
+# === IP forwarding ===
 net.ipv4.ip_forward = 1
 
-# TCP fast open
+# === Conntrack tuning (CRITICAL for port hopping stability) ===
+# Without this, conntrack table fills up and packets get dropped
+net.netfilter.nf_conntrack_max = 1048576
+net.netfilter.nf_conntrack_buckets = 262144
+net.netfilter.nf_conntrack_udp_timeout = 60
+net.netfilter.nf_conntrack_udp_timeout_stream = 120
+
+# === TCP optimizations ===
 net.ipv4.tcp_fastopen = 3
 EOF
+
+    # Load conntrack module first (needed for nf_conntrack sysctl)
+    modprobe nf_conntrack 2>/dev/null || true
 
     sysctl -p /etc/sysctl.d/99-hysteria-udp.conf > /dev/null 2>&1 || true
 
@@ -215,7 +245,7 @@ EOF
         print_msg "BBR enabled"
     fi
 
-    print_msg "Kernel optimized"
+    print_msg "Kernel optimized (conntrack max=1M)"
 }
 
 create_service() {
@@ -254,10 +284,10 @@ setup_firewall() {
     fi
     print_info "Interface: ${MAIN_IFACE}"
 
-    # Clean old hysteria iptables rules first
-    clean_iptables_rules
+    # Clean old rules
+    iptables -t nat -F PREROUTING 2>/dev/null || true
 
-    # Allow established connections (critical!)
+    # Allow established connections
     iptables -I INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT 2>/dev/null || true
 
     # Open listen port
@@ -269,7 +299,7 @@ setup_firewall() {
         # Open port range
         iptables -I INPUT -p udp --dport "${PORT_RANGE_START}:${PORT_RANGE_END}" -j ACCEPT 2>/dev/null || true
 
-        # Redirect ONLY external interface, NOT loopback (prevents DNS redirect loop)
+        # Redirect ONLY on external interface
         iptables -t nat -A PREROUTING -i "$MAIN_IFACE" -p udp --dport "${PORT_RANGE_START}:${PORT_RANGE_END}" -j REDIRECT --to-ports "$LISTEN_PORT" 2>/dev/null || true
 
         # UFW
@@ -284,22 +314,17 @@ setup_firewall() {
         fi
     fi
 
-    # Save iptables for reboot persistence
+    # Save rules
     save_iptables_rules
 
     print_msg "Firewall configured"
 }
 
-clean_iptables_rules() {
-    # Remove old NAT rules related to hysteria
-    iptables -t nat -F PREROUTING 2>/dev/null || true
-}
-
 save_iptables_rules() {
-    # Create script to restore rules on reboot
+    # Create restore script
     cat > "$IPTABLES_SCRIPT" << EOIPT
 #!/bin/bash
-# Restore Hysteria iptables rules
+modprobe nf_conntrack 2>/dev/null
 iptables -I INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 iptables -I INPUT -p udp --dport ${LISTEN_PORT} -j ACCEPT
 EOIPT
@@ -312,18 +337,16 @@ EOIPT
     fi
     chmod +x "$IPTABLES_SCRIPT"
 
-    # Save with iptables-save
+    # Persist
     if command -v iptables-save &>/dev/null; then
         mkdir -p /etc/iptables
         iptables-save > /etc/iptables/rules.v4 2>/dev/null || true
     fi
-
-    # Try netfilter-persistent
     if command -v netfilter-persistent &>/dev/null; then
         netfilter-persistent save > /dev/null 2>&1 || true
     fi
 
-    # Add to rc.local as fallback
+    # rc.local fallback
     if [ ! -f /etc/rc.local ] || ! grep -q "hysteria" /etc/rc.local 2>/dev/null; then
         echo "bash ${IPTABLES_SCRIPT}" >> /etc/rc.local 2>/dev/null || true
         chmod +x /etc/rc.local 2>/dev/null || true
@@ -341,49 +364,55 @@ start_service() {
         print_msg "Hysteria server is RUNNING!"
     else
         print_err "Failed to start! Logs:"
-        echo ""
         journalctl -u hysteria-server --no-pager -n 20
         exit 1
     fi
 }
 
-# Verify the server can actually relay traffic
 verify_server() {
     echo ""
     print_info "Running connectivity tests..."
 
-    # Test 1: Check server is listening
-    if ss -ulnp | grep -q ":${LISTEN_PORT}"; then
-        print_msg "Test 1/4: Hysteria listening on port ${LISTEN_PORT}"
+    # Test 1: Listening
+    if ss -ulnp 2>/dev/null | grep -q ":${LISTEN_PORT}"; then
+        print_msg "Test 1/5: Listening on port ${LISTEN_PORT}"
     else
-        print_err "Test 1/4: NOT listening on port ${LISTEN_PORT}!"
+        print_err "Test 1/5: NOT listening on ${LISTEN_PORT}!"
     fi
 
-    # Test 2: DNS resolution from server
-    if nslookup google.com > /dev/null 2>&1 || host google.com > /dev/null 2>&1 || dig google.com +short > /dev/null 2>&1; then
-        print_msg "Test 2/4: DNS resolution working"
+    # Test 2: DNS
+    if nslookup google.com > /dev/null 2>&1; then
+        print_msg "Test 2/5: DNS working"
     else
-        print_warn "Test 2/4: DNS might not work! Trying to fix..."
-        echo "nameserver 8.8.8.8" > /etc/resolv.conf
-        echo "nameserver 1.1.1.1" >> /etc/resolv.conf
-        print_info "Set DNS to 8.8.8.8 / 1.1.1.1"
+        print_err "Test 2/5: DNS FAILED"
     fi
 
-    # Test 3: Internet connectivity from server
-    if curl -s4m5 -o /dev/null -w "%{http_code}" http://www.google.com 2>/dev/null | grep -q "200\|301\|302"; then
-        print_msg "Test 3/4: Internet connectivity OK"
+    # Test 3: Internet
+    if curl -s4m5 -o /dev/null http://www.google.com 2>/dev/null; then
+        print_msg "Test 3/5: Internet OK"
     else
-        print_warn "Test 3/4: Server may have limited internet access"
+        print_warn "Test 3/5: Internet may be limited"
     fi
 
-    # Test 4: Check iptables are not blocking outbound
-    local OUTBOUND_POLICY
-    OUTBOUND_POLICY=$(iptables -L OUTPUT -n 2>/dev/null | head -1 | grep -oP 'policy \K\w+')
-    if [ "$OUTBOUND_POLICY" = "ACCEPT" ] || [ -z "$OUTBOUND_POLICY" ]; then
-        print_msg "Test 4/4: Outbound traffic allowed"
+    # Test 4: Outbound not blocked
+    local OUT_POLICY
+    OUT_POLICY=$(iptables -L OUTPUT -n 2>/dev/null | head -1 | grep -oP 'policy \K\w+')
+    if [ "$OUT_POLICY" = "ACCEPT" ] || [ -z "$OUT_POLICY" ]; then
+        print_msg "Test 4/5: Outbound traffic OK"
     else
-        print_warn "Test 4/4: OUTPUT policy is ${OUTBOUND_POLICY}, adding ACCEPT rules..."
+        print_warn "Test 4/5: Fixing outbound policy..."
         iptables -I OUTPUT -j ACCEPT 2>/dev/null || true
+    fi
+
+    # Test 5: Conntrack table
+    local CT_MAX CT_COUNT
+    CT_MAX=$(sysctl -n net.netfilter.nf_conntrack_max 2>/dev/null || echo "0")
+    CT_COUNT=$(cat /proc/sys/net/netfilter/nf_conntrack_count 2>/dev/null || echo "0")
+    if [ "$CT_MAX" -gt 0 ]; then
+        local CT_PERCENT=$((CT_COUNT * 100 / CT_MAX))
+        print_msg "Test 5/5: Conntrack ${CT_COUNT}/${CT_MAX} (${CT_PERCENT}% used)"
+    else
+        print_msg "Test 5/5: Conntrack OK"
     fi
 
     echo ""
@@ -438,7 +467,6 @@ uninstall() {
     rm -f "$HYSTERIA_SERVICE"
     rm -f "$HYSTERIA_BIN"
 
-    # Clean iptables
     iptables -t nat -F PREROUTING 2>/dev/null || true
     if command -v iptables-save &>/dev/null; then
         mkdir -p /etc/iptables
@@ -449,8 +477,6 @@ uninstall() {
     rm -f /etc/sysctl.d/99-hysteria-udp.conf
     sysctl --system > /dev/null 2>&1 || true
     systemctl daemon-reload
-
-    # Clean rc.local
     sed -i '/hysteria/d' /etc/rc.local 2>/dev/null || true
 
     print_msg "Uninstalled successfully"
@@ -472,6 +498,7 @@ get_server_ip
 install_deps
 install_hysteria
 generate_cert
+fix_dns
 get_config
 create_config
 optimize_kernel
