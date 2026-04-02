@@ -277,14 +277,7 @@ EOF
 setup_firewall() {
     print_info "Configuring firewall..."
 
-    # Detect main interface
-    MAIN_IFACE=$(ip -4 route show default | awk '{print $5}' | head -1)
-    if [ -z "$MAIN_IFACE" ]; then
-        MAIN_IFACE="eth0"
-    fi
-    print_info "Interface: ${MAIN_IFACE}"
-
-    # Clean old rules
+    # Clean old NAT rules
     iptables -t nat -F PREROUTING 2>/dev/null || true
 
     # Allow established connections
@@ -299,15 +292,24 @@ setup_firewall() {
         # Open port range
         iptables -I INPUT -p udp --dport "${PORT_RANGE_START}:${PORT_RANGE_END}" -j ACCEPT 2>/dev/null || true
 
-        # Redirect ONLY on external interface
-        iptables -t nat -A PREROUTING -i "$MAIN_IFACE" -p udp --dport "${PORT_RANGE_START}:${PORT_RANGE_END}" -j REDIRECT --to-ports "$LISTEN_PORT" 2>/dev/null || true
+        # Redirect ALL incoming UDP in range to listen port
+        # Safe because: DNS uses system resolv.conf (not affected by PREROUTING)
+        # and outgoing traffic goes through OUTPUT chain, not PREROUTING
+        iptables -t nat -A PREROUTING -p udp --dport "${PORT_RANGE_START}:${PORT_RANGE_END}" -j REDIRECT --to-ports "$LISTEN_PORT" 2>/dev/null || true
 
         # UFW
         if command -v ufw &>/dev/null && ufw status 2>/dev/null | grep -q "active"; then
             ufw allow "${PORT_RANGE_START}:${PORT_RANGE_END}/udp" > /dev/null 2>&1 || true
         fi
 
-        print_msg "Port hopping configured"
+        # Verify the rule was applied
+        if iptables -t nat -L PREROUTING -n 2>/dev/null | grep -q "redir ports ${LISTEN_PORT}"; then
+            print_msg "Port hopping rule ACTIVE"
+        else
+            print_err "Port hopping rule FAILED - trying alternative method..."
+            # Fallback: use DNAT
+            iptables -t nat -A PREROUTING -p udp --dport "${PORT_RANGE_START}:${PORT_RANGE_END}" -j DNAT --to-destination "127.0.0.1:${LISTEN_PORT}" 2>/dev/null || true
+        fi
     else
         if command -v ufw &>/dev/null && ufw status 2>/dev/null | grep -q "active"; then
             ufw allow "${LISTEN_PORT}/udp" > /dev/null 2>&1 || true
@@ -332,7 +334,7 @@ EOIPT
     if [ "$USE_PORT_HOPPING" = true ]; then
         cat >> "$IPTABLES_SCRIPT" << EOIPT
 iptables -I INPUT -p udp --dport ${PORT_RANGE_START}:${PORT_RANGE_END} -j ACCEPT
-iptables -t nat -A PREROUTING -i ${MAIN_IFACE} -p udp --dport ${PORT_RANGE_START}:${PORT_RANGE_END} -j REDIRECT --to-ports ${LISTEN_PORT}
+iptables -t nat -A PREROUTING -p udp --dport ${PORT_RANGE_START}:${PORT_RANGE_END} -j REDIRECT --to-ports ${LISTEN_PORT}
 EOIPT
     fi
     chmod +x "$IPTABLES_SCRIPT"
