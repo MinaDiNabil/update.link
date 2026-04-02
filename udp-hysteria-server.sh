@@ -5,7 +5,6 @@
 #  For Ubuntu 18.04 / 20.04 / 22.04 / 24.04
 # ============================================================
 
-# Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -13,7 +12,6 @@ CYAN='\033[0;36m'
 BOLD='\033[1m'
 NC='\033[0m'
 
-# Paths
 HYSTERIA_BIN="/usr/local/bin/hysteria"
 HYSTERIA_DIR="/etc/hysteria"
 HYSTERIA_CONFIG="${HYSTERIA_DIR}/config.json"
@@ -40,7 +38,7 @@ print_info() { echo -e "${CYAN}[i]${NC} $1"; }
 
 check_root() {
     if [ "$(id -u)" -ne 0 ]; then
-        print_err "This script must be run as root (sudo)"
+        print_err "Must run as root (sudo)"
         exit 1
     fi
 }
@@ -57,7 +55,7 @@ get_server_ip() {
 install_deps() {
     print_info "Installing dependencies..."
     apt-get update -qq > /dev/null 2>&1
-    apt-get install -y -qq curl wget openssl iptables conntrack > /dev/null 2>&1
+    apt-get install -y -qq curl wget openssl iptables nftables conntrack > /dev/null 2>&1
     print_msg "Dependencies installed"
 }
 
@@ -75,7 +73,7 @@ install_hysteria() {
     local DOWNLOAD_URL="https://github.com/apernet/hysteria/releases/download/v1.3.5/hysteria-linux-${ARCH}"
 
     if ! wget -q --show-progress -O "$HYSTERIA_BIN" "$DOWNLOAD_URL"; then
-        print_err "Failed to download Hysteria"
+        print_err "Failed to download"
         exit 1
     fi
     chmod +x "$HYSTERIA_BIN"
@@ -84,13 +82,11 @@ install_hysteria() {
 
 generate_cert() {
     mkdir -p "$HYSTERIA_DIR"
-
     if [ -f "$HYSTERIA_CERT" ] && [ -f "$HYSTERIA_KEY" ]; then
         print_warn "Certificate exists, skipping"
         return
     fi
-
-    print_info "Generating self-signed certificate..."
+    print_info "Generating certificate..."
     openssl ecparam -genkey -name prime256v1 -out "$HYSTERIA_KEY" 2>/dev/null
     openssl req -new -x509 -key "$HYSTERIA_KEY" \
         -out "$HYSTERIA_CERT" \
@@ -101,39 +97,20 @@ generate_cert() {
     print_msg "Certificate generated"
 }
 
-# Fix system DNS FIRST (before anything else needs it)
 fix_dns() {
-    print_info "Ensuring DNS works..."
-
-    # Test if DNS works
+    print_info "Checking DNS..."
     if ! nslookup google.com > /dev/null 2>&1; then
-        print_warn "DNS broken, fixing..."
-        # Backup
+        print_warn "Fixing DNS..."
         cp /etc/resolv.conf /etc/resolv.conf.bak 2>/dev/null || true
-
-        # Disable systemd-resolved if it's causing issues
-        if systemctl is-active --quiet systemd-resolved 2>/dev/null; then
-            mkdir -p /etc/systemd/resolved.conf.d
-            cat > /etc/systemd/resolved.conf.d/dns.conf << 'EOF'
-[Resolve]
-DNS=8.8.8.8 1.1.1.1
-FallbackDNS=8.8.4.4 1.0.0.1
-EOF
-            systemctl restart systemd-resolved 2>/dev/null || true
-        fi
-
-        # Direct fix
         cat > /etc/resolv.conf << 'EOF'
 nameserver 8.8.8.8
 nameserver 1.1.1.1
 EOF
     fi
-
-    # Verify
     if nslookup google.com > /dev/null 2>&1; then
         print_msg "DNS working"
     else
-        print_warn "DNS may still have issues"
+        print_warn "DNS may have issues"
     fi
 }
 
@@ -142,7 +119,7 @@ get_config() {
     echo -e "${BOLD}=== Server Configuration ===${NC}"
     echo ""
 
-    echo -e "${CYAN}Port range for the app. Examples: 443 / 1-65535 / 20000-50000${NC}"
+    echo -e "${CYAN}Port range. Examples: 443 / 1-65535 / 20000-50000${NC}"
     read -rp "$(echo -e "${CYAN}Enter port/range [default: 1-65535]: ${NC}")" PORT_INPUT
     PORT_INPUT=${PORT_INPUT:-1-65535}
 
@@ -172,14 +149,9 @@ get_config() {
     echo ""
 }
 
-# ============================================================
-#  MINIMAL Hysteria v1 config - only required fields
-#  Let Hysteria use its own defaults for recv_window etc.
-#  This prevents flow control mismatch with client
-# ============================================================
 create_config() {
     mkdir -p "$HYSTERIA_DIR"
-    print_info "Creating server configuration..."
+    print_info "Creating configuration..."
 
     cat > "$HYSTERIA_CONFIG" << EOF
 {
@@ -198,44 +170,48 @@ create_config() {
 }
 EOF
     chmod 600 "$HYSTERIA_CONFIG"
-    print_msg "Configuration created (minimal stable config)"
+    print_msg "Configuration created"
 }
 
 optimize_kernel() {
-    print_info "Optimizing kernel for UDP..."
+    print_info "Optimizing kernel..."
+
+    # Load required modules FIRST
+    modprobe nf_conntrack 2>/dev/null || true
+    modprobe nf_nat 2>/dev/null || true
+    modprobe nf_conntrack_ipv4 2>/dev/null || true
+    modprobe xt_REDIRECT 2>/dev/null || true
 
     cat > /etc/sysctl.d/99-hysteria-udp.conf << 'EOF'
-# === UDP buffers (critical for Hysteria stability) ===
+# UDP buffers
 net.core.rmem_max = 16777216
 net.core.wmem_max = 16777216
 net.core.rmem_default = 1048576
 net.core.wmem_default = 1048576
 
-# === Socket backlog ===
+# Backlog
 net.core.somaxconn = 65535
 net.core.netdev_max_backlog = 65535
 
-# === UDP memory ===
+# UDP memory
 net.ipv4.udp_mem = 65536 131072 262144
 net.ipv4.udp_rmem_min = 8192
 net.ipv4.udp_wmem_min = 8192
 
-# === IP forwarding ===
+# IP forward
 net.ipv4.ip_forward = 1
 
-# === Conntrack tuning (CRITICAL for port hopping stability) ===
-# Without this, conntrack table fills up and packets get dropped
+# Conntrack (critical for port hopping)
 net.netfilter.nf_conntrack_max = 1048576
-net.netfilter.nf_conntrack_buckets = 262144
-net.netfilter.nf_conntrack_udp_timeout = 60
-net.netfilter.nf_conntrack_udp_timeout_stream = 120
+net.netfilter.nf_conntrack_udp_timeout = 12
+net.netfilter.nf_conntrack_udp_timeout_stream = 35
 
-# === TCP optimizations ===
+# TCP
 net.ipv4.tcp_fastopen = 3
 EOF
 
-    # Load conntrack module first (needed for nf_conntrack sysctl)
-    modprobe nf_conntrack 2>/dev/null || true
+    # Set hashsize before sysctl
+    echo 262144 > /sys/module/nf_conntrack/parameters/hashsize 2>/dev/null || true
 
     sysctl -p /etc/sysctl.d/99-hysteria-udp.conf > /dev/null 2>&1 || true
 
@@ -245,7 +221,7 @@ EOF
         print_msg "BBR enabled"
     fi
 
-    print_msg "Kernel optimized (conntrack max=1M)"
+    print_msg "Kernel optimized"
 }
 
 create_service() {
@@ -260,6 +236,8 @@ Wants=network-online.target
 [Service]
 Type=simple
 User=root
+ExecStartPre=/sbin/modprobe nf_conntrack
+ExecStartPre=/sbin/modprobe nf_nat
 ExecStart=${HYSTERIA_BIN} server --config ${HYSTERIA_CONFIG}
 Restart=always
 RestartSec=3
@@ -271,87 +249,161 @@ WantedBy=multi-user.target
 EOF
 
     systemctl daemon-reload
-    print_msg "Systemd service created"
+    print_msg "Service created"
 }
 
-setup_firewall() {
-    print_info "Configuring firewall..."
-
-    # Clean old NAT rules
-    iptables -t nat -F PREROUTING 2>/dev/null || true
-
-    # Allow established connections
-    iptables -I INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT 2>/dev/null || true
-
-    # Open listen port
-    iptables -I INPUT -p udp --dport "$LISTEN_PORT" -j ACCEPT 2>/dev/null || true
-
-    if [ "$USE_PORT_HOPPING" = true ]; then
-        print_info "Port hopping: ${PORT_RANGE_START}-${PORT_RANGE_END} -> ${LISTEN_PORT}..."
-
-        # Open port range
-        iptables -I INPUT -p udp --dport "${PORT_RANGE_START}:${PORT_RANGE_END}" -j ACCEPT 2>/dev/null || true
-
-        # Redirect ALL incoming UDP in range to listen port
-        # Safe because: DNS uses system resolv.conf (not affected by PREROUTING)
-        # and outgoing traffic goes through OUTPUT chain, not PREROUTING
-        iptables -t nat -A PREROUTING -p udp --dport "${PORT_RANGE_START}:${PORT_RANGE_END}" -j REDIRECT --to-ports "$LISTEN_PORT" 2>/dev/null || true
-
-        # UFW
-        if command -v ufw &>/dev/null && ufw status 2>/dev/null | grep -q "active"; then
-            ufw allow "${PORT_RANGE_START}:${PORT_RANGE_END}/udp" > /dev/null 2>&1 || true
-        fi
-
-        # Verify the rule was applied
-        if iptables -t nat -L PREROUTING -n 2>/dev/null | grep -q "redir ports ${LISTEN_PORT}"; then
-            print_msg "Port hopping rule ACTIVE"
-        else
-            print_err "Port hopping rule FAILED - trying alternative method..."
-            # Fallback: use DNAT
-            iptables -t nat -A PREROUTING -p udp --dport "${PORT_RANGE_START}:${PORT_RANGE_END}" -j DNAT --to-destination "127.0.0.1:${LISTEN_PORT}" 2>/dev/null || true
-        fi
-    else
+# ============================================================
+# Port hopping setup - tries nftables first, falls back to iptables
+# ============================================================
+setup_port_hopping() {
+    if [ "$USE_PORT_HOPPING" != true ]; then
+        # Single port - just open it in firewall
+        iptables -I INPUT -p udp --dport "$LISTEN_PORT" -j ACCEPT 2>/dev/null || true
         if command -v ufw &>/dev/null && ufw status 2>/dev/null | grep -q "active"; then
             ufw allow "${LISTEN_PORT}/udp" > /dev/null 2>&1 || true
         fi
+        print_msg "Single port ${LISTEN_PORT} opened"
+        return
     fi
 
-    # Save rules
-    save_iptables_rules
+    print_info "Setting up port hopping..."
 
-    print_msg "Firewall configured"
+    # Method 1: Try nftables (most reliable for port hopping)
+    if setup_nftables; then
+        print_msg "Port hopping via nftables"
+        HOPPING_METHOD="nftables"
+        return
+    fi
+
+    # Method 2: Fall back to iptables
+    if setup_iptables_redirect; then
+        print_msg "Port hopping via iptables"
+        HOPPING_METHOD="iptables"
+        return
+    fi
+
+    print_err "Could not set up port hopping! Use single port ${LISTEN_PORT} in the app."
 }
 
-save_iptables_rules() {
-    # Create restore script
-    cat > "$IPTABLES_SCRIPT" << EOIPT
+setup_nftables() {
+    # Check if nftables is available
+    if ! command -v nft &>/dev/null; then
+        print_warn "nftables not available, trying iptables..."
+        return 1
+    fi
+
+    print_info "Configuring nftables..."
+
+    # Flush old hysteria rules
+    nft delete table inet hysteria 2>/dev/null || true
+
+    # Create nftables rules
+    nft add table inet hysteria 2>/dev/null || return 1
+
+    # Allow incoming UDP
+    nft add chain inet hysteria input '{ type filter hook input priority 0; }' 2>/dev/null || return 1
+    nft add rule inet hysteria input udp dport "${LISTEN_PORT}" accept 2>/dev/null || return 1
+    nft add rule inet hysteria input udp dport "${PORT_RANGE_START}-${PORT_RANGE_END}" accept 2>/dev/null || return 1
+
+    # NAT redirect
+    nft add chain inet hysteria prerouting '{ type nat hook prerouting priority dstnat; }' 2>/dev/null || return 1
+    nft add rule inet hysteria prerouting udp dport "${PORT_RANGE_START}-${PORT_RANGE_END}" redirect to ":${LISTEN_PORT}" 2>/dev/null || return 1
+
+    # Verify
+    if nft list chain inet hysteria prerouting 2>/dev/null | grep -q "redirect"; then
+        # Save nftables rules
+        nft list ruleset > /etc/nftables.conf 2>/dev/null || true
+        systemctl enable nftables 2>/dev/null || true
+
+        # Create restore script
+        cat > "$IPTABLES_SCRIPT" << EOIPT
+#!/bin/bash
+# Restore nftables rules for Hysteria port hopping
+nft delete table inet hysteria 2>/dev/null
+nft add table inet hysteria
+nft add chain inet hysteria input '{ type filter hook input priority 0; }'
+nft add rule inet hysteria input udp dport ${LISTEN_PORT} accept
+nft add rule inet hysteria input udp dport ${PORT_RANGE_START}-${PORT_RANGE_END} accept
+nft add chain inet hysteria prerouting '{ type nat hook prerouting priority dstnat; }'
+nft add rule inet hysteria prerouting udp dport ${PORT_RANGE_START}-${PORT_RANGE_END} redirect to :${LISTEN_PORT}
+EOIPT
+        chmod +x "$IPTABLES_SCRIPT"
+        return 0
+    fi
+
+    # nftables didn't work
+    nft delete table inet hysteria 2>/dev/null || true
+    return 1
+}
+
+setup_iptables_redirect() {
+    print_info "Configuring iptables..."
+
+    # Load modules
+    modprobe nf_conntrack 2>/dev/null || true
+    modprobe nf_nat 2>/dev/null || true
+    modprobe xt_REDIRECT 2>/dev/null || true
+
+    # Clean old rules
+    iptables -t nat -F PREROUTING 2>/dev/null || true
+
+    # Allow established
+    iptables -I INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT 2>/dev/null || true
+
+    # Open ports
+    iptables -I INPUT -p udp --dport "$LISTEN_PORT" -j ACCEPT 2>/dev/null || true
+    iptables -I INPUT -p udp --dport "${PORT_RANGE_START}:${PORT_RANGE_END}" -j ACCEPT 2>/dev/null || true
+
+    # Redirect
+    iptables -t nat -A PREROUTING -p udp --dport "${PORT_RANGE_START}:${PORT_RANGE_END}" -j REDIRECT --to-ports "$LISTEN_PORT" 2>/dev/null || return 1
+
+    # Verify
+    if iptables -t nat -L PREROUTING -n 2>/dev/null | grep -q "redir"; then
+        # Save
+        if command -v iptables-save &>/dev/null; then
+            mkdir -p /etc/iptables
+            iptables-save > /etc/iptables/rules.v4 2>/dev/null || true
+        fi
+        if command -v netfilter-persistent &>/dev/null; then
+            netfilter-persistent save > /dev/null 2>&1 || true
+        fi
+
+        # Create restore script
+        cat > "$IPTABLES_SCRIPT" << EOIPT
 #!/bin/bash
 modprobe nf_conntrack 2>/dev/null
+modprobe nf_nat 2>/dev/null
+modprobe xt_REDIRECT 2>/dev/null
 iptables -I INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 iptables -I INPUT -p udp --dport ${LISTEN_PORT} -j ACCEPT
-EOIPT
-
-    if [ "$USE_PORT_HOPPING" = true ]; then
-        cat >> "$IPTABLES_SCRIPT" << EOIPT
 iptables -I INPUT -p udp --dport ${PORT_RANGE_START}:${PORT_RANGE_END} -j ACCEPT
 iptables -t nat -A PREROUTING -p udp --dport ${PORT_RANGE_START}:${PORT_RANGE_END} -j REDIRECT --to-ports ${LISTEN_PORT}
 EOIPT
-    fi
-    chmod +x "$IPTABLES_SCRIPT"
-
-    # Persist
-    if command -v iptables-save &>/dev/null; then
-        mkdir -p /etc/iptables
-        iptables-save > /etc/iptables/rules.v4 2>/dev/null || true
-    fi
-    if command -v netfilter-persistent &>/dev/null; then
-        netfilter-persistent save > /dev/null 2>&1 || true
+        chmod +x "$IPTABLES_SCRIPT"
+        return 0
     fi
 
-    # rc.local fallback
-    if [ ! -f /etc/rc.local ] || ! grep -q "hysteria" /etc/rc.local 2>/dev/null; then
-        echo "bash ${IPTABLES_SCRIPT}" >> /etc/rc.local 2>/dev/null || true
-        chmod +x /etc/rc.local 2>/dev/null || true
+    return 1
+}
+
+# UFW handling (separate from redirect)
+setup_ufw() {
+    if command -v ufw &>/dev/null && ufw status 2>/dev/null | grep -q "active"; then
+        if [ "$USE_PORT_HOPPING" = true ]; then
+            ufw allow "${PORT_RANGE_START}:${PORT_RANGE_END}/udp" > /dev/null 2>&1 || true
+        else
+            ufw allow "${LISTEN_PORT}/udp" > /dev/null 2>&1 || true
+        fi
+    fi
+}
+
+# Persist rules via rc.local
+persist_rules() {
+    if [ -f "$IPTABLES_SCRIPT" ]; then
+        if [ ! -f /etc/rc.local ] || ! grep -q "hysteria" /etc/rc.local 2>/dev/null; then
+            echo "bash ${IPTABLES_SCRIPT}" >> /etc/rc.local 2>/dev/null || true
+            chmod +x /etc/rc.local 2>/dev/null || true
+        fi
     fi
 }
 
@@ -359,13 +411,12 @@ start_service() {
     print_info "Starting Hysteria server..."
     systemctl enable hysteria-server > /dev/null 2>&1
     systemctl restart hysteria-server
-
     sleep 3
 
     if systemctl is-active --quiet hysteria-server; then
         print_msg "Hysteria server is RUNNING!"
     else
-        print_err "Failed to start! Logs:"
+        print_err "Failed! Logs:"
         journalctl -u hysteria-server --no-pager -n 20
         exit 1
     fi
@@ -373,18 +424,18 @@ start_service() {
 
 verify_server() {
     echo ""
-    print_info "Running connectivity tests..."
+    print_info "Running tests..."
 
     # Test 1: Listening
     if ss -ulnp 2>/dev/null | grep -q ":${LISTEN_PORT}"; then
-        print_msg "Test 1/5: Listening on port ${LISTEN_PORT}"
+        print_msg "Test 1/5: Listening on ${LISTEN_PORT}"
     else
-        print_err "Test 1/5: NOT listening on ${LISTEN_PORT}!"
+        print_err "Test 1/5: NOT listening!"
     fi
 
     # Test 2: DNS
     if nslookup google.com > /dev/null 2>&1; then
-        print_msg "Test 2/5: DNS working"
+        print_msg "Test 2/5: DNS OK"
     else
         print_err "Test 2/5: DNS FAILED"
     fi
@@ -393,26 +444,34 @@ verify_server() {
     if curl -s4m5 -o /dev/null http://www.google.com 2>/dev/null; then
         print_msg "Test 3/5: Internet OK"
     else
-        print_warn "Test 3/5: Internet may be limited"
+        print_warn "Test 3/5: Internet limited"
     fi
 
-    # Test 4: Outbound not blocked
-    local OUT_POLICY
-    OUT_POLICY=$(iptables -L OUTPUT -n 2>/dev/null | head -1 | grep -oP 'policy \K\w+')
-    if [ "$OUT_POLICY" = "ACCEPT" ] || [ -z "$OUT_POLICY" ]; then
-        print_msg "Test 4/5: Outbound traffic OK"
+    # Test 4: Port hopping active
+    if [ "$USE_PORT_HOPPING" = true ]; then
+        if [ "$HOPPING_METHOD" = "nftables" ]; then
+            if nft list chain inet hysteria prerouting 2>/dev/null | grep -q "redirect"; then
+                print_msg "Test 4/5: Port hopping ACTIVE (nftables)"
+            else
+                print_err "Test 4/5: Port hopping NOT active!"
+            fi
+        else
+            if iptables -t nat -L PREROUTING -n 2>/dev/null | grep -q "redir"; then
+                print_msg "Test 4/5: Port hopping ACTIVE (iptables)"
+            else
+                print_err "Test 4/5: Port hopping NOT active!"
+            fi
+        fi
     else
-        print_warn "Test 4/5: Fixing outbound policy..."
-        iptables -I OUTPUT -j ACCEPT 2>/dev/null || true
+        print_msg "Test 4/5: Single port mode"
     fi
 
-    # Test 5: Conntrack table
+    # Test 5: Conntrack
     local CT_MAX CT_COUNT
     CT_MAX=$(sysctl -n net.netfilter.nf_conntrack_max 2>/dev/null || echo "0")
     CT_COUNT=$(cat /proc/sys/net/netfilter/nf_conntrack_count 2>/dev/null || echo "0")
     if [ "$CT_MAX" -gt 0 ]; then
-        local CT_PERCENT=$((CT_COUNT * 100 / CT_MAX))
-        print_msg "Test 5/5: Conntrack ${CT_COUNT}/${CT_MAX} (${CT_PERCENT}% used)"
+        print_msg "Test 5/5: Conntrack ${CT_COUNT}/${CT_MAX}"
     else
         print_msg "Test 5/5: Conntrack OK"
     fi
@@ -429,7 +488,7 @@ show_info() {
     fi
 
     echo -e "${GREEN}${BOLD}╔══════════════════════════════════════════════════╗${NC}"
-    echo -e "${GREEN}${BOLD}║         Server Ready!                            ║${NC}"
+    echo -e "${GREEN}${BOLD}║              Server Ready!                       ║${NC}"
     echo -e "${GREEN}${BOLD}╚══════════════════════════════════════════════════╝${NC}"
     echo ""
     echo -e "${BOLD}=== App Settings (MinaProNet VPN) ===${NC}"
@@ -458,17 +517,22 @@ Obfs:        ${OBFS}
 Auth:        ${AUTH_STR}
 UpDown:      ${UP_MBPS}:${DOWN_MBPS}
 Internal:    ${LISTEN_PORT}
+Method:      ${HOPPING_METHOD:-direct}
 =======================================
 EOF
 }
 
 uninstall() {
-    print_warn "Uninstalling Hysteria server..."
+    print_warn "Uninstalling..."
     systemctl stop hysteria-server 2>/dev/null || true
     systemctl disable hysteria-server 2>/dev/null || true
     rm -f "$HYSTERIA_SERVICE"
     rm -f "$HYSTERIA_BIN"
 
+    # Clean nftables
+    nft delete table inet hysteria 2>/dev/null || true
+
+    # Clean iptables
     iptables -t nat -F PREROUTING 2>/dev/null || true
     if command -v iptables-save &>/dev/null; then
         mkdir -p /etc/iptables
@@ -481,13 +545,11 @@ uninstall() {
     systemctl daemon-reload
     sed -i '/hysteria/d' /etc/rc.local 2>/dev/null || true
 
-    print_msg "Uninstalled successfully"
+    print_msg "Uninstalled"
     exit 0
 }
 
-# ========================
-#       MAIN
-# ========================
+# ======================== MAIN ========================
 
 if [ "$1" = "--uninstall" ]; then
     check_root
@@ -505,7 +567,9 @@ get_config
 create_config
 optimize_kernel
 create_service
-setup_firewall
+setup_port_hopping
+setup_ufw
+persist_rules
 start_service
 verify_server
 show_info
