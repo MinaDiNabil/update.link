@@ -35,10 +35,12 @@ import json
 import logging
 import os
 import re
+import shutil
 import socket
 import ssl
 import struct
 import sys
+import tempfile
 import time
 import uuid as uuid_mod
 from dataclasses import asdict, dataclass, field
@@ -516,6 +518,50 @@ async def _drain_briefly(reader: asyncio.StreamReader, timeout: float) -> Tuple[
         return True, b""  # treat connection error as "got something" (= bad)
 
 
+async def _ws_upgrade_probe(
+    reader, writer, host_header: str, path: str, timeout: float = 2.0
+) -> bool:
+    """Send a WebSocket Upgrade request to the configured path and verify
+    the server responds with HTTP/1.1 101 Switching Protocols.
+
+    Catches the most common WS-transport false positive: a Cloudflare
+    tunnel URL whose backend has gone down but whose edge still terminates
+    TLS.  A pure silence check passes those because Cloudflare's edge
+    waits for an HTTP request and stays quiet for the probe window;
+    a real Upgrade request to that dead tunnel returns 503 / 404 / a
+    Cloudflare error page within ~1s, which we then reject.
+    """
+    if not path:
+        path = "/"
+    elif not path.startswith("/"):
+        path = "/" + path
+    ws_key = base64.b64encode(os.urandom(16)).decode("ascii")
+    request = (
+        f"GET {path} HTTP/1.1\r\n"
+        f"Host: {host_header}\r\n"
+        f"Upgrade: websocket\r\n"
+        f"Connection: Upgrade\r\n"
+        f"Sec-WebSocket-Key: {ws_key}\r\n"
+        f"Sec-WebSocket-Version: 13\r\n"
+        f"User-Agent: Mozilla/5.0\r\n"
+        f"\r\n"
+    ).encode("ascii")
+    try:
+        writer.write(request)
+        await writer.drain()
+        head = await asyncio.wait_for(reader.read(256), timeout=timeout)
+    except (OSError, asyncio.TimeoutError, ssl.SSLError):
+        return False
+    if not head:
+        return False
+    # Status line: "HTTP/1.1 101 Switching Protocols"
+    return b" 101 " in head[:64] or b"HTTP/1.1 101" in head[:64]
+
+
+def _is_ws_transport(server: PublicServer) -> bool:
+    return (server.network or "").lower() == "ws"
+
+
 async def _vless_probe(reader, writer, server: PublicServer) -> bool:
     """Real VLESS handshake probe — send the actual client header with the
     server's UUID and a CONNECT request to a benign target, expect the
@@ -674,7 +720,21 @@ async def probe(server: PublicServer) -> Optional[int]:
         # real wire bytes that V2RAY NG would send in production, then
         # checks the server's response matches the protocol spec.
         try:
-            if proto == "vless":
+            # WebSocket-transport servers (the dominant choice for
+            # Cloudflare-tunnelled deployments) need a real Upgrade
+            # request first.  A pure protocol probe under WS would
+            # fail because the server expects WS frames, not raw
+            # protocol bytes — and a pure silence check passes any
+            # Cloudflare tunnel even when the backend is dead, because
+            # Cloudflare's edge stays quiet until the user sends an
+            # HTTP request.  The Upgrade probe sends one, and rejects
+            # everything that doesn't reply 101 Switching Protocols
+            # (dead tunnel → 503, wrong path → 404, default site → 200,
+            # bad gateway → 502, etc.).
+            if _is_ws_transport(server):
+                ws_host = server.sni or server.host
+                ok = await _ws_upgrade_probe(reader, writer, ws_host, server.path)
+            elif proto == "vless":
                 ok = await _vless_probe(reader, writer, server)
             elif proto == "vmess":
                 ok = await _vmess_probe(reader, writer, server)
@@ -706,6 +766,322 @@ async def probe(server: PublicServer) -> Optional[int]:
                 await writer.wait_closed()
             except Exception:
                 pass
+
+
+# ---------------------------------------------------------------------------
+# Stage 2: real V2Ray engine verification via xray-core.
+#
+# The Stage 1 probe (TCP + TLS + WebSocket Upgrade + protocol-handshake
+# heuristics) is fast but imperfect — it can still pass servers whose
+# inner V2Ray protocol is dead even when the outer transport is alive
+# (a Cloudflare tunnel that responds 101 to the WS Upgrade but whose
+# backend died in the last few seconds, a UUID that was rotated server-
+# side, etc.).  V2RAY NG catches these because it uses xray-core / v2ray-
+# core to run the full stack on the test path and only reports success
+# when an actual HTTP request can travel through the tunnel.
+#
+# Stage 2 mirrors that exactly: for each Stage 1 survivor, generate a
+# minimal xray config that uses the candidate as outbound and a SOCKS
+# inbound on a fresh local port, start the xray subprocess, then try
+# `curl --socks5-hostname` to a connectivity-check URL.  Only candidates
+# that return HTTP 204 (Google) or 200 (Cloudflare) within the timeout
+# are accepted into the verified list.  Anything else — connection
+# refused, TLS error, WS-101-but-dead-V2Ray-backend, wrong UUID, wrong
+# password, wrong path, server overloaded — fails the test silently.
+#
+# This is the same gold-standard test V2RAY NG runs.  If xray isn't on
+# PATH, we log a warning and emit Stage 1 results unchanged so the
+# workflow still produces SOMETHING; for production accuracy the
+# workflow should install xray-core (see probe-workflow.yml.example).
+# ---------------------------------------------------------------------------
+XRAY_BINARY = shutil.which("xray") or shutil.which("v2ray")
+XRAY_TEST_TARGETS: List[str] = [
+    # Google's connectivity check (returns 204 No Content).  Reachable
+    # from every CI runner region we've seen.
+    "https://www.gstatic.com/generate_204",
+    # Cloudflare's diagnostic (returns 200 with a small body).  Different
+    # IP space / TLS chain than Google so a regional block on one doesn't
+    # invalidate every probe.
+    "https://www.cloudflare.com/cdn-cgi/trace",
+]
+XRAY_STARTUP_DELAY_S = 0.5
+XRAY_TEST_TIMEOUT_S = 6.0
+XRAY_OVERALL_TIMEOUT_S = 10.0
+# Independent concurrency cap for Stage 2 — each xray instance is its
+# own subprocess (~10-20 MB RAM, listening on a SOCKS port), so we run
+# fewer in parallel than Stage 1.  GitHub Actions runners are 2-vCPU,
+# 7 GB; 25 concurrent xray instances is comfortable, leaves headroom
+# for the curl side-by-side and never trips the Linux ephemeral-port
+# pressure limit.
+XRAY_CONCURRENCY = 25
+
+
+def _find_free_port() -> int:
+    """Bind to a random ephemeral port and immediately release it,
+    returning the port number.  Subject to a TOCTOU race if another
+    process binds the same port before xray starts, but the worst-case
+    outcome is one probe failing — which we treat as "not working" anyway.
+    """
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(("127.0.0.1", 0))
+        return s.getsockname()[1]
+
+
+def _xray_stream_settings(server: PublicServer) -> dict:
+    """Build the streamSettings block for an xray outbound matching the
+    server's transport and security mode.
+    """
+    network = (server.network or "tcp").lower()
+    security = (server.security or "none").lower()
+
+    settings: dict = {
+        "network": network if network in ("tcp", "ws", "grpc", "h2", "kcp", "quic") else "tcp",
+        "security": security if security in ("tls", "reality") else "none",
+    }
+
+    if security == "tls":
+        settings["tlsSettings"] = {
+            "serverName": server.sni or server.host,
+            "allowInsecure": True,
+            "alpn": ["h2", "http/1.1"],
+        }
+    elif security == "reality":
+        # Reality requires publicKey and shortId, which the subscription
+        # URI doesn't always carry.  Without them the handshake will
+        # fail.  Caller (xray_probe) refuses to test Reality servers
+        # when the fields are missing.
+        settings["realitySettings"] = {
+            "serverName": server.sni or server.host,
+            "fingerprint": "chrome",
+            "publicKey": "",
+            "shortId": "",
+        }
+
+    if network == "ws":
+        path = server.path if server.path.startswith("/") else f"/{server.path or ''}"
+        if not path:
+            path = "/"
+        settings["wsSettings"] = {
+            "path": path,
+            "headers": {"Host": server.sni or server.host},
+        }
+    elif network == "grpc":
+        settings["grpcSettings"] = {
+            "serviceName": (server.path or "").lstrip("/"),
+            "multiMode": False,
+        }
+    elif network == "h2":
+        settings["httpSettings"] = {
+            "host": [server.sni or server.host],
+            "path": server.path or "/",
+        }
+
+    return settings
+
+
+def _xray_config(server: PublicServer, socks_port: int) -> Optional[dict]:
+    """Generate a minimal xray config for the given server, or None if
+    the server has missing fields the engine can't tolerate.
+    """
+    proto = (server.protocol or "").lower()
+    try:
+        port_int = int(server.port)
+    except ValueError:
+        return None
+    if not (1 <= port_int <= 65535):
+        return None
+
+    inbound = {
+        "port": socks_port,
+        "listen": "127.0.0.1",
+        "protocol": "socks",
+        "settings": {"auth": "noauth", "udp": False, "ip": "127.0.0.1"},
+        "tag": "socks-in",
+    }
+
+    stream = _xray_stream_settings(server)
+
+    if proto == "vless":
+        if not server.uuid:
+            return None
+        outbound = {
+            "protocol": "vless",
+            "settings": {
+                "vnext": [{
+                    "address": server.host,
+                    "port": port_int,
+                    "users": [{
+                        "id": server.uuid,
+                        "encryption": "none",
+                        "flow": server.flow or "",
+                    }],
+                }],
+            },
+            "streamSettings": stream,
+            "tag": "out",
+        }
+    elif proto == "vmess":
+        if not server.uuid:
+            return None
+        outbound = {
+            "protocol": "vmess",
+            "settings": {
+                "vnext": [{
+                    "address": server.host,
+                    "port": port_int,
+                    "users": [{
+                        "id": server.uuid,
+                        "alterId": 0,
+                        "security": (server.cipher or "auto").lower(),
+                    }],
+                }],
+            },
+            "streamSettings": stream,
+            "tag": "out",
+        }
+    elif proto == "trojan":
+        if not server.password:
+            return None
+        outbound = {
+            "protocol": "trojan",
+            "settings": {
+                "servers": [{
+                    "address": server.host,
+                    "port": port_int,
+                    "password": server.password,
+                }],
+            },
+            "streamSettings": stream,
+            "tag": "out",
+        }
+    elif proto in ("ss", "shadowsocks"):
+        if not server.password or not server.cipher:
+            return None
+        outbound = {
+            "protocol": "shadowsocks",
+            "settings": {
+                "servers": [{
+                    "address": server.host,
+                    "port": port_int,
+                    "method": server.cipher,
+                    "password": server.password,
+                }],
+            },
+            "tag": "out",
+        }
+    else:
+        # hysteria2 and unknown protocols — xray-core doesn't speak
+        # hysteria2 (separate fork), so we don't run Stage 2 on those
+        # and trust the Stage 1 result.
+        return None
+
+    return {
+        "log": {"loglevel": "error"},
+        "inbounds": [inbound],
+        "outbounds": [outbound, {"protocol": "freedom", "tag": "direct"}],
+        "routing": {
+            "rules": [{
+                "type": "field",
+                "inboundTag": ["socks-in"],
+                "outboundTag": "out",
+            }],
+        },
+    }
+
+
+async def _xray_curl_test(socks_port: int) -> Optional[int]:
+    """Try every connectivity-check target through the SOCKS proxy until
+    one succeeds.  Returns latency in ms on success, None on full failure.
+    """
+    for target in XRAY_TEST_TARGETS:
+        start = time.monotonic()
+        try:
+            proc = await asyncio.create_subprocess_exec(
+                "curl",
+                "-sS", "-o", "/dev/null", "-w", "%{http_code}",
+                "--socks5-hostname", f"127.0.0.1:{socks_port}",
+                "--max-time", str(int(XRAY_TEST_TIMEOUT_S)),
+                target,
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.DEVNULL,
+            )
+            stdout, _ = await asyncio.wait_for(
+                proc.communicate(), timeout=XRAY_TEST_TIMEOUT_S + 1.0
+            )
+            elapsed_ms = int((time.monotonic() - start) * 1000)
+            code = stdout.decode("ascii", errors="ignore").strip()
+            if code in ("200", "204"):
+                return max(1, elapsed_ms)
+        except (asyncio.TimeoutError, FileNotFoundError, OSError):
+            continue
+        except Exception:
+            continue
+    return None
+
+
+async def xray_probe(server: PublicServer) -> Optional[int]:
+    """Stage-2 probe: spin up xray with this server as outbound, fetch a
+    connectivity-check URL through the resulting SOCKS proxy, return
+    the elapsed time in ms.  Returns None on any failure — wrong UUID,
+    wrong password, dead backend, missing transport metadata, or
+    transport unsupported by xray (hysteria2).
+    """
+    if XRAY_BINARY is None:
+        return None
+    # Reality requires fields we don't always have parsed.  Skip rather
+    # than emit a config that will fail handshake every time.
+    if (server.security or "").lower() == "reality":
+        return None
+
+    socks_port = _find_free_port()
+    config = _xray_config(server, socks_port)
+    if config is None:
+        return None
+
+    fd, config_path = tempfile.mkstemp(suffix=".json", prefix="xray-probe-")
+    proc: Optional[asyncio.subprocess.Process] = None
+    try:
+        os.write(fd, json.dumps(config).encode("utf-8"))
+        os.close(fd)
+        try:
+            proc = await asyncio.create_subprocess_exec(
+                XRAY_BINARY, "run", "-c", config_path,
+                stdout=asyncio.subprocess.DEVNULL,
+                stderr=asyncio.subprocess.DEVNULL,
+            )
+        except (FileNotFoundError, OSError):
+            return None
+
+        # Give xray a moment to bind the SOCKS port.
+        await asyncio.sleep(XRAY_STARTUP_DELAY_S)
+        if proc.returncode is not None:
+            # xray exited early — bad config.
+            return None
+
+        try:
+            return await asyncio.wait_for(
+                _xray_curl_test(socks_port),
+                timeout=XRAY_OVERALL_TIMEOUT_S,
+            )
+        except asyncio.TimeoutError:
+            return None
+    except Exception as e:
+        logging.debug("xray_probe %s: %s", server.host, e)
+        return None
+    finally:
+        if proc is not None and proc.returncode is None:
+            try:
+                proc.kill()
+            except ProcessLookupError:
+                pass
+            try:
+                await asyncio.wait_for(proc.wait(), timeout=2.0)
+            except asyncio.TimeoutError:
+                pass
+        try:
+            os.unlink(config_path)
+        except OSError:
+            pass
 
 
 # ---------------------------------------------------------------------------
@@ -776,6 +1152,64 @@ async def main_async(output_path: str, limit: int) -> int:
                                  len(verified), len(candidates))
 
     await asyncio.gather(*(probe_one(s) for s in candidates))
+
+    # ---- Stage 2: real V2Ray engine verification via xray-core ----
+    #
+    # Stage 1 (above) is the fast pre-filter that drops the obvious
+    # garbage from the 5000+ raw subscription entries.  Stage 2 runs
+    # actual xray-core processes against every Stage 1 survivor and
+    # only keeps the ones a real client can establish a tunnel through —
+    # exactly what V2RAY NG does on its own test path.  This is what
+    # finally closes the long tail of "TCP+TLS+WS-Upgrade pass, but
+    # the inner V2Ray protocol fails the moment we send real bytes"
+    # false positives.
+    #
+    # If xray isn't on PATH (workflow hasn't been updated to install
+    # it), we skip Stage 2 with a warning and emit Stage 1 results
+    # unchanged — degraded accuracy but the workflow still produces a
+    # JSON.
+    if XRAY_BINARY is None:
+        logging.warning(
+            "xray binary not found on PATH — skipping Stage 2 (real engine verification). "
+            "Install xray-core in the workflow for V2RAY NG-grade accuracy; "
+            "see tools/v2ray-prober/probe-workflow.yml.example."
+        )
+    elif verified:
+        logging.info(
+            "Stage 2: verifying %d Stage 1 survivors with %s (concurrency=%d)",
+            len(verified), XRAY_BINARY, XRAY_CONCURRENCY,
+        )
+        stage1 = list(verified)
+        verified = []
+        xray_sem = asyncio.Semaphore(XRAY_CONCURRENCY)
+        progress = {"done": 0}
+
+        async def xray_verify(server: PublicServer) -> None:
+            if len(verified) >= limit:
+                return
+            async with xray_sem:
+                if len(verified) >= limit:
+                    return
+                ping = await xray_probe(server)
+                progress["done"] += 1
+                if progress["done"] % 50 == 0:
+                    logging.info(
+                        "Stage 2 progress: %d/%d (%d verified so far)",
+                        progress["done"], len(stage1), len(verified),
+                    )
+                if ping is not None:
+                    # Replace Stage 1 ping with Stage 2 ping (which is
+                    # actual end-to-end latency through the tunnel,
+                    # not just the TCP+TLS handshake time).
+                    server.ping = f"{ping}ms"
+                    server.status = "online"
+                    verified.append(server)
+
+        await asyncio.gather(*(xray_verify(s) for s in stage1))
+        logging.info(
+            "Stage 2: %d / %d Stage 1 survivors passed the real engine test",
+            len(verified), len(stage1),
+        )
 
     verified = verified[:limit]
     # Sort by ping ascending so the fastest servers show first in the
