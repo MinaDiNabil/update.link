@@ -1,21 +1,37 @@
+# GitHub Actions workflow that probes the V2Ray subscription sources
+# and commits the verified-working list to the update.link repo so the
+# Android client can fetch it instantly.
+#
+# Two-stage architecture:
+#   Stage 1 (probe.py) — fast TCP + TLS + WebSocket Upgrade + protocol
+#   handshakes; reduces 5000 raw subscription entries to ~200-500 that
+#   look alive on the wire.
+#
+#   Stage 2 (xray-core) — for every Stage 1 survivor, spawns a real
+#   xray-core process with that server as outbound and verifies an
+#   actual HTTP request can travel through the tunnel.  Same engine
+#   V2RAY NG uses; same accuracy.
+
 name: probe-v2ray-servers
 
 on:
   schedule:
+    # Every 30 minutes.  GitHub Actions cron is in UTC.
     - cron: "*/30 * * * *"
-  workflow_dispatch: {}
+  workflow_dispatch: {}     # allow manual runs from the Actions tab
 
 permissions:
-  contents: write
+  contents: write           # required to commit the JSON back to main
 
 concurrency:
+  # Skip overlapping runs — a single in-flight probe is enough.
   group: probe-v2ray-servers
   cancel-in-progress: false
 
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 25     # whole job, including network
 
     steps:
       - name: Check out repo
@@ -30,6 +46,24 @@ jobs:
 
       - name: Install dependencies
         run: pip install -r requirements.txt
+
+      # xray-core gives the prober V2RAY NG-grade accuracy: it actually
+      # establishes a tunnel through every Stage 1 survivor and verifies
+      # an HTTP request can travel through it.  Without xray installed,
+      # probe.py falls back to Stage-1-only output (TCP + TLS + WS
+      # Upgrade), which still works but lets through false positives.
+      # The tarball is ~10 MB and pinned to a specific release for
+      # reproducibility — bump XRAY_VERSION when you want to upgrade.
+      - name: Install xray-core
+        env:
+          XRAY_VERSION: 1.8.24
+        run: |
+          set -e
+          curl -sSL "https://github.com/XTLS/Xray-core/releases/download/v${XRAY_VERSION}/Xray-linux-64.zip" -o /tmp/xray.zip
+          mkdir -p /tmp/xray
+          unzip -o /tmp/xray.zip -d /tmp/xray >/dev/null
+          sudo install -m 0755 /tmp/xray/xray /usr/local/bin/xray
+          xray version
 
       - name: Probe and emit JSON
         run: python probe.py --output v2ray-verified.json --limit 1500
