@@ -29,18 +29,30 @@ import argparse
 import asyncio
 import base64
 import binascii
+import hashlib
+import hmac
 import json
 import logging
+import os
 import re
 import socket
 import ssl
+import struct
 import sys
 import time
+import uuid as uuid_mod
 from dataclasses import asdict, dataclass, field
 from typing import Iterable, List, Optional, Set, Tuple
 from urllib.parse import parse_qs, unquote, urlparse
 
 import aiohttp
+
+try:
+    from cryptography.hazmat.backends import default_backend
+    from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+    _HAS_CRYPTO = True
+except ImportError:  # pragma: no cover — required, but we want a useful error
+    _HAS_CRYPTO = False
 
 # ---------------------------------------------------------------------------
 # Subscription sources — must stay in sync with API_SOURCES in
@@ -423,6 +435,21 @@ def parse_subscription(text: str) -> Iterable[PublicServer]:
 
 # ---------------------------------------------------------------------------
 # Probing.
+#
+# Why TCP+TLS isn't enough:
+#   - TLS terminators (Nginx, Cloudflare, Caddy) accept the handshake even
+#     when the V2Ray backend they're fronting is dead.  Probe says "fast
+#     ping!", real client times out on the first VMess/VLESS packet.
+#   - GFW / MENA carrier filters SYN-ACK then RST after handshake.
+#   - Servers configured for a different protocol on that port still pass
+#     TCP+TLS but reject the V2Ray handshake byte-for-byte.
+#
+# What V2RAY NG actually does (and we mirror here): for each protocol,
+# send the real handshake bytes derived from the server's UUID/password,
+# then check whether the server speaks the matching wire protocol back.
+# A server that has an open port and a TLS cert but no actual V2Ray
+# behind it RST's, returns HTTP 502, or sends an unrelated greeting —
+# all of which we detect and discard.
 # ---------------------------------------------------------------------------
 def _needs_tls(server: PublicServer) -> bool:
     sec = (server.security or "").lower()
@@ -430,8 +457,179 @@ def _needs_tls(server: PublicServer) -> bool:
     return sec in ("tls", "reality") or proto in ("trojan", "hysteria2")
 
 
+# VMess AEAD constants.  The cmd_key suffix and the KDF salt are fixed
+# in the protocol — see the v2fly VMess AEAD spec.
+_VMESS_CMD_KEY_SUFFIX = b"c48619fe-8f02-49e0-b9e9-edf763e17e21"
+_VMESS_KDF_KEY = b"VMess AEAD KDF"
+_VMESS_AUTH_ID_SALT = b"AES Auth ID Encryption"
+
+
+def _vmess_cmd_key(uuid_str: str) -> Optional[bytes]:
+    try:
+        uid = uuid_mod.UUID(uuid_str).bytes
+    except (ValueError, AttributeError, TypeError):
+        return None
+    return hashlib.md5(uid + _VMESS_CMD_KEY_SUFFIX).digest()
+
+
+def _vmess_kdf(key: bytes, *paths: bytes) -> bytes:
+    """VMess AEAD KDF — HMAC-SHA256 chain.  See v2fly docs."""
+    result = hmac.new(_VMESS_KDF_KEY, key, hashlib.sha256).digest()
+    for path in paths:
+        result = hmac.new(result, path, hashlib.sha256).digest()
+    return result
+
+
+def _vmess_create_auth_id(cmd_key: bytes) -> bytes:
+    """Create a 16-byte VMess AEAD AuthID.
+
+    Layout: timestamp (8 BE) || random (4) || crc32 (4 BE) — encrypted
+    with AES-128-ECB using KDF(cmd_key, "AES Auth ID Encryption")[:16].
+    A real VMess server decrypts this, validates the CRC, and waits for
+    the encrypted command section.  A wrong UUID / non-VMess server
+    fails the CRC check and either RSTs or sends an HTTP error.
+    """
+    if not _HAS_CRYPTO:
+        raise RuntimeError("cryptography package is required for VMess probe")
+    plaintext = struct.pack(">Q", int(time.time())) + os.urandom(4)
+    plaintext += struct.pack(">I", binascii.crc32(plaintext) & 0xFFFFFFFF)
+    aes_key = _vmess_kdf(cmd_key, _VMESS_AUTH_ID_SALT)[:16]
+    cipher = Cipher(algorithms.AES(aes_key), modes.ECB(), backend=default_backend())
+    encryptor = cipher.encryptor()
+    return encryptor.update(plaintext) + encryptor.finalize()
+
+
+async def _drain_briefly(reader: asyncio.StreamReader, timeout: float) -> Tuple[bool, bytes]:
+    """Wait for unsolicited data from the peer.
+
+    Returns (got_data_or_eof, data).  Real V2Ray protocols stay silent
+    after the TLS handshake until the client sends the protocol header,
+    so any data here is a strong signal the server isn't V2Ray.  EOF
+    means the server already closed the connection — also bad.
+    """
+    try:
+        data = await asyncio.wait_for(reader.read(4096), timeout=timeout)
+        return True, data  # data may be empty bytes (EOF)
+    except asyncio.TimeoutError:
+        return False, b""
+    except (OSError, ssl.SSLError, ConnectionError):
+        return True, b""  # treat connection error as "got something" (= bad)
+
+
+async def _vless_probe(reader, writer, server: PublicServer) -> bool:
+    """Real VLESS handshake probe — send the actual client header with the
+    server's UUID and a CONNECT request to a benign target, expect the
+    server to respond with a valid VLESS response header.
+    """
+    if not server.uuid:
+        # Without a UUID we can't speak VLESS — fall back to silence check.
+        got_data, _ = await _drain_briefly(reader, 0.4)
+        return not got_data
+    try:
+        uuid_bytes = uuid_mod.UUID(server.uuid).bytes
+    except (ValueError, AttributeError, TypeError):
+        return False
+    # VLESS request header:
+    #   version 0x00 (1) | UUID (16) | addons_len 0x00 (1) | cmd 0x01 CONNECT (1) |
+    #   port (2 BE) | atyp 0x01 IPv4 (1) | addr 1.1.1.1 (4)
+    header = (
+        b"\x00" + uuid_bytes + b"\x00" + b"\x01"
+        + struct.pack(">H", 80)
+        + b"\x01" + b"\x01\x01\x01\x01"
+    )
+    payload = b"GET / HTTP/1.1\r\nHost: one.one.one.one\r\nUser-Agent: probe\r\n\r\n"
+    try:
+        writer.write(header + payload)
+        await writer.drain()
+        response = await asyncio.wait_for(reader.read(4096), timeout=2.5)
+    except (OSError, asyncio.TimeoutError, ssl.SSLError):
+        return False
+    # Real VLESS response begins with [version 0x00][addons_length 0x00],
+    # followed by the tunneled response (here, HTTP from 1.1.1.1).
+    return len(response) >= 2 and response[0] == 0x00 and response[1] == 0x00
+
+
+async def _vmess_probe(reader, writer, server: PublicServer) -> bool:
+    """Real VMess AEAD probe — derive the auth ID from the server's UUID
+    and send it.  A real VMess server with a matching UUID will silently
+    wait for the encrypted command section; everything else (wrong UUID,
+    not-VMess, dead backend) sends back HTTP error data or RSTs the
+    connection within a few hundred ms.
+    """
+    cmd_key = _vmess_cmd_key(server.uuid)
+    if cmd_key is None:
+        # Bad UUID — can't probe properly, fall back to silence check.
+        got_data, _ = await _drain_briefly(reader, 0.5)
+        return not got_data
+    try:
+        auth_id = _vmess_create_auth_id(cmd_key)
+        writer.write(auth_id)
+        await writer.drain()
+    except (OSError, ssl.SSLError, RuntimeError):
+        return False
+    # Real VMess: stays silent waiting for the rest of the encrypted
+    # request (length + cmd section).  Anything else: HTTP/2 SETTINGS,
+    # 502 Bad Gateway, 400 Bad Request, RST...
+    got_data, data = await _drain_briefly(reader, 0.6)
+    if not got_data:
+        return True
+    # If we got TLS application data that looks like HTTP, definitely fail.
+    if data.startswith(b"HTTP/") or data[:2] == b"\x00\x00" and len(data) >= 24:
+        return False
+    # Any other unsolicited data is also suspicious for VMess.
+    return False
+
+
+async def _trojan_probe(reader, writer, server: PublicServer) -> bool:
+    """Real Trojan handshake probe — send SHA224(password) hex + a CONNECT
+    request to 1.1.1.1:80, then check the response.
+
+    Trojan's "fallback to web server" behaviour means a wrong password
+    proxies to the configured fallback site and returns its HTML default
+    page; a right password forwards to 1.1.1.1 which returns either a
+    Cloudflare 301-to-HTTPS or a quick HTTP response.  Distinguishing
+    right-from-wrong-password is tricky, so we instead use this probe
+    to confirm the server is actually doing TLS-then-Trojan-or-fallback
+    (vs. a dead reverse proxy which would just RST or 502).
+    """
+    if not server.password:
+        got_data, _ = await _drain_briefly(reader, 0.4)
+        return not got_data
+    try:
+        pw_hash = hashlib.sha224(server.password.encode("utf-8")).hexdigest().encode("ascii")
+    except Exception:
+        return False
+    # Trojan request: SHA224(password) hex || CRLF || CMD 0x01 CONNECT ||
+    # ATYP 0x01 IPv4 || addr 1.1.1.1 || port 80 (BE) || CRLF || payload
+    req = (
+        pw_hash + b"\r\n"
+        + b"\x01"
+        + b"\x01" + b"\x01\x01\x01\x01" + struct.pack(">H", 80)
+        + b"\r\n"
+        + b"GET / HTTP/1.1\r\nHost: one.one.one.one\r\nUser-Agent: probe\r\n\r\n"
+    )
+    try:
+        writer.write(req)
+        await writer.drain()
+        response = await asyncio.wait_for(reader.read(4096), timeout=2.5)
+    except (OSError, asyncio.TimeoutError, ssl.SSLError):
+        return False
+    # Either "real Trojan + right password forwards to 1.1.1.1" or
+    # "real Trojan + wrong password falls back to web server" returns
+    # HTTP-shaped data.  A dead backend behind TLS returns nothing or
+    # an SSL error — already caught above.
+    if not response:
+        return False
+    return response.startswith(b"HTTP/") or b"<html" in response[:512].lower()
+
+
 async def probe(server: PublicServer) -> Optional[int]:
-    """Returns ping in ms, or None if the server failed the probe."""
+    """Returns ping in ms, or None if the server failed the probe.
+
+    Per-protocol handshake check, NOT just TCP+TLS — see module-level
+    docstring for why TCP+TLS produced false positives that the user's
+    real V2Ray client (V2RAY NG) caught.
+    """
     try:
         port = int(server.port)
     except ValueError:
@@ -439,58 +637,75 @@ async def probe(server: PublicServer) -> Optional[int]:
     if not (1 <= port <= 65535) or not server.host:
         return None
 
+    proto = (server.protocol or "").lower()
+    needs_tls = _needs_tls(server)
     start = time.monotonic()
-    try:
-        # Step 1: TCP connect.
-        try:
-            reader, writer = await asyncio.wait_for(
-                asyncio.open_connection(server.host, port),
-                timeout=PROBE_TCP_TIMEOUT,
-            )
-        except (OSError, asyncio.TimeoutError):
-            return None
 
-        if _needs_tls(server):
-            # Step 2: TLS handshake with the configured SNI.  A server
-            # that just passes TCP but isn't actually serving TLS (LB
-            # backend dead, GFW SYN-ACK injector, stale Nginx default
-            # page on the wrong port, etc.) gets caught here.
+    reader: Optional[asyncio.StreamReader] = None
+    writer: Optional[asyncio.StreamWriter] = None
+    try:
+        # Step 1: open the connection (with TLS if required).  We open
+        # the TLS connection in one shot via the ssl=ctx parameter
+        # rather than upgrading after the fact, because asyncio's
+        # start_tls is finicky across Python versions and we need the
+        # post-handshake reader/writer to do the protocol probe below.
+        if needs_tls:
             sni = server.sni or server.host
             ctx = ssl.create_default_context()
             ctx.check_hostname = False
-            ctx.verify_mode = ssl.CERT_NONE  # accept self-signed; we just want
-                                              # to know that *something* is speaking TLS.
+            ctx.verify_mode = ssl.CERT_NONE
             try:
-                ssl_sock_coro = asyncio.open_connection(
-                    server.host, port, ssl=ctx, server_hostname=sni
+                reader, writer = await asyncio.wait_for(
+                    asyncio.open_connection(server.host, port, ssl=ctx, server_hostname=sni),
+                    timeout=PROBE_TCP_TIMEOUT + PROBE_TLS_TIMEOUT,
                 )
-                # We re-open instead of upgrading the existing socket because
-                # asyncio's start_tls is finicky across Python versions; the
-                # extra round-trip is negligible.
-                writer.close()
-                try:
-                    await writer.wait_closed()
-                except Exception:
-                    pass
-                tls_reader, tls_writer = await asyncio.wait_for(
-                    ssl_sock_coro, timeout=PROBE_TLS_TIMEOUT
-                )
-                tls_writer.close()
-                try:
-                    await tls_writer.wait_closed()
-                except Exception:
-                    pass
             except (OSError, asyncio.TimeoutError, ssl.SSLError):
                 return None
         else:
-            writer.close()
+            try:
+                reader, writer = await asyncio.wait_for(
+                    asyncio.open_connection(server.host, port),
+                    timeout=PROBE_TCP_TIMEOUT,
+                )
+            except (OSError, asyncio.TimeoutError):
+                return None
+
+        # Step 2: protocol-specific handshake.  Each branch sends the
+        # real wire bytes that V2RAY NG would send in production, then
+        # checks the server's response matches the protocol spec.
+        try:
+            if proto == "vless":
+                ok = await _vless_probe(reader, writer, server)
+            elif proto == "vmess":
+                ok = await _vmess_probe(reader, writer, server)
+            elif proto == "trojan":
+                ok = await _trojan_probe(reader, writer, server)
+            else:
+                # Shadowsocks and unknown protocols: the most we can do
+                # without implementing a full cipher is a "the server
+                # stays silent like a real proxy would" check.  This
+                # still catches HTTP fallthroughs, default Nginx pages,
+                # and dead backends behind TLS terminators.
+                got_data, _ = await _drain_briefly(reader, 0.4)
+                ok = not got_data
+        except Exception:
+            ok = False
+
+        if not ok:
+            return None
+        return max(1, int((time.monotonic() - start) * 1000))
+    except Exception:
+        return None
+    finally:
+        if writer is not None:
+            try:
+                writer.close()
+            except Exception:
+                pass
             try:
                 await writer.wait_closed()
             except Exception:
                 pass
-        return max(1, int((time.monotonic() - start) * 1000))
-    except Exception:
-        return None
 
 
 # ---------------------------------------------------------------------------
