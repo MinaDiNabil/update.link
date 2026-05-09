@@ -1,1 +1,48 @@
+name: probe-v2ray-servers
 
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: probe-v2ray-servers
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Probe and emit JSON
+        run: python probe.py --output v2ray-verified.json --limit 1500
+
+      - name: Commit the updated JSON if changed
+        run: |
+          set -e
+          git config user.name  "v2ray-prober[bot]"
+          git config user.email "v2ray-prober@users.noreply.github.com"
+          if [ -n "$(git status --porcelain v2ray-verified.json)" ]; then
+            git add v2ray-verified.json
+            git commit -m "chore(prober): refresh v2ray-verified.json [skip ci]"
+            git push
+          else
+            echo "No changes to commit."
+          fi
