@@ -62,17 +62,59 @@ except ImportError:  # pragma: no cover — required, but we want a useful error
 # aggregators, then mixed-protocol grab bags.
 # ---------------------------------------------------------------------------
 API_SOURCES: List[str] = [
+    # ---------------------------------------------------------------------------
+    # w1770946466/Auto_proxy — Hysteria2 + mixed (always first)
+    # ---------------------------------------------------------------------------
     "https://raw.githubusercontent.com/w1770946466/Auto_proxy/main/Long_term_subscription_num",
     "https://raw.githubusercontent.com/w1770946466/Auto_proxy/main/Long_term_subscription1",
     "https://raw.githubusercontent.com/w1770946466/Auto_proxy/main/Long_term_subscription2",
+    "https://raw.githubusercontent.com/w1770946466/Auto_proxy/main/Long_term_subscription3",
+    "https://raw.githubusercontent.com/w1770946466/Auto_proxy/main/Long_term_subscription4",
+    "https://raw.githubusercontent.com/w1770946466/Auto_proxy/main/Long_term_subscription5",
+    "https://raw.githubusercontent.com/w1770946466/Auto_proxy/main/Long_term_subscription6",
+    "https://raw.githubusercontent.com/w1770946466/Auto_proxy/main/Long_term_subscription7",
+
+    # ---------------------------------------------------------------------------
+    # peasoft/NoMoreWalls
+    # ---------------------------------------------------------------------------
     "https://raw.githubusercontent.com/peasoft/NoMoreWalls/master/list_raw.txt",
     "https://cdn.jsdelivr.net/gh/peasoft/NoMoreWalls@master/list_raw.txt",
+    "https://raw.githubusercontent.com/peasoft/NoMoreWalls/master/list.txt",
+    "https://cdn.jsdelivr.net/gh/peasoft/NoMoreWalls@master/list.txt",
+
+    # ---------------------------------------------------------------------------
+    # roosterkid/openproxylist
+    # ---------------------------------------------------------------------------
     "https://cdn.jsdelivr.net/gh/roosterkid/openproxylist@main/V2RAY_RAW.txt",
     "https://raw.githubusercontent.com/roosterkid/openproxylist/main/V2RAY_RAW.txt",
+    "https://cdn.jsdelivr.net/gh/roosterkid/openproxylist@main/TROJAN_RAW.txt",
+    "https://raw.githubusercontent.com/roosterkid/openproxylist/main/TROJAN_RAW.txt",
+    "https://cdn.jsdelivr.net/gh/roosterkid/openproxylist@main/SOCKS5_RAW.txt",
+    "https://raw.githubusercontent.com/roosterkid/openproxylist/main/SOCKS5_RAW.txt",
+
+    # ---------------------------------------------------------------------------
+    # mahdibland/V2RayAggregator
+    # ---------------------------------------------------------------------------
     "https://cdn.jsdelivr.net/gh/mahdibland/V2RayAggregator@master/sub/sub_merge.txt",
     "https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/sub/sub_merge.txt",
+    "https://cdn.jsdelivr.net/gh/mahdibland/V2RayAggregator@master/sub/sub_merge_base64.txt",
+    "https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/sub/sub_merge_base64.txt",
+    "https://cdn.jsdelivr.net/gh/mahdibland/ShadowsocksAggregator@master/Eternity",
+    "https://raw.githubusercontent.com/mahdibland/ShadowsocksAggregator/master/Eternity",
+    "https://cdn.jsdelivr.net/gh/mahdibland/ShadowsocksAggregator@master/EternityAir",
+    "https://raw.githubusercontent.com/mahdibland/ShadowsocksAggregator/master/EternityAir",
+
+    # ---------------------------------------------------------------------------
+    # mfuu/v2ray
+    # ---------------------------------------------------------------------------
     "https://cdn.jsdelivr.net/gh/mfuu/v2ray@master/v2ray",
     "https://raw.githubusercontent.com/mfuu/v2ray/master/v2ray",
+    "https://cdn.jsdelivr.net/gh/mfuu/v2ray@master/clash.yaml",
+    "https://raw.githubusercontent.com/mfuu/v2ray/master/clash.yaml",
+
+    # ---------------------------------------------------------------------------
+    # barry-far/V2ray-Configs — Sub1..Sub12 + All_Configs
+    # ---------------------------------------------------------------------------
     "https://cdn.jsdelivr.net/gh/barry-far/V2ray-Configs@main/Sub1.txt",
     "https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/Sub1.txt",
     "https://cdn.jsdelivr.net/gh/barry-far/V2ray-Configs@main/Sub2.txt",
@@ -81,12 +123,417 @@ API_SOURCES: List[str] = [
     "https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/Sub3.txt",
     "https://cdn.jsdelivr.net/gh/barry-far/V2ray-Configs@main/Sub4.txt",
     "https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/Sub4.txt",
+    "https://cdn.jsdelivr.net/gh/barry-far/V2ray-Configs@main/Sub5.txt",
+    "https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/Sub5.txt",
+    "https://cdn.jsdelivr.net/gh/barry-far/V2ray-Configs@main/Sub6.txt",
+    "https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/Sub6.txt",
+    "https://cdn.jsdelivr.net/gh/barry-far/V2ray-Configs@main/Sub7.txt",
+    "https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/Sub7.txt",
+    "https://cdn.jsdelivr.net/gh/barry-far/V2ray-Configs@main/Sub8.txt",
+    "https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/Sub8.txt",
+    "https://cdn.jsdelivr.net/gh/barry-far/V2ray-Configs@main/All_Configs_Sub.txt",
+    "https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/All_Configs_Sub.txt",
+    "https://cdn.jsdelivr.net/gh/barry-far/V2ray-Configs@main/All_Configs_base64_Sub.txt",
+    "https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/All_Configs_base64_Sub.txt",
+
+    # ---------------------------------------------------------------------------
+    # yebekhe/TelegramV2rayCollector
+    # ---------------------------------------------------------------------------
     "https://cdn.jsdelivr.net/gh/yebekhe/TelegramV2rayCollector@main/sub/base64/mix",
     "https://raw.githubusercontent.com/yebekhe/TelegramV2rayCollector/main/sub/base64/mix",
+    "https://cdn.jsdelivr.net/gh/yebekhe/TelegramV2rayCollector@main/sub/base64/vmess",
+    "https://raw.githubusercontent.com/yebekhe/TelegramV2rayCollector/main/sub/base64/vmess",
+    "https://cdn.jsdelivr.net/gh/yebekhe/TelegramV2rayCollector@main/sub/base64/vless",
+    "https://raw.githubusercontent.com/yebekhe/TelegramV2rayCollector/main/sub/base64/vless",
+    "https://cdn.jsdelivr.net/gh/yebekhe/TelegramV2rayCollector@main/sub/base64/trojan",
+    "https://raw.githubusercontent.com/yebekhe/TelegramV2rayCollector/main/sub/base64/trojan",
+    "https://cdn.jsdelivr.net/gh/yebekhe/TelegramV2rayCollector@main/sub/base64/ss",
+    "https://raw.githubusercontent.com/yebekhe/TelegramV2rayCollector/main/sub/base64/ss",
+    "https://cdn.jsdelivr.net/gh/yebekhe/TelegramV2rayCollector@main/sub/plain/mix",
+    "https://raw.githubusercontent.com/yebekhe/TelegramV2rayCollector/main/sub/plain/mix",
+
+    # ---------------------------------------------------------------------------
+    # yebekhe/TelegramProxies
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/yebekhe/TelegramProxies/main/sub/base64/mix",
+    "https://cdn.jsdelivr.net/gh/yebekhe/TelegramProxies@main/sub/base64/mix",
+
+    # ---------------------------------------------------------------------------
+    # lagzian/SS-Collector
+    # ---------------------------------------------------------------------------
     "https://cdn.jsdelivr.net/gh/lagzian/SS-Collector@main/mix_base64.txt",
     "https://raw.githubusercontent.com/lagzian/SS-Collector/main/mix_base64.txt",
+    "https://cdn.jsdelivr.net/gh/lagzian/SS-Collector@main/SS_B64.txt",
+    "https://raw.githubusercontent.com/lagzian/SS-Collector/main/SS_B64.txt",
+    "https://cdn.jsdelivr.net/gh/lagzian/TVC@main/subscriptions/xray/base64/mix",
+    "https://raw.githubusercontent.com/lagzian/TVC/main/subscriptions/xray/base64/mix",
+
+    # ---------------------------------------------------------------------------
+    # ts-sf/fly
+    # ---------------------------------------------------------------------------
     "https://cdn.jsdelivr.net/gh/ts-sf/fly@master/v2",
     "https://raw.githubusercontent.com/ts-sf/fly/master/v2",
+
+    # ---------------------------------------------------------------------------
+    # freefq/free — large Chinese aggregator
+    # ---------------------------------------------------------------------------
+    "https://cdn.jsdelivr.net/gh/freefq/free@master/v2",
+    "https://raw.githubusercontent.com/freefq/free/master/v2",
+
+    # ---------------------------------------------------------------------------
+    # aiboboxx/v2rayfree
+    # ---------------------------------------------------------------------------
+    "https://cdn.jsdelivr.net/gh/aiboboxx/v2rayfree@main/v2",
+    "https://raw.githubusercontent.com/aiboboxx/v2rayfree/main/v2",
+
+    # ---------------------------------------------------------------------------
+    # Pawdroid/Free-servers
+    # ---------------------------------------------------------------------------
+    "https://cdn.jsdelivr.net/gh/Pawdroid/Free-servers@main/sub",
+    "https://raw.githubusercontent.com/Pawdroid/Free-servers/main/sub",
+
+    # ---------------------------------------------------------------------------
+    # ermaozi/get_subscribe
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/ermaozi/get_subscribe/main/subscribe/v2ray.txt",
+    "https://cdn.jsdelivr.net/gh/ermaozi/get_subscribe@main/subscribe/v2ray.txt",
+    "https://raw.githubusercontent.com/ermaozi01/free_clash_vpn/main/subscribe/v2ray.txt",
+    "https://cdn.jsdelivr.net/gh/ermaozi01/free_clash_vpn@main/subscribe/v2ray.txt",
+
+    # ---------------------------------------------------------------------------
+    # tbbatbb/vpn_list — daily updated
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/tbbatbb/Proxy/master/dist/v2ray.config.txt",
+    "https://cdn.jsdelivr.net/gh/tbbatbb/Proxy@master/dist/v2ray.config.txt",
+
+    # ---------------------------------------------------------------------------
+    # wrfree/v2free
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/wrfree/free/main/v2",
+    "https://cdn.jsdelivr.net/gh/wrfree/free@main/v2",
+
+    # ---------------------------------------------------------------------------
+    # vveg26/v2rayNG-config
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/vveg26/get_proxy/main/speed/all",
+    "https://cdn.jsdelivr.net/gh/vveg26/get_proxy@main/speed/all",
+
+    # ---------------------------------------------------------------------------
+    # Bardiafa/Free
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/Bardiafa/Free-V2ray-List/main/All_Configs_Sub.txt",
+    "https://cdn.jsdelivr.net/gh/Bardiafa/Free-V2ray-List@main/All_Configs_Sub.txt",
+
+    # ---------------------------------------------------------------------------
+    # LalatinaHub/Married-lady
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/LalatinaHub/Mineral/main/result/api/1/all",
+    "https://cdn.jsdelivr.net/gh/LalatinaHub/Mineral@main/result/api/1/all",
+
+    # ---------------------------------------------------------------------------
+    # mheidari98/proxy-list
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/mheidari98/.proxy/main/all",
+    "https://cdn.jsdelivr.net/gh/mheidari98/.proxy@main/all",
+
+    # ---------------------------------------------------------------------------
+    # HideMyIP / tgcf-daily aggregators
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/soroushmirzaei/telegram-configs-collector/main/subscribe/collective/base64/mix",
+    "https://cdn.jsdelivr.net/gh/soroushmirzaei/telegram-configs-collector@main/subscribe/collective/base64/mix",
+    "https://raw.githubusercontent.com/soroushmirzaei/telegram-configs-collector/main/subscribe/protocols/vmess",
+    "https://raw.githubusercontent.com/soroushmirzaei/telegram-configs-collector/main/subscribe/protocols/vless",
+    "https://raw.githubusercontent.com/soroushmirzaei/telegram-configs-collector/main/subscribe/protocols/trojan",
+    "https://raw.githubusercontent.com/soroushmirzaei/telegram-configs-collector/main/subscribe/protocols/shadowsocks",
+
+    # ---------------------------------------------------------------------------
+    # ALIILAPRO/v2ray-config
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/ALIILAPRO/v2ray-config/main/sub.txt",
+    "https://cdn.jsdelivr.net/gh/ALIILAPRO/v2ray-config@main/sub.txt",
+    "https://raw.githubusercontent.com/ALIILAPRO/v2ray-config/main/server.txt",
+
+    # ---------------------------------------------------------------------------
+    # Surfboardv2ray aggregators
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/IranianCypherpunks/sub/main/config",
+    "https://cdn.jsdelivr.net/gh/IranianCypherpunks/sub@main/config",
+
+    # ---------------------------------------------------------------------------
+    # itsyebekhe/HiN-VPN
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/itsyebekhe/HiN-VPN/main/subscription/normal/mix",
+    "https://raw.githubusercontent.com/itsyebekhe/HiN-VPN/main/subscription/base64/mix",
+    "https://cdn.jsdelivr.net/gh/itsyebekhe/HiN-VPN@main/subscription/base64/mix",
+
+    # ---------------------------------------------------------------------------
+    # Everyday-VPN / Iranian sources
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/MrMohebi/xray-proxy-grabber-telegram/master/collected-proxies/row-url/all.txt",
+    "https://cdn.jsdelivr.net/gh/MrMohebi/xray-proxy-grabber-telegram@master/collected-proxies/row-url/all.txt",
+
+    # ---------------------------------------------------------------------------
+    # Surfboard/Clash meta mixed sources
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/Rayan428/v2config/main/sub",
+    "https://cdn.jsdelivr.net/gh/Rayan428/v2config@main/sub",
+
+    # ---------------------------------------------------------------------------
+    # PolloLoco / XTLS sources
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/poloskei/poloskei/refs/heads/main/files/output.txt",
+    "https://raw.githubusercontent.com/Leon406/SubCrawler/master/sub/share/vless",
+    "https://raw.githubusercontent.com/Leon406/SubCrawler/master/sub/share/vmess",
+    "https://raw.githubusercontent.com/Leon406/SubCrawler/master/sub/share/trojan",
+    "https://raw.githubusercontent.com/Leon406/SubCrawler/master/sub/share/ss",
+    "https://raw.githubusercontent.com/Leon406/SubCrawler/master/sub/share/all3",
+    "https://cdn.jsdelivr.net/gh/Leon406/SubCrawler@master/sub/share/all3",
+
+    # ---------------------------------------------------------------------------
+    # tachyondevel / multi-protocol
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/tachyondevel/open-tunnel/main/sub",
+    "https://cdn.jsdelivr.net/gh/tachyondevel/open-tunnel@main/sub",
+
+    # ---------------------------------------------------------------------------
+    # Proxy-Store / large mixed
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/proxifly/free-proxy-list/main/proxies/protocols/socks5/data.txt",
+    "https://raw.githubusercontent.com/proxifly/free-proxy-list/main/proxies/all/data.json",
+
+    # ---------------------------------------------------------------------------
+    # 0xkuj / mixed
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/0xkuj/V2ray/main/V2ray",
+    "https://cdn.jsdelivr.net/gh/0xkuj/V2ray@main/V2ray",
+
+    # ---------------------------------------------------------------------------
+    # manuGMG/free-v2ray
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/manuGMG/proxy-365/main/SOCKS5.txt",
+    "https://raw.githubusercontent.com/manuGMG/proxy-365/main/VMESS.txt",
+
+    # ---------------------------------------------------------------------------
+    # vmessprotocol / daily update
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/vmessprotocol/subscribe/main/vmess.txt",
+    "https://cdn.jsdelivr.net/gh/vmessprotocol/subscribe@main/vmess.txt",
+
+    # ---------------------------------------------------------------------------
+    # Surfboard-ready ClashMeta aggregators (plain URI fallback)
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/coldwater-10/V2Hub/main/merge",
+    "https://cdn.jsdelivr.net/gh/coldwater-10/V2Hub@main/merge",
+    "https://raw.githubusercontent.com/coldwater-10/V2Hub2/main/merge",
+    "https://cdn.jsdelivr.net/gh/coldwater-10/V2Hub2@main/merge",
+    "https://raw.githubusercontent.com/coldwater-10/V2Hub3/main/merge",
+    "https://cdn.jsdelivr.net/gh/coldwater-10/V2Hub3@main/merge",
+
+    # ---------------------------------------------------------------------------
+    # SoliSpirit (high-refresh Iranian aggregator)
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/SoliSpirit/v2ray-configs/main/all_configs.txt",
+    "https://cdn.jsdelivr.net/gh/SoliSpirit/v2ray-configs@main/all_configs.txt",
+
+    # ---------------------------------------------------------------------------
+    # AryanGold / GFW bypass
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/AryanGold/temp_config/main/Splitter_Sub.txt",
+    "https://cdn.jsdelivr.net/gh/AryanGold/temp_config@main/Splitter_Sub.txt",
+
+    # ---------------------------------------------------------------------------
+    # hkaa0 / tipray
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/hkaa0/permalink/main/proxy/V2ray",
+    "https://cdn.jsdelivr.net/gh/hkaa0/permalink@main/proxy/V2ray",
+
+    # ---------------------------------------------------------------------------
+    # rxzyx / v2rayfree
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/rxzyx/V2RayFreePro/main/Vl.txt",
+    "https://cdn.jsdelivr.net/gh/rxzyx/V2RayFreePro@main/Vl.txt",
+
+    # ---------------------------------------------------------------------------
+    # Surfing-Hub / Aggregation
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/Surfboardv2ray/TGParse/main/python/splitted/mixed",
+    "https://cdn.jsdelivr.net/gh/Surfboardv2ray/TGParse@main/python/splitted/mixed",
+    "https://raw.githubusercontent.com/Surfboardv2ray/Proxy-sorter/main/output.txt",
+    "https://cdn.jsdelivr.net/gh/Surfboardv2ray/Proxy-sorter@main/output.txt",
+    "https://raw.githubusercontent.com/Surfboardv2ray/v2ray-worker-sub/master/Eternity.txt",
+    "https://cdn.jsdelivr.net/gh/Surfboardv2ray/v2ray-worker-sub@master/Eternity.txt",
+
+    # ---------------------------------------------------------------------------
+    # HexaSurface / speed-tested
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/HexaSurface/V2RAY_URL_Filter/main/filtered_urls.txt",
+
+    # ---------------------------------------------------------------------------
+    # 4everProxy / TG-sourced
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/4ever-freedom/4EverFreedom/main/TG_sub",
+    "https://cdn.jsdelivr.net/gh/4ever-freedom/4EverFreedom@main/TG_sub",
+
+    # ---------------------------------------------------------------------------
+    # MatinGhasemi / VLESS focus
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/MatinGhasemi/vless/main/vless",
+    "https://cdn.jsdelivr.net/gh/MatinGhasemi/vless@main/vless",
+
+    # ---------------------------------------------------------------------------
+    # kaoxindalao / speed-tested Chinese
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/kaoxindalao/v2raycheshi/main/v2raycheshi",
+    "https://cdn.jsdelivr.net/gh/kaoxindalao/v2raycheshi@main/v2raycheshi",
+
+    # ---------------------------------------------------------------------------
+    # Misaka-blog aggregators
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/misaka-blog/chromego_merge/main/sub/merged_proxies_new.yaml",
+    "https://cdn.jsdelivr.net/gh/misaka-blog/chromego_merge@main/sub/merged_proxies_new.yaml",
+
+    # ---------------------------------------------------------------------------
+    # ZywChannel / TG collector
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/ZywChannel/free/main/sub",
+    "https://cdn.jsdelivr.net/gh/ZywChannel/free@main/sub",
+
+    # ---------------------------------------------------------------------------
+    # SGNOOB / sub
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/SGNOOB/config/main/sub/sub_merge_base64.txt",
+    "https://cdn.jsdelivr.net/gh/SGNOOB/config@main/sub/sub_merge_base64.txt",
+
+    # ---------------------------------------------------------------------------
+    # codingbox / daily
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/codingbox/Free-Node-Merge/main/node.txt",
+    "https://cdn.jsdelivr.net/gh/codingbox/Free-Node-Merge@main/node.txt",
+
+    # ---------------------------------------------------------------------------
+    # PassiveNodes / large dump
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/awesome-vpn/awesome-vpn/master/all",
+    "https://cdn.jsdelivr.net/gh/awesome-vpn/awesome-vpn@master/all",
+
+    # ---------------------------------------------------------------------------
+    # xrayfree / updated frequently
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/xrayfree/free-ssr-ss-v2ray-vpn-clash/main/trial/v2ray.txt",
+    "https://cdn.jsdelivr.net/gh/xrayfree/free-ssr-ss-v2ray-vpn-clash@main/trial/v2ray.txt",
+
+    # ---------------------------------------------------------------------------
+    # TelegramFreeProxy / dedicated Telegram collector
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/imohammadkhalili/V2RAY/main/Mkhalili",
+    "https://cdn.jsdelivr.net/gh/imohammadkhalili/V2RAY@main/Mkhalili",
+
+    # ---------------------------------------------------------------------------
+    # AzadNet (Iranian GFW circumvention)
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/AzadNet/v2ray-configs/main/sub/all",
+    "https://cdn.jsdelivr.net/gh/AzadNet/v2ray-configs@main/sub/all",
+
+    # ---------------------------------------------------------------------------
+    # v2rayse / consolidated
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/v2rayse/node-list/main/week.txt",
+    "https://cdn.jsdelivr.net/gh/v2rayse/node-list@main/week.txt",
+
+    # ---------------------------------------------------------------------------
+    # FVPN / multi-protocol
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/FQrabbit/SSTap-Rule/master/sub/all",
+
+    # ---------------------------------------------------------------------------
+    # tgfreeproxy + Telegram channel mirrors
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/amirblum/v2ray/main/amirblum",
+    "https://cdn.jsdelivr.net/gh/amirblum/v2ray@main/amirblum",
+
+    # ---------------------------------------------------------------------------
+    # resasanian / verified daily
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/resasanian/Mirza/main/best.txt",
+    "https://cdn.jsdelivr.net/gh/resasanian/Mirza@main/best.txt",
+    "https://raw.githubusercontent.com/resasanian/Mirza/main/sub",
+    "https://cdn.jsdelivr.net/gh/resasanian/Mirza@main/sub",
+
+    # ---------------------------------------------------------------------------
+    # MhdiTaheri / V2nodeJS
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/MhdiTaheri/V2nodeJS/main/v2",
+    "https://cdn.jsdelivr.net/gh/MhdiTaheri/V2nodeJS@main/v2",
+
+    # ---------------------------------------------------------------------------
+    # AliDehbansiahkarbon — VLESS / REALITY focus
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/AliDehbansiahkarbon/ChatGPTVirus/main/sub/subscribe_base64.txt",
+    "https://cdn.jsdelivr.net/gh/AliDehbansiahkarbon/ChatGPTVirus@main/sub/subscribe_base64.txt",
+
+    # ---------------------------------------------------------------------------
+    # prxyshare (daily cron)
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/prxyshare/prxyshare/main/vmix",
+    "https://cdn.jsdelivr.net/gh/prxyshare/prxyshare@main/vmix",
+
+    # ---------------------------------------------------------------------------
+    # a2470981985 / free nodes
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/a2470981985/get_proxy/main/clash.yaml",
+
+    # ---------------------------------------------------------------------------
+    # IP-ProxyTool / nodes
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/ip-scanner/cloudflare/main/sub.txt",
+    "https://cdn.jsdelivr.net/gh/ip-scanner/cloudflare@main/sub.txt",
+
+    # ---------------------------------------------------------------------------
+    # HexaHunterVPN (fast-probe output)
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/HexaHunterVPN/FreeVPNsList/main/v2ray",
+    "https://cdn.jsdelivr.net/gh/HexaHunterVPN/FreeVPNsList@main/v2ray",
+
+    # ---------------------------------------------------------------------------
+    # GreenFishStudio / Iran-optimised
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/GreenFishStudio/GreenFish/master/Subscription/GreenFishYYDS",
+    "https://cdn.jsdelivr.net/gh/GreenFishStudio/GreenFish@master/Subscription/GreenFishYYDS",
+
+    # ---------------------------------------------------------------------------
+    # itsyebekhe / xray-reality
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/itsyebekhe/PSG/main/sub",
+    "https://cdn.jsdelivr.net/gh/itsyebekhe/PSG@main/sub",
+
+    # ---------------------------------------------------------------------------
+    # proxypool / online services (raw URI endpoints)
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/vxiaov/free_proxies/main/all_proxies.txt",
+    "https://cdn.jsdelivr.net/gh/vxiaov/free_proxies@main/all_proxies.txt",
+
+    # ---------------------------------------------------------------------------
+    # Navier-Stokes / wulabing aggregator
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/wulabing/V2Ray_ws-tls_bash_onekey/master/info",
+
+    # ---------------------------------------------------------------------------
+    # Alvin9999 (large Chinese share)
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/Alvin9999/new-pac/master/v2ray.txt",
+    "https://cdn.jsdelivr.net/gh/Alvin9999/new-pac@master/v2ray.txt",
+
+    # ---------------------------------------------------------------------------
+    # xiaoqi7788 / daily
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/xiaoqi7788/v2ray-nodes/main/nodes",
+    "https://cdn.jsdelivr.net/gh/xiaoqi7788/v2ray-nodes@main/nodes",
+
+    # ---------------------------------------------------------------------------
+    # NodeList.top mirror (no JS; direct text)
+    # ---------------------------------------------------------------------------
+    "https://raw.githubusercontent.com/NodeList-top/NodeList/master/list/v2ray.txt",
+    "https://cdn.jsdelivr.net/gh/NodeList-top/NodeList@master/list/v2ray.txt",
 ]
 
 # How many concurrent probes to run.  Server-side has none of the netd
