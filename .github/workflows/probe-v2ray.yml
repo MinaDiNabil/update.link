@@ -17,7 +17,7 @@ name: probe-v2ray-servers
 on:
   schedule:
     # Every 30 minutes.  GitHub Actions cron is in UTC.
-    - cron: "*/30 * * * *"
+    - cron: "0 */1 * * *"
   workflow_dispatch: {}     # allow manual runs from the Actions tab
 
 permissions:
