@@ -202,16 +202,24 @@ write_firewall_script() {
 IFACE="${IFACE}"
 LISTEN_PORT="${LISTEN_PORT}"
 
+# Flush existing iptables NAT / INPUT rules cleanly first
+iptables -t nat -F PREROUTING 2>/dev/null || true
+iptables -t nat -F POSTROUTING 2>/dev/null || true
+
 # Enable NAT / Masquerade
 iptables -t nat -A POSTROUTING -o "\$IFACE" -j MASQUERADE
 ip6tables -t nat -A POSTROUTING -o "\$IFACE" -j MASQUERADE 2>/dev/null || true
 
-# Redirect all incoming UDP ports (1-65535) to Hysteria listening port
-iptables -t nat -A PREROUTING -i "\$IFACE" -p udp --dport 1:65535 -j REDIRECT --to-ports "\$LISTEN_PORT"
-ip6tables -t nat -A PREROUTING -i "\$IFACE" -p udp --dport 1:65535 -j REDIRECT --to-ports "\$LISTEN_PORT" 2>/dev/null || true
+# Redirect UDP ports EXCEPT listening port itself to avoid circular loop
+iptables -t nat -A PREROUTING -i "\$IFACE" -p udp --dport 1:\$((LISTEN_PORT-1)) -j REDIRECT --to-ports "\$LISTEN_PORT" 2>/dev/null || true
+iptables -t nat -A PREROUTING -i "\$IFACE" -p udp --dport \$((LISTEN_PORT+1)):65535 -j REDIRECT --to-ports "\$LISTEN_PORT" 2>/dev/null || true
 
-# Allow input on main listening port and general traffic
-iptables -A INPUT -i "\$IFACE" -p udp --dport "\$LISTEN_PORT" -j ACCEPT
+ip6tables -t nat -A PREROUTING -i "\$IFACE" -p udp --dport 1:\$((LISTEN_PORT-1)) -j REDIRECT --to-ports "\$LISTEN_PORT" 2>/dev/null || true
+ip6tables -t nat -A PREROUTING -i "\$IFACE" -p udp --dport \$((LISTEN_PORT+1)):65535 -j REDIRECT --to-ports "\$LISTEN_PORT" 2>/dev/null || true
+
+# Explicitly ACCEPT UDP traffic on all ports in INPUT chain
+iptables -I INPUT -i "\$IFACE" -p udp -j ACCEPT
+ip6tables -I INPUT -i "\$IFACE" -p udp -j ACCEPT 2>/dev/null || true
 iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 
 if command -v netfilter-persistent >/dev/null 2>&1; then
@@ -224,7 +232,7 @@ fi
 exit 0
 EOFW
     chmod 750 "$FW_SCRIPT"
-    bash "$FW_SCRIPT" && msg "Firewall rules applied (1-65535 UDP Redirect)" || err "Firewall script failed"
+    bash "$FW_SCRIPT" && msg "Firewall rules applied (1-65535 UDP Redirect Fixed)" || err "Firewall script failed"
 }
 
 create_services() {
@@ -291,7 +299,7 @@ verify_server() {
 
     [ "$(sysctl -n net.ipv4.ip_forward)" = "1" ]         && msg "2/3 ip_forward enabled" || err "2/3 ip_forward disabled"
 
-    iptables -t nat -S PREROUTING 2>/dev/null | grep -q "1:65535"         && msg "3/3 Port hopping 1-65535 active" || err "3/3 Port hopping NOT active"
+    iptables -t nat -S PREROUTING 2>/dev/null | grep -q "REDIRECT"         && msg "3/3 Port hopping active" || err "3/3 Port hopping NOT active"
     echo ""
 }
 
