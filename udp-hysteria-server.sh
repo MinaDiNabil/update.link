@@ -1,58 +1,79 @@
 #!/usr/bin/env bash
 # ==============================================================================
-#  MinaProNet VPN — Hysteria UDP Server  (نسخة مُصلَّحة ومُحسَّنة)
-#  الهدف: ثبات دائم بلا انقطاع + عدد مستخدمين غير محدود + أقصى سرعة ممكنة
+#  MinaProNet VPN — Hysteria v1 UDP Server  (نسخة مُصلَّحة ومُحسَّنة)
+#  Hysteria 1 فقط — ملف إعداد JSON كما في سكربتك الأصلي
 #
-#  الأسباب الحقيقية لتوقف الخدمة بعد ثوانٍ في السكربت القديم:
-#   1) REDIRECT على المنافذ 1:65535 كان يخطف حركة العودة الخاصة بالسيرفر نفسه
-#   2) nf_conntrack_udp_timeout = 5 كان يقتل جلسات UDP بعد 5 ثوانٍ من الخمول
-#   3) Restart=on-failure بلا StartLimitIntervalSec=0 يوقف الخدمة نهائياً
-#   4) rmem_default = 32MB يلتهم الذاكرة ويستدعي OOM Killer
-#   5) عدم تطابق صيغة ملف الإعداد مع إصدار Hysteria المثبّت
-#   6) iptables -F INPUT يمسح قواعد النظام والمستخدم hysteria غير موجود أصلاً
+#  الأسباب الحقيقية لتوقف الخدمة بعد ثوانٍ:
+#   1) "auth": {"mode": "password"} صيغة غير موثقة في v1 → فشل فوري عند الإقلاع
+#   2) REDIRECT على المنافذ 1:65535 يخطف حركة العودة الخاصة بالسيرفر نفسه
+#   3) nf_conntrack_udp_timeout = 5 يقتل جلسات UDP بعد 5 ثوانٍ من الخمول
+#   4) Restart=on-failure بدون StartLimitIntervalSec=0 يوقف الخدمة نهائياً
+#   5) المستخدم hysteria غير موجود أصلاً → فشل فوري عند كل تشغيل
+#   6) rmem_default = 32MB يلتهم الذاكرة ويستدعي OOM Killer
+#   7) iptables -F INPUT يمسح قواعد النظام كلها
 #
 #  الاستخدام:  sudo bash udp-hysteria-server.sh
-#  تخصيص:      sudo LISTEN_PORT=443 ENABLE_OBFS=0 bash udp-hysteria-server.sh
+#  تخصيص:      sudo DOWN_MBPS=500 HOP_END=25000 bash udp-hysteria-server.sh
+#  عدة كلمات:  sudo PASSWORDS="pass1,pass2,pass3" bash udp-hysteria-server.sh
 # ==============================================================================
 
 set -Eeuo pipefail
 
 # ----------------------------------------------------------------- الإعدادات
-LISTEN_PORT="${LISTEN_PORT:-36712}"          # منفذ الاستماع الأساسي
-ENABLE_HOP="${ENABLE_HOP:-1}"                # 1 = تفعيل Port Hopping ضد حجب UDP
-HOP_START="${HOP_START:-20000}"              # بداية نطاق القفز
-HOP_END="${HOP_END:-29999}"                  # نهاية نطاق القفز
-ENABLE_OBFS="${ENABLE_OBFS:-1}"              # 0 إذا كان التطبيق لا يدعم salamander
-OBFS_PASS="${OBFS_PASS:-minapronet}"
-ENABLE_BBR="${ENABLE_BBR:-1}"                # BBR + fq لحركة TCP الصادرة
-IGNORE_CLIENT_BW="${IGNORE_CLIENT_BW:-1}"    # 1 = BBR للجميع (الأفضل لعدد كبير)
-UP_MBPS="${UP_MBPS:-1000}"                   # تُستخدم فقط عند IGNORE_CLIENT_BW=0
-DOWN_MBPS="${DOWN_MBPS:-1000}"
+LISTEN_PORT="${LISTEN_PORT:-36712}"      # منفذ الاستماع الأساسي
+ENABLE_HOP="${ENABLE_HOP:-1}"            # 1 = تفعيل Port Hopping ضد حجب UDP
+HOP_START="${HOP_START:-20000}"          # بداية نطاق القفز
+HOP_END="${HOP_END:-29999}"              # نهاية نطاق القفز (يجب أن تبقى < 30000)
+
+# up_mbps / down_mbps في v1 هي الحد الأقصى **لكل عميل** وليست حد السيرفر.
+# v1 يستخدم خوارزمية Brutal التي تتجاهل فقد الحزم وترسل بالسرعة المعلنة مهما حدث.
+# لذلك 1000 لكل عميل × 20 عميلاً = انهيار الخط بالكامل وانقطاع الجميع.
+# القيم الأقل هنا تعني ثباتاً أعلى بكثير مع عدد مستخدمين غير محدود.
+UP_MBPS="${UP_MBPS:-100}"
+DOWN_MBPS="${DOWN_MBPS:-200}"
+
+OBFS_PASS="${OBFS_PASS:-minapronet}"     # نفس قيمة obfs في التطبيق
+ENABLE_OBFS="${ENABLE_OBFS:-1}"          # 0 لتعطيل التمويه تماماً
+ALPN="${ALPN:-}"                         # اتركه فارغاً إلا إذا كان التطبيق يحدده
+RESOLVER="${RESOLVER:-udp://1.1.1.1:53}" # DNS مستقل عن /etc/resolv.conf
+MAX_CONN_CLIENT="${MAX_CONN_CLIENT:-4096}"
+DISABLE_MTU_DISC="${DISABLE_MTU_DISC:-false}"
+ENABLE_BBR="${ENABLE_BBR:-1}"
 SNI="${SNI:-www.bing.com}"
-MASQ_URL="${MASQ_URL:-https://www.bing.com}" # تمويه: السيرفر يبدو موقع HTTPS عادي
 HY_DIR="/etc/hysteria"
 HY_BIN="${HY_BIN:-/usr/local/bin/hysteria}"
 SVC="hysteria-server"
-
-# اقتباس آمن يمنع كسر الملفات بكلمات مرور تحوي رموزاً أو مسافات
-# (كلمة مرور مثل yes أو 12345 تُفسَّر خطأً في YAML بدون اقتباس)
-yq() { printf "'%s'" "$(printf '%s' "$1" | sed "s/'/''/g")"; }
-jq_() { printf '"%s"' "$(printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g')"; }
 
 log()  { printf '\033[1;36m[*]\033[0m %s\n' "$*"; }
 ok()   { printf '\033[1;32m[✓]\033[0m %s\n' "$*"; }
 warn() { printf '\033[1;33m[!]\033[0m %s\n' "$*"; }
 die()  { printf '\033[1;31m[✗]\033[0m %s\n' "$*" >&2; exit 1; }
 
+# اقتباس JSON آمن: كلمة مرور فيها " أو \ كانت تُفسد الملف
+jq_() { printf '"%s"' "$(printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g')"; }
+
 if [ "$(id -u)" -ne 0 ]; then die "يجب تشغيل السكربت بصلاحيات root."; fi
-if ! command -v iptables >/dev/null 2>&1; then die "iptables غير مثبت: apt install -y iptables"; fi
-if ! command -v openssl  >/dev/null 2>&1; then die "openssl غير مثبت: apt install -y openssl"; fi
+for t in iptables openssl timeout; do
+    command -v "$t" >/dev/null 2>&1 || die "$t غير مثبت."
+done
 if [ ! -x "$HY_BIN" ]; then die "ملف hysteria التنفيذي غير موجود في $HY_BIN"; fi
-if [ "$HOP_END" -ge 30000 ] && [ "$ENABLE_HOP" = "1" ]; then
+if [ "$ENABLE_HOP" = "1" ] && [ "$HOP_END" -ge 30000 ]; then
     die "نطاق القفز يجب أن ينتهي قبل 30000 حتى لا يتعارض مع منافذ المصدر الصادرة."
 fi
 
-# --------------------------------------------- كشف الموارد وواجهة الشبكة
+# --------------------------------------- التأكد أن الملف التنفيذي v1 وليس v2
+HY_VER_RAW="$("$HY_BIN" version 2>/dev/null || "$HY_BIN" --version 2>/dev/null || "$HY_BIN" -v 2>/dev/null || echo '')"
+if printf '%s' "$HY_VER_RAW" | grep -qiE '\bv?2\.[0-9]+\.[0-9]+'; then
+    die "الملف التنفيذي في $HY_BIN هو Hysteria 2 وليس v1.
+هذا السكربت لـ v1 فقط. نزّل آخر إصدار من v1 (v1.3.5):
+  systemctl stop ${SVC} 2>/dev/null
+  wget -O /usr/local/bin/hysteria https://github.com/apernet/hysteria/releases/download/v1.3.5/hysteria-linux-amd64
+  chmod +x /usr/local/bin/hysteria
+ثم أعد تشغيل هذا السكربت."
+fi
+log "إصدار hysteria: ${HY_VER_RAW:-غير معروف}"
+
+# ------------------------------------------------- كشف الموارد والواجهة
 RAM_MB=$(awk '/MemTotal/{print int($2/1024)}' /proc/meminfo)
 CPUS=$(nproc 2>/dev/null || echo 1)
 IFACE=$(ip -4 route show default 2>/dev/null | awk '{print $5; exit}')
@@ -60,51 +81,46 @@ if [ -z "${IFACE:-}" ]; then IFACE=$(ip -o link show | awk -F': ' '$2!="lo"{prin
 PUBIP=$(ip -4 addr show dev "$IFACE" 2>/dev/null | awk '/inet /{print $2; exit}' | cut -d/ -f1 || true)
 log "الموارد: ذاكرة ${RAM_MB}MB | معالجات ${CPUS} | واجهة ${IFACE} | IP ${PUBIP:-غير معروف}"
 
-# نوافذ QUIC وحجم المخازن تُحسب من الذاكرة (يمنع OOM على السيرفرات الصغيرة)
+# نوافذ QUIC تُحسب من الذاكرة. الافتراضي في v1 هو 15MB و64MB **لكل عميل**،
+# وقيم سكربتك (32MB/128MB) كانت الضِعف وتستنزف الذاكرة مع كثرة المستخدمين.
 if [ "$RAM_MB" -le 1200 ]; then
-    STREAM_WIN=2097152;  CONN_WIN=5242880;  SOCK_MAX=8388608;  STREAMS=512
-elif [ "$RAM_MB" -le 2500 ]; then
-    STREAM_WIN=4194304;  CONN_WIN=10485760; SOCK_MAX=16777216; STREAMS=1024
+    RECV_CONN=8388608;  RECV_CLIENT=33554432; SOCK_MAX=8388608
 else
-    STREAM_WIN=8388608;  CONN_WIN=20971520; SOCK_MAX=16777216; STREAMS=2048
+    RECV_CONN=15728640; RECV_CLIENT=67108864; SOCK_MAX=16777216
 fi
 
-# سعة conntrack تتناسب مع الذاكرة (كل سجل ≈ 350 بايت) بدل رقم ثابت خطير
 CT_MAX=$(( RAM_MB * 256 ))
 if [ "$CT_MAX" -gt 1048576 ]; then CT_MAX=1048576; fi
 if [ "$CT_MAX" -lt 131072 ];  then CT_MAX=131072;  fi
 CT_BUCKETS=$(( CT_MAX / 4 ))
-UDP_MEM_MAX=$(( RAM_MB * 256 / 8 ))          # ≈ 12.5% من الذاكرة بوحدة الصفحات
+UDP_MEM_MAX=$(( RAM_MB * 256 / 8 ))
 UDP_MEM_PRESS=$(( UDP_MEM_MAX * 3 / 4 ))
 UDP_MEM_MIN=$(( UDP_MEM_MAX / 4 ))
 
-# ------------------------------------------------------ كشف إصدار Hysteria
-HY_VER_RAW="$("$HY_BIN" version 2>/dev/null || "$HY_BIN" --version 2>/dev/null || "$HY_BIN" -v 2>/dev/null || echo '')"
-VER_KNOWN=1
-if   printf '%s' "$HY_VER_RAW" | grep -qiE '\bv?2\.[0-9]+\.[0-9]+'; then HY_MAJOR=2
-elif printf '%s' "$HY_VER_RAW" | grep -qiE '\bv?1\.[0-9]+\.[0-9]+'; then HY_MAJOR=1
+if ip -6 addr show scope global 2>/dev/null | grep -q inet6; then
+    RESOLVE_PREF="46"
 else
-    HY_MAJOR=2; VER_KNOWN=0
-    warn "تعذّر تحديد الإصدار — سيُجرَّب v2 أولاً ثم v1 تلقائياً عند الفشل."
-fi
-log "إصدار Hysteria: v${HY_MAJOR}"
-if [ "$HY_MAJOR" -eq 1 ]; then
-    warn "Hysteria 1 قديم ولم يعد مدعوماً. يُنصح بشدة بالترقية إلى v2."
+    RESOLVE_PREF="4"
 fi
 
 mkdir -p "$HY_DIR"
 
-# ------------------------------------------ الحفاظ على كلمة المرور الحالية
+# ------------------------------------ الحفاظ على كلمة المرور الحالية
 OLD_PASS=""
-if [ -f "$HY_DIR/config.yaml" ]; then
-    OLD_PASS=$(awk '/^auth:/{f=1;next} f&&/^[^[:space:]]/{f=0} f&&/password:/{sub(/^[[:space:]]*password:[[:space:]]*/,""); gsub(/["'"'"']/,""); print; exit}' "$HY_DIR/config.yaml" 2>/dev/null || true)
+if [ -f "$HY_DIR/config.json" ]; then
+    OLD_PASS=$(grep -o '"password"[[:space:]]*:[[:space:]]*"[^"]*"' "$HY_DIR/config.json" 2>/dev/null \
+        | head -1 | sed 's/.*"password"[[:space:]]*:[[:space:]]*"//; s/"$//' || true)
+    if [ -z "$OLD_PASS" ]; then
+        OLD_PASS=$(sed -n '/"auth"/,/}/p' "$HY_DIR/config.json" 2>/dev/null \
+            | grep -o '"[^"]\{4,\}"' \
+            | grep -vE '^"(auth|mode|config|password|passwords|external|none)"$' \
+            | head -1 | tr -d '"' || true)
+    fi
 fi
-if [ -z "$OLD_PASS" ] && [ -f "$HY_DIR/config.json" ]; then
-    OLD_PASS=$(grep -o '"password"[[:space:]]*:[[:space:]]*"[^"]*"' "$HY_DIR/config.json" 2>/dev/null | head -1 | sed 's/.*"password"[[:space:]]*:[[:space:]]*"//; s/"$//' || true)
-fi
-PASSWORD="${PASSWORD:-${OLD_PASS:-$(head -c 24 /dev/urandom | base64 | tr -d '/+=' | head -c 24)}}"
+PASSWORDS="${PASSWORDS:-${OLD_PASS:-$(head -c 24 /dev/urandom | base64 | tr -d '/+=' | head -c 24)}}"
+FIRST_PASS="${PASSWORDS%%,*}"
 
-# ============================================================ 1) إعدادات النواة
+# ========================================================= 1) إعدادات النواة
 log "كتابة إعدادات النواة المُحسَّنة..."
 modprobe nf_conntrack 2>/dev/null || true
 if [ -w /sys/module/nf_conntrack/parameters/hashsize ]; then
@@ -112,10 +128,10 @@ if [ -w /sys/module/nf_conntrack/parameters/hashsize ]; then
 fi
 
 cat > /etc/sysctl.d/99-hysteria-multiuser.conf <<EOF
-# ===== Hysteria / QUIC tuning — MinaProNet =====
+# ===== Hysteria v1 / QUIC tuning — MinaProNet =====
 
 # --- مخازن UDP: نرفع الحد الأقصى فقط ونُبقي الافتراضي صغيراً.
-# rmem_default الكبير يخصّص ذاكرة لكل مقبس في النظام ويؤدي إلى OOM.
+# rmem_default الكبير يُطبَّق على كل مقبس في النظام لا على hysteria وحده.
 net.core.rmem_max = ${SOCK_MAX}
 net.core.wmem_max = ${SOCK_MAX}
 net.core.rmem_default = 262144
@@ -172,9 +188,9 @@ root soft nofile 1048576
 root hard nofile 1048576
 EOF
 
-# ======================================================= 2) المستخدم والشهادة
+# ==================================================== 2) المستخدم والشهادة
 if ! id -u hysteria >/dev/null 2>&1; then
-    log "إنشاء مستخدم الخدمة hysteria..."
+    log "إنشاء مستخدم الخدمة hysteria (كان مفقوداً تماماً)..."
     useradd --system --no-create-home --shell /usr/sbin/nologin hysteria
 fi
 
@@ -186,106 +202,109 @@ if [ ! -s "$HY_DIR/server.crt" ] || [ ! -s "$HY_DIR/server.key" ]; then
         -subj "/CN=${SNI}" -days 3650 >/dev/null 2>&1 || die "فشل توليد الشهادة."
     rm -f "$HY_DIR/ec.pem"
 fi
-# المجلد يبقى ملكاً لـ root ومقروءاً لمجموعة hysteria فقط.
-# لو كان المجلد مملوكاً لمستخدم الخدمة لأمكنه استبدال firewall.sh الذي يعمل بصلاحيات root.
+# المجلد يبقى ملكاً لـ root: لو ملكه مستخدم الخدمة لأمكنه استبدال firewall.sh
+# الذي يعمل بصلاحيات root.
 chown root:hysteria "$HY_DIR" "$HY_DIR/server.key" "$HY_DIR/server.crt"
 chmod 750 "$HY_DIR"
 chmod 640 "$HY_DIR/server.key"
 chmod 644 "$HY_DIR/server.crt"
-CERT_PIN=$(openssl x509 -in "$HY_DIR/server.crt" -noout -fingerprint -sha256 2>/dev/null | cut -d= -f2 || true)
 
-# =========================================================== 3) ملف الإعداد
-write_config() {
-    local major="$1"
-    if [ "$major" -eq 2 ]; then
-        CFG="$HY_DIR/config.yaml"
-        rm -f "$HY_DIR/config.json"
-        {
-            echo "listen: :${LISTEN_PORT}"
-            echo
-            echo "tls:"
-            echo "  cert: ${HY_DIR}/server.crt"
-            echo "  key: ${HY_DIR}/server.key"
-            echo
-            if [ "$ENABLE_OBFS" = "1" ]; then
-                echo "obfs:"
-                echo "  type: salamander"
-                echo "  salamander:"
-                echo "    password: $(yq "$OBFS_PASS")"
-                echo
-            fi
-            echo "auth:"
-            echo "  type: password"
-            echo "  password: $(yq "$PASSWORD")"
-            echo
-            echo "quic:"
-            echo "  initStreamReceiveWindow: ${STREAM_WIN}"
-            echo "  maxStreamReceiveWindow: ${STREAM_WIN}"
-            echo "  initConnReceiveWindow: ${CONN_WIN}"
-            echo "  maxConnReceiveWindow: ${CONN_WIN}"
-            echo "  maxIdleTimeout: 30s"
-            echo "  maxIncomingStreams: ${STREAMS}"
-            echo "  keepAlivePeriod: 10s"
-            echo "  disablePathMTUDiscovery: false"
-            echo
-            if [ "$IGNORE_CLIENT_BW" = "1" ]; then
-                echo "# BBR للجميع: يوزّع النطاق بعدالة ويمنع انهيار الشبكة مع تزايد المستخدمين"
-                echo "ignoreClientBandwidth: true"
-            else
-                echo "bandwidth:"
-                echo "  up: ${UP_MBPS} mbps"
-                echo "  down: ${DOWN_MBPS} mbps"
-                echo "ignoreClientBandwidth: false"
-            fi
-            echo
-            echo "disableUDP: false"
-            echo "udpIdleTimeout: 60s"
-            echo
-            echo "masquerade:"
-            echo "  type: proxy"
-            echo "  proxy:"
-            echo "    url: $(yq "$MASQ_URL")"
-            echo "    rewriteHost: true"
-        } > "$CFG"
+# ======================================================= 3) ملف الإعداد
+pw_array() {
+    local out="" p old_ifs="$IFS"
+    IFS=','
+    for p in $PASSWORDS; do
+        [ -z "$p" ] && continue
+        if [ -n "$out" ]; then out="$out, "; fi
+        out="${out}$(jq_ "$p")"
+    done
+    IFS="$old_ifs"
+    printf '[%s]' "$out"
+}
+
+build_config() {   # $1 = صيغة المصادقة: array | object ، $2 = مسار الملف
+    local style="$1" path="$2" auth_block obfs_line="" alpn_line=""
+
+    if [ "$style" = "array" ]; then
+        # الصيغة الموثقة رسمياً في v1: mode=passwords و config مصفوفة نصوص
+        auth_block="\"auth\": { \"mode\": \"passwords\", \"config\": $(pw_array) },"
     else
-        CFG="$HY_DIR/config.json"
-        rm -f "$HY_DIR/config.yaml"
-        local obfs_line=""
-        if [ "$ENABLE_OBFS" = "1" ]; then obfs_line="\"obfs\": $(jq_ "$OBFS_PASS"),"; fi
-        cat > "$CFG" <<EOF
+        # صيغة الإصدارات القديمة جداً من v1
+        auth_block="\"auth\": { \"mode\": \"password\", \"config\": { \"password\": $(jq_ "$FIRST_PASS") } },"
+    fi
+
+    if [ "$ENABLE_OBFS" = "1" ]; then obfs_line="    \"obfs\": $(jq_ "$OBFS_PASS"),"; fi
+    if [ -n "$ALPN" ];            then alpn_line="    \"alpn\": $(jq_ "$ALPN"),";     fi
+
+    cat > "$path" <<EOF
 {
     "listen": ":${LISTEN_PORT}",
+    "protocol": "udp",
     "cert": "${HY_DIR}/server.crt",
     "key": "${HY_DIR}/server.key",
-    ${obfs_line}
-    "auth": { "mode": "password", "config": { "password": $(jq_ "$PASSWORD") } },
+${obfs_line}
+${alpn_line}
+    ${auth_block}
     "up_mbps": ${UP_MBPS},
     "down_mbps": ${DOWN_MBPS},
     "disable_udp": false,
-    "recv_window_conn": ${CONN_WIN},
-    "recv_window_client": $(( CONN_WIN * 4 )),
-    "max_conn_client": ${STREAMS},
-    "disable_mtu_discovery": false
+    "recv_window_conn": ${RECV_CONN},
+    "recv_window_client": ${RECV_CLIENT},
+    "max_conn_client": ${MAX_CONN_CLIENT},
+    "disable_mtu_discovery": ${DISABLE_MTU_DISC},
+    "resolver": "${RESOLVER}",
+    "resolve_preference": "${RESOLVE_PREF}"
 }
 EOF
-    fi
-    chown root:hysteria "$CFG"
-    chmod 640 "$CFG"
+    sed -i '/^[[:space:]]*$/d' "$path"
 }
 
-log "كتابة ملف الإعداد المناسب للإصدار v${HY_MAJOR}..."
+# --- اختبار الصيغة على الملف التنفيذي نفسه بدل التخمين ---
+# نشغّل السيرفر على منفذ مؤقت لأربع ثوانٍ: إن بقي يعمل فالصيغة مقبولة.
+PROBE_OUT=""
+probe_auth_style() {
+    local style="$1" tmp probe_port out rc save_port
+    tmp="$(mktemp /tmp/hy-probe.XXXXXX.json)"
+    probe_port=$(( (RANDOM % 4000) + 45000 ))
+    save_port="$LISTEN_PORT"
+    LISTEN_PORT="$probe_port"
+    build_config "$style" "$tmp"
+    LISTEN_PORT="$save_port"
+
+    rc=0
+    out=$(timeout 4 "$HY_BIN" server --config "$tmp" 2>&1) || rc=$?
+    rm -f "$tmp"
+    PROBE_OUT="$out"
+    # الرمز 124 يعني أن العملية كانت ما تزال تعمل عند انتهاء المهلة ⇒ الإعداد صالح
+    [ "$rc" -eq 124 ]
+}
+
+log "اختبار صيغة المصادقة المدعومة في هذا الإصدار..."
+AUTH_STYLE=""
+if probe_auth_style "array"; then
+    AUTH_STYLE="array"
+    ok "الصيغة المدعومة: mode=passwords (مصفوفة) — الصحيحة لـ v1.1 فما فوق"
+elif probe_auth_style "object"; then
+    AUTH_STYLE="object"
+    warn "إصدار قديم: mode=password (كائن). يدعم كلمة مرور واحدة فقط."
+else
+    echo "$PROBE_OUT" | tail -20
+    die "فشل تشغيل hysteria بأي من الصيغتين. راجع المخرجات أعلاه (شهادة؟ صلاحيات؟ منفذ مشغول؟)."
+fi
+
 STAMP=$(date +%s)
 if [ -f "$HY_DIR/config.json" ]; then cp -a "$HY_DIR/config.json" "$HY_DIR/config.json.bak.$STAMP"; fi
-if [ -f "$HY_DIR/config.yaml" ]; then cp -a "$HY_DIR/config.yaml" "$HY_DIR/config.yaml.bak.$STAMP"; fi
-write_config "$HY_MAJOR"
-ok "تم إنشاء $CFG"
+build_config "$AUTH_STYLE" "$HY_DIR/config.json"
+chown root:hysteria "$HY_DIR/config.json"
+chmod 640 "$HY_DIR/config.json"
+ok "تم إنشاء $HY_DIR/config.json"
 
-# ======================================================== 4) الجدار الناري
+# ====================================================== 4) الجدار الناري
 log "إعادة بناء قواعد الجدار الناري بشكل آمن..."
 
 cat > "$HY_DIR/firewall.sh" <<EOFW
 #!/usr/bin/env bash
-# قواعد Hysteria — تستخدم سلاسل مخصصة ولا تمسح قواعد الخدمات الأخرى
+# قواعد Hysteria — سلاسل مخصصة لا تمسح قواعد الخدمات الأخرى
 set -uo pipefail
 LISTEN_PORT="${LISTEN_PORT}"
 HOP_START="${HOP_START}"
@@ -300,7 +319,7 @@ while read -r spec; do
     iptables -t nat -D PREROUTING \${spec#-A PREROUTING } 2>/dev/null || true
 done < <(iptables-save -t nat 2>/dev/null | grep -E '^-A PREROUTING .*(dport 1:65535|dports 1:65535)' || true)
 
-# حذف قاعدة السماح المفتوحة لكل UDP
+# --- حذف قاعدة السماح المفتوحة لكل UDP ---
 while iptables -C INPUT -p udp -j ACCEPT 2>/dev/null; do
     iptables -D INPUT -p udp -j ACCEPT 2>/dev/null || break
 done
@@ -325,7 +344,7 @@ fi
 
 # --- تعطيل تتبّع الاتصالات للمنفذ الأساسي عند إيقاف القفز ---
 # يمنع امتلاء جدول conntrack مع آلاف المستخدمين.
-# لا يُفعَّل مع القفز لأن NAT العكسي يحتاج إلى conntrack.
+# لا يُفعَّل مع القفز لأن NAT العكسي يحتاج conntrack ليُعيد منفذ المصدر الصحيح.
 iptables -t raw -N HY_RAW 2>/dev/null || true
 iptables -t raw -F HY_RAW
 iptables -t raw -C PREROUTING -j HY_RAW 2>/dev/null || iptables -t raw -I PREROUTING 1 -j HY_RAW
@@ -335,7 +354,7 @@ if [ "\$ENABLE_HOP" != "1" ]; then
     iptables -t raw -I OUTPUT 1 -p udp --sport "\$LISTEN_PORT" -j NOTRACK
 fi
 
-# --- IPv6 (يُتجاهل الخطأ إن لم يكن مفعّلاً) ---
+# --- IPv6 ---
 if command -v ip6tables >/dev/null 2>&1; then
     ip6tables -N HY_IN 2>/dev/null || true
     ip6tables -F HY_IN 2>/dev/null || true
@@ -358,12 +377,12 @@ chown root:root "$HY_DIR/firewall.sh"
 chmod 700 "$HY_DIR/firewall.sh"
 bash "$HY_DIR/firewall.sh" || warn "تحذير: بعض قواعد الجدار الناري لم تُطبَّق."
 if [ "$ENABLE_HOP" = "1" ]; then
-    ok "قواعد الجدار الناري جاهزة (نطاق القفز ${HOP_START}-${HOP_END} ← ${LISTEN_PORT})"
+    ok "الجدار الناري جاهز (نطاق القفز ${HOP_START}-${HOP_END} ← ${LISTEN_PORT})"
 else
-    ok "قواعد الجدار الناري جاهزة (منفذ واحد: ${LISTEN_PORT} مع NOTRACK)"
+    ok "الجدار الناري جاهز (منفذ واحد ${LISTEN_PORT} مع NOTRACK)"
 fi
 
-# وحدة تُعيد تطبيق القواعد بعد كل إقلاع (كانت مفقودة رغم الإشارة إليها)
+# وحدة تُعيد تطبيق القواعد بعد كل إقلاع (كانت مفقودة رغم الإشارة إليها في After=)
 cat > /etc/systemd/system/hysteria-firewall.service <<EOF
 [Unit]
 Description=Hysteria firewall rules
@@ -380,16 +399,15 @@ ExecStart=/bin/bash ${HY_DIR}/firewall.sh
 WantedBy=multi-user.target
 EOF
 
-# ======================================================== 5) خدمة systemd
+# ====================================================== 5) خدمة systemd
 log "تحديث وحدة systemd..."
-write_unit() {
 cat > "/etc/systemd/system/${SVC}.service" <<EOF
 [Unit]
-Description=Hysteria UDP Server (MinaProNet)
-Documentation=https://v2.hysteria.network/
+Description=Hysteria v1 UDP Server (MinaProNet)
+Documentation=https://v1.hysteria.network/
 After=network-online.target hysteria-firewall.service
 Wants=network-online.target hysteria-firewall.service
-# إلغاء حد محاولات إعادة التشغيل — كان يوقف الخدمة نهائياً بعد 5 محاولات فاشلة
+# بدون هذين السطرين توقف systemd الخدمة نهائياً بعد 5 محاولات فاشلة خلال 10 ثوانٍ
 StartLimitIntervalSec=0
 StartLimitBurst=0
 
@@ -398,7 +416,7 @@ Type=simple
 User=hysteria
 Group=hysteria
 WorkingDirectory=${HY_DIR}
-ExecStart=${HY_BIN} server --config ${CFG}
+ExecStart=${HY_BIN} server --config ${HY_DIR}/config.json
 Restart=always
 RestartSec=3
 LimitNOFILE=1048576
@@ -411,19 +429,17 @@ NoNewPrivileges=true
 ProtectSystem=true
 ProtectHome=true
 PrivateTmp=true
-ReadWritePaths=${HY_DIR}
 
 [Install]
 WantedBy=multi-user.target
 EOF
-}
-write_unit
+
 systemctl daemon-reload
 systemctl enable hysteria-firewall.service >/dev/null 2>&1 || true
 systemctl enable "$SVC" >/dev/null 2>&1 || true
 systemctl restart "$SVC" || true
 
-# ========================================================= 6) أداة الفحص
+# ======================================================== 6) أداة الفحص
 cat > /usr/local/bin/hy-status <<EOF
 #!/usr/bin/env bash
 echo "== حالة الخدمة =="
@@ -439,59 +455,43 @@ echo
 echo "== أخطاء استقبال UDP (يجب أن تبقى شبه ثابتة) =="
 netstat -su 2>/dev/null | grep -iE 'receive errors|RcvbufErrors' || echo "netstat غير مثبت"
 echo
+echo "== قواعد قفز المنافذ =="
+iptables -t nat -L HY_HOP -n 2>/dev/null | tail -n +3
+echo
 echo "== آخر 15 سطر من السجل =="
 journalctl -u ${SVC} -n 15 --no-pager
 EOF
 chmod +x /usr/local/bin/hy-status
 
 # ==================================================== 7) التحقق النهائي
-service_healthy() {
-    systemctl is-active --quiet "$SVC" \
-        && ss -lunp 2>/dev/null | grep -qE ":${LISTEN_PORT}[[:space:]]"
-}
-
-log "التحقق من استقرار الخدمة (10 ثوانٍ)..."
-sleep 10
-
-# إذا فشل الإصدار المُخمَّن، جرّب الصيغة الأخرى تلقائياً
-if ! service_healthy && [ "$VER_KNOWN" -eq 0 ]; then
-    warn "فشل التشغيل بصيغة v2 — إعادة المحاولة بصيغة v1..."
-    HY_MAJOR=1
-    write_config 1
-    write_unit
-    systemctl daemon-reload
-    systemctl restart "$SVC" || true
-    sleep 8
-fi
+log "التحقق من استقرار الخدمة (12 ثانية)..."
+sleep 12
 
 echo
-if service_healthy; then
+if systemctl is-active --quiet "$SVC" && ss -lunp 2>/dev/null | grep -qE ":${LISTEN_PORT}[[:space:]]"; then
     RESTARTS=$(systemctl show -p NRestarts --value "$SVC" 2>/dev/null || echo 0)
     ok "الخدمة تعمل بثبات (مرات إعادة التشغيل: ${RESTARTS})"
     echo
     echo "──────────────── بيانات الاتصال ────────────────"
-    echo " الخادم        : ${PUBIP:-<ضع IP السيرفر>}"
-    echo " المنفذ        : ${LISTEN_PORT}"
-    if [ "$ENABLE_HOP" = "1" ]; then echo " نطاق القفز    : ${HOP_START}-${HOP_END}"; fi
-    echo " كلمة المرور   : ${PASSWORD}"
-    if [ "$ENABLE_OBFS" = "1" ]; then echo " التمويه       : salamander / ${OBFS_PASS}"; fi
-    echo " SNI           : ${SNI}  (فعّل insecure — الشهادة ذاتية التوقيع)"
-    if [ -n "${CERT_PIN:-}" ]; then echo " بصمة الشهادة  : ${CERT_PIN}"; fi
-    if [ "$HY_MAJOR" -eq 2 ]; then
-        Q="insecure=1&sni=${SNI}"
-        if [ "$ENABLE_OBFS" = "1" ]; then Q="${Q}&obfs=salamander&obfs-password=${OBFS_PASS}"; fi
-        if [ "$ENABLE_HOP" = "1" ];  then Q="${Q}&mport=${HOP_START}-${HOP_END}"; fi
-        echo
-        echo " رابط جاهز للتطبيق:"
-        echo " hy2://${PASSWORD}@${PUBIP:-SERVER_IP}:${LISTEN_PORT}/?${Q}#MinaProNet"
-    fi
+    echo " الخادم           : ${PUBIP:-<ضع IP السيرفر>}"
+    echo " المنفذ           : ${LISTEN_PORT}"
+    if [ "$ENABLE_HOP" = "1" ]; then echo " نطاق القفز       : ${HOP_START}-${HOP_END}"; fi
+    echo " كلمة المرور      : ${PASSWORDS}"
+    if [ "$ENABLE_OBFS" = "1" ]; then echo " obfs (xplus)     : ${OBFS_PASS}"; fi
+    echo " up/down لكل عميل : ${UP_MBPS} / ${DOWN_MBPS} Mbps"
+    echo " SNI (peer)       : ${SNI}  — فعّل insecure لأن الشهادة ذاتية التوقيع"
+    echo
+    Q="protocol=udp&auth=${FIRST_PASS}&peer=${SNI}&insecure=1&upmbps=${UP_MBPS}&downmbps=${DOWN_MBPS}"
+    if [ "$ENABLE_OBFS" = "1" ]; then Q="${Q}&obfs=xplus&obfsParam=${OBFS_PASS}"; fi
+    if [ -n "$ALPN" ];            then Q="${Q}&alpn=${ALPN}"; fi
+    if [ "$ENABLE_HOP" = "1" ];   then Q="${Q}&mport=${HOP_START}-${HOP_END}"; fi
+    echo " رابط v1 للتطبيق:"
+    echo " hysteria://${PUBIP:-SERVER_IP}:${LISTEN_PORT}?${Q}#MinaProNet"
     echo "────────────────────────────────────────────────"
     echo
     echo " للفحص في أي وقت:  hy-status"
 else
     warn "الخدمة لم تستقر. مخرجات السجل:"
     journalctl -u "$SVC" -n 30 --no-pager || true
-    echo
-    echo "تحقّق من: تطابق إصدار hysteria مع صيغة الإعداد، صلاحيات الشهادة، وتعارض المنفذ."
     exit 1
 fi
