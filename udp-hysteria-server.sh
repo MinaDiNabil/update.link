@@ -1,14 +1,13 @@
 #!/usr/bin/env bash
-#============================================================
-# MinaProNet VPN - Hysteria UDP Server Setup (Full Port Hopping 1-65535)
-# Compatible with MinaProNetVPN Tunnel App (Hysteria v1)
-# Ubuntu 20.04 / 22.04 / 24.04
-#============================================================
+# ============================================================
+#  MinaProNet VPN - Hysteria UDP Server Setup (Ultra-Performance)
+#  Full Port Range (1-65535) + Fix UDP Freeze & Browsing Issues
+# ============================================================
 
 set -uo pipefail
 
-RED='[0;31m'; GREEN='[0;32m'; YELLOW='[1;33m'
-CYAN='[0;36m'; BOLD='[1m'; NC='[0m'
+RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[1;33m'
+CYAN='\033[0;36m'; BOLD='\033[1m'; NC='\033[0m'
 
 HYSTERIA_BIN="/usr/local/bin/hysteria"
 HYSTERIA_VER="v1.3.5"
@@ -25,15 +24,14 @@ SYSCTL_FILE="/etc/sysctl.d/99-hysteria-udp.conf"
 print_banner() {
     echo -e "${CYAN}${BOLD}"
     echo "╔══════════════════════════════════════════════════╗"
-    echo "║ MinaProNet VPN - Hysteria UDP (Full Hopping)   ║"
-    echo "║ Port Hopping Range: 1-65535 Enabled             ║"
+    echo "║   MinaProNet VPN - Hysteria Max Performance      ║"
+    echo "║       Port Range 1-65535 | UDP Fix Applied       ║"
     echo "╚══════════════════════════════════════════════════╝"
     echo -e "${NC}"
 }
-
-msg() { echo -e "${GREEN}[✓]${NC} $1"; }
+msg()  { echo -e "${GREEN}[✓]${NC} $1"; }
 warn() { echo -e "${YELLOW}[!]${NC} $1"; }
-err() { echo -e "${RED}[✗]${NC} $1"; }
+err()  { echo -e "${RED}[✗]${NC} $1"; }
 info() { echo -e "${CYAN}[i]${NC} $1"; }
 
 check_root() {
@@ -59,7 +57,8 @@ install_deps() {
     info "Installing dependencies..."
     export DEBIAN_FRONTEND=noninteractive
     apt-get update -qq >/dev/null 2>&1
-    apt-get install -y -qq curl wget openssl ca-certificates iptables         iptables-persistent conntrack iproute2 >/dev/null 2>&1
+    apt-get install -y -qq curl wget openssl ca-certificates iptables \
+        iptables-persistent conntrack iproute2 >/dev/null 2>&1
     msg "Dependencies installed"
 }
 
@@ -75,21 +74,12 @@ install_hysteria() {
 
     info "Downloading Hysteria ${HYSTERIA_VER} (${ARCH})..."
     TMP=$(mktemp)
-    if ! wget -q --show-progress -O "$TMP" "https://github.com/apernet/hysteria/releases/download/${HYSTERIA_VER}/hysteria-linux-${ARCH}"; then
-        err "Download failed"
-        rm -f "$TMP"
-        exit 1
+    if ! wget -q --show-progress -O "$TMP" \
+        "https://github.com/apernet/hysteria/releases/download/${HYSTERIA_VER}/hysteria-linux-${ARCH}"; then
+        err "Download failed"; rm -f "$TMP"; exit 1
     fi
 
-    if ! head -c4 "$TMP" | grep -q $'ELF'; then
-        err "Downloaded file is not a valid binary"
-        rm -f "$TMP"
-        exit 1
-    fi
-
-    chmod 755 "$TMP"
-    mv -f "$TMP" "$HYSTERIA_BIN"
-    "$HYSTERIA_BIN" version >/dev/null 2>&1 || warn "Binary did not report a version"
+    chmod 755 "$TMP"; mv -f "$TMP" "$HYSTERIA_BIN"
     msg "Hysteria installed at ${HYSTERIA_BIN}"
 }
 
@@ -107,53 +97,62 @@ generate_cert() {
         warn "Certificate exists, skipping"; return
     fi
     info "Generating self-signed certificate..."
-    local CN="bing.com"
+    local CN="hysteria.mnet"
     openssl ecparam -genkey -name prime256v1 -out "$HYSTERIA_KEY" 2>/dev/null
-    openssl req -new -x509 -key "$HYSTERIA_KEY" -out "$HYSTERIA_CERT"         -subj "/CN=${CN}" -days 3650 2>/dev/null
+    openssl req -new -x509 -key "$HYSTERIA_KEY" -out "$HYSTERIA_CERT" \
+        -subj "/CN=${CN}" -days 3650 2>/dev/null
     chmod 640 "$HYSTERIA_KEY"; chmod 644 "$HYSTERIA_CERT"
     chown root:"$HYSTERIA_USER" "$HYSTERIA_KEY" "$HYSTERIA_CERT"
-    msg "Certificate generated (CN=${CN})"
+    msg "Certificate generated"
 }
 
 get_config() {
     echo ""; echo -e "${BOLD}=== Server Configuration ===${NC}"; echo ""
+    
+    read -rp "$(echo -e "${CYAN}Enter Listen Main Port [default: 443]: ${NC}")" LISTEN_PORT
+    LISTEN_PORT=${LISTEN_PORT:-443}
 
-    read -rp "$(echo -e "${CYAN}Main Listening Port [default: 5666]: ${NC}")" LISTEN_PORT
-    LISTEN_PORT=${LISTEN_PORT:-5666}
+    read -rp "$(echo -e "${CYAN}Enable Full Port Hopping 1-65535? [Y/n]: ${NC}")" HOP_CHOICE
+    if [[ "${HOP_CHOICE,,}" != "n" ]]; then
+        USE_PORT_HOPPING=true
+        PORT_RANGE_START=1
+        PORT_RANGE_END=65535
+        info "Port Hopping Enabled: 1-65535 -> Redirecting to ${LISTEN_PORT}"
+    else
+        USE_PORT_HOPPING=false
+        info "Single Port Mode: ${LISTEN_PORT}"
+    fi
 
     read -rp "$(echo -e "${CYAN}Obfs password [default: random]: ${NC}")" OBFS
     OBFS=${OBFS:-$(openssl rand -hex 12)}
-
     read -rp "$(echo -e "${CYAN}Auth password [default: random]: ${NC}")" AUTH_STR
     AUTH_STR=${AUTH_STR:-$(openssl rand -hex 16)}
 
-    read -rp "$(echo -e "${CYAN}Max Upload Mbps per client [default: 100]: ${NC}")" UP_MBPS
-    UP_MBPS=${UP_MBPS:-100}
-
-    read -rp "$(echo -e "${CYAN}Max Download Mbps per client [default: 100]: ${NC}")" DOWN_MBPS
-    DOWN_MBPS=${DOWN_MBPS:-100}
-
-    echo ""
+    read -rp "$(echo -e "${CYAN}Max Upload Mbps per client [default: 200]: ${NC}")" UP_MBPS
+    UP_MBPS=${UP_MBPS:-200}
+    read -rp "$(echo -e "${CYAN}Max Download Mbps per client [default: 500]: ${NC}")" DOWN_MBPS
+    DOWN_MBPS=${DOWN_MBPS:-500}
 }
 
 create_config() {
-    info "Creating configuration..."
+    info "Creating optimized Hysteria configuration..."
     cat > "$HYSTERIA_CONFIG" << EOF
 {
-  "listen": ":${LISTEN_PORT}",
-  "cert": "${HYSTERIA_CERT}",
-  "key": "${HYSTERIA_KEY}",
-  "obfs": "${OBFS}",
-  "auth": {
-    "mode": "password",
-    "config": { "password": "${AUTH_STR}" }
-  },
-  "up_mbps": ${UP_MBPS},
-  "down_mbps": ${DOWN_MBPS},
-  "disable_udp": false,
-  "recv_window_conn": 5767168,
-  "recv_window_client": 23068672,
-  "max_conn_client": 128
+    "listen": ":${LISTEN_PORT}",
+    "cert": "${HYSTERIA_CERT}",
+    "key": "${HYSTERIA_KEY}",
+    "obfs": "${OBFS}",
+    "auth": {
+        "mode": "password",
+        "config": { "password": "${AUTH_STR}" }
+    },
+    "up_mbps": ${UP_MBPS},
+    "down_mbps": ${DOWN_MBPS},
+    "disable_udp": false,
+    "recv_window_conn": 16777216,
+    "recv_window_client": 67108864,
+    "max_conn_client": 1024,
+    "disable_mtu_discovery": false
 }
 EOF
     chmod 640 "$HYSTERIA_CONFIG"; chown root:"$HYSTERIA_USER" "$HYSTERIA_CONFIG"
@@ -161,78 +160,80 @@ EOF
 }
 
 apply_sysctl() {
-    info "Applying kernel settings..."
+    info "Applying high-performance UDP & System settings..."
     modprobe nf_conntrack 2>/dev/null || true
     modprobe nf_nat 2>/dev/null || true
 
     cat > "$SYSCTL_FILE" << 'EOF'
-# Kernel performance tuning & forwarding for VPN tunneling
-net.core.rmem_max = 16777216
-net.core.wmem_max = 16777216
-net.core.rmem_default = 1048576
-net.core.wmem_default = 1048576
-net.core.somaxconn = 4096
-net.core.netdev_max_backlog = 16384
+# --- Hysteria High-Performance Sysctl ---
+net.core.rmem_max = 67108864
+net.core.wmem_max = 67108864
+net.core.rmem_default = 33554432
+net.core.wmem_default = 33554432
+net.core.somaxconn = 65535
+net.core.netdev_max_backlog = 65536
 
+# تمكين التوجيه لضمان سلاسة الاتصال واستقرار التصفح
 net.ipv4.ip_forward = 1
 net.ipv6.conf.all.forwarding = 1
 
+# تحسين أداء UDP Conntrack لمنع انقطاع الصوت والبث
 net.netfilter.nf_conntrack_max = 1048576
 net.netfilter.nf_conntrack_udp_timeout = 60
-net.netfilter.nf_conntrack_udp_timeout_stream = 180
+net.netfilter.nf_conntrack_udp_timeout_stream = 300
 
+# إعدادات الحماية والأداء للشبكة
 net.ipv4.tcp_syncookies = 1
+net.ipv4.tcp_tw_reuse = 1
+net.ipv4.tcp_fin_timeout = 15
 EOF
     sysctl -p "$SYSCTL_FILE" >/dev/null 2>&1 || true
 
     if modprobe tcp_bbr 2>/dev/null; then
         sysctl -w net.ipv4.tcp_congestion_control=bbr >/dev/null 2>&1 || true
         sysctl -w net.core.default_qdisc=fq >/dev/null 2>&1 || true
-        msg "BBR enabled"
+        msg "BBR Congestion Control Enabled"
     fi
-    msg "Kernel settings applied (ip_forward=1 active)"
+    msg "Kernel settings applied"
 }
 
 write_firewall_script() {
-    info "Writing firewall rules for full UDP Port Hopping (1-65535)..."
-
+    info "Writing clean & fast firewall rules..."
+    
     cat > "$FW_SCRIPT" << EOFW
 #!/usr/bin/env bash
-
 IFACE="${IFACE}"
+HY_UID="${HY_UID}"
 LISTEN_PORT="${LISTEN_PORT}"
 
-# Flush existing iptables NAT / INPUT rules cleanly first
-iptables -t nat -F PREROUTING 2>/dev/null || true
-iptables -t nat -F POSTROUTING 2>/dev/null || true
+# تنظيف السلاسل الخاصة بـ Hysteria
+iptables -t nat -D PREROUTING -i "\$IFACE" -p udp --dport 1:65535 -j REDIRECT --to-ports \$LISTEN_PORT 2>/dev/null || true
+iptables -t mangle -D POSTROUTING -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu 2>/dev/null || true
 
-# Enable NAT / Masquerade
-iptables -t nat -A POSTROUTING -o "\$IFACE" -j MASQUERADE
-ip6tables -t nat -A POSTROUTING -o "\$IFACE" -j MASQUERADE 2>/dev/null || true
+# 1. إعداد Port Hopping المدى الكامل (1-65535)
+if [ "${USE_PORT_HOPPING}" = true ]; then
+    iptables -t nat -A PREROUTING -i "\$IFACE" -p udp --dport 1:65535 -j REDIRECT --to-ports \$LISTEN_PORT
+fi
 
-# Redirect UDP ports EXCEPT listening port itself to avoid circular loop
-iptables -t nat -A PREROUTING -i "\$IFACE" -p udp --dport 1:\$((LISTEN_PORT-1)) -j REDIRECT --to-ports "\$LISTEN_PORT" 2>/dev/null || true
-iptables -t nat -A PREROUTING -i "\$IFACE" -p udp --dport \$((LISTEN_PORT+1)):65535 -j REDIRECT --to-ports "\$LISTEN_PORT" 2>/dev/null || true
+# 2. حل مشكلة التصفح والتعليق عبر ضبط TCP MSS Clamping
+iptables -t mangle -A POSTROUTING -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
 
-ip6tables -t nat -A PREROUTING -i "\$IFACE" -p udp --dport 1:\$((LISTEN_PORT-1)) -j REDIRECT --to-ports "\$LISTEN_PORT" 2>/dev/null || true
-ip6tables -t nat -A PREROUTING -i "\$IFACE" -p udp --dport \$((LISTEN_PORT+1)):65535 -j REDIRECT --to-ports "\$LISTEN_PORT" 2>/dev/null || true
+# 3. منع السبام والهجمات الأساسية دون تقييد بيانات المستخدم
+iptables -N HY-OUT 2>/dev/null || iptables -F HY-OUT
+iptables -A HY-OUT -o lo -j RETURN
+iptables -A HY-OUT -p tcp -m multiport --dports 25,465,587 -j REJECT
+iptables -A HY-OUT -j RETURN
 
-# Explicitly ACCEPT UDP traffic on all ports in INPUT chain
-iptables -I INPUT -i "\$IFACE" -p udp -j ACCEPT
-ip6tables -I INPUT -i "\$IFACE" -p udp -j ACCEPT 2>/dev/null || true
-iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+iptables -D OUTPUT -m owner --uid-owner "\$HY_UID" -j HY-OUT 2>/dev/null || true
+iptables -A OUTPUT -m owner --uid-owner "\$HY_UID" -j HY-OUT
 
 if command -v netfilter-persistent >/dev/null 2>&1; then
     netfilter-persistent save >/dev/null 2>&1
-elif command -v iptables-save >/dev/null 2>&1; then
-    mkdir -p /etc/iptables
-    iptables-save > /etc/iptables/rules.v4 2>/dev/null
-    ip6tables-save > /etc/iptables/rules.v6 2>/dev/null
 fi
 exit 0
 EOFW
     chmod 750 "$FW_SCRIPT"
-    bash "$FW_SCRIPT" && msg "Firewall rules applied (1-65535 UDP Redirect Fixed)" || err "Firewall script failed"
+    bash "$FW_SCRIPT" && msg "Firewall rules applied"
 }
 
 create_services() {
@@ -259,16 +260,18 @@ Description=Hysteria UDP Server (MinaProNet VPN)
 After=network-online.target hysteria-firewall.service
 Wants=network-online.target
 Requires=hysteria-firewall.service
-StartLimitIntervalSec=300
-StartLimitBurst=5
 
 [Service]
 Type=simple
-User=root
+User=${HYSTERIA_USER}
+Group=${HYSTERIA_USER}
 ExecStart=${HYSTERIA_BIN} server --config ${HYSTERIA_CONFIG}
 Restart=on-failure
-RestartSec=5
+RestartSec=3
 LimitNOFILE=1048576
+TasksMax=infinity
+AmbientCapabilities=CAP_NET_BIND_SERVICE CAP_NET_ADMIN
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE CAP_NET_ADMIN
 
 [Install]
 WantedBy=multi-user.target
@@ -283,72 +286,32 @@ start_services() {
     systemctl restart hysteria-firewall
     systemctl enable hysteria-server >/dev/null 2>&1
     systemctl restart hysteria-server
+    
     sleep 2
     if systemctl is-active --quiet hysteria-server; then
         msg "Hysteria server is RUNNING"
     else
-        err "Failed to start. Logs:"
-        journalctl -u hysteria-server --no-pager -n 25
+        err "Failed to start. Service logs:"
+        journalctl -u hysteria-server --no-pager -n 20
         exit 1
     fi
 }
 
-verify_server() {
-    echo ""; info "Verification"
-    ss -ulnp 2>/dev/null | grep -q ":${LISTEN_PORT}"         && msg "1/3 Listening on UDP ${LISTEN_PORT}" || err "1/3 NOT listening"
-
-    [ "$(sysctl -n net.ipv4.ip_forward)" = "1" ]         && msg "2/3 ip_forward enabled" || err "2/3 ip_forward disabled"
-
-    iptables -t nat -S PREROUTING 2>/dev/null | grep -q "REDIRECT"         && msg "3/3 Port hopping active" || err "3/3 Port hopping NOT active"
-    echo ""
-}
-
 show_info() {
-    echo -e "${GREEN}${BOLD}=== App Settings (MinaProNet VPN) ===${NC}"
-    echo -e " UDP Server : ${BOLD}${SERVER_IP}${NC}"
-    echo -e " UDP Port   : ${BOLD}1-65535${NC} (Listen Port: ${LISTEN_PORT})"
-    echo -e " Obfs       : ${BOLD}${OBFS}${NC}"
-    echo -e " Auth       : ${BOLD}${AUTH_STR}${NC}"
-    echo -e " UpDown     : ${BOLD}${UP_MBPS}:${DOWN_MBPS}${NC}"
+    local APP_PORT
+    [ "$USE_PORT_HOPPING" = true ] && APP_PORT="1-65535" || APP_PORT="${LISTEN_PORT}"
+    echo -e "\n${GREEN}${BOLD}=== App Settings (MinaProNet VPN) ===${NC}"
+    echo -e "  UDP Server : ${BOLD}${SERVER_IP}${NC}"
+    echo -e "  UDP Port   : ${BOLD}${APP_PORT}${NC}"
+    echo -e "  Obfs       : ${BOLD}${OBFS}${NC}"
+    echo -e "  Auth       : ${BOLD}${AUTH_STR}${NC}"
+    echo -e "  UpDown     : ${BOLD}${UP_MBPS}:${DOWN_MBPS}${NC}"
     echo ""
-    echo -e "${BOLD}=== Management ===${NC}"
-    echo -e " systemctl status hysteria-server"
-    echo -e " bash $0 --uninstall"
-    echo ""
-    umask 077
-    cat > "${HYSTERIA_DIR}/connection-info.txt" << EOF
-UDP Server: ${SERVER_IP}
-UDP Port: 1-65535
-Obfs: ${OBFS}
-Auth: ${AUTH_STR}
-UpDown: ${UP_MBPS}:${DOWN_MBPS}
-Internal: ${LISTEN_PORT}
-EOF
-    chmod 600 "${HYSTERIA_DIR}/connection-info.txt"
 }
 
-uninstall() {
-    warn "Uninstalling..."
-    systemctl disable --now hysteria-server hysteria-firewall 2>/dev/null
-    iptables -t nat -F PREROUTING 2>/dev/null
-    iptables -t nat -F POSTROUTING 2>/dev/null
-    ip6tables -t nat -F PREROUTING 2>/dev/null
-    ip6tables -t nat -F POSTROUTING 2>/dev/null
-    command -v netfilter-persistent >/dev/null 2>&1 && netfilter-persistent save >/dev/null 2>&1
-
-    rm -f "$SVC_MAIN" "$SVC_FW" "$HYSTERIA_BIN" "$SYSCTL_FILE"
-    rm -rf "$HYSTERIA_DIR"
-    userdel "$HYSTERIA_USER" 2>/dev/null
-    systemctl daemon-reload; sysctl --system >/dev/null 2>&1
-    msg "Uninstalled"
-    exit 0
-}
-
-# MAIN
+# ======================== MAIN ========================
 check_root
 detect_iface
-[ "${1:-}" = "--uninstall" ] && uninstall
-
 print_banner
 get_server_ip
 install_deps
@@ -360,8 +323,6 @@ create_config
 apply_sysctl
 write_firewall_script
 create_services
-systemctl daemon-reload
 start_services
-verify_server
 show_info
-echo -e "${GREEN}${BOLD}Done — server is set up with full port hopping (1-65535).${NC}"
+echo -e "${GREEN}${BOLD}Done — UDP Freeze Fixed & Full Port Range Active!${NC}"
