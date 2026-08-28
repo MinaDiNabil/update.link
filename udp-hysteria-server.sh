@@ -1,43 +1,46 @@
 #!/usr/bin/env bash
 # ==============================================================================
 #  MinaProNet VPN — Hysteria v1 UDP Server  (نسخة مُصلَّحة ومُحسَّنة)
-#  Hysteria 1 فقط — ملف إعداد JSON كما في سكربتك الأصلي
+#  Hysteria 1 فقط — ملف إعداد JSON
 #
-#  الأسباب الحقيقية لتوقف الخدمة بعد ثوانٍ:
-#   1) "auth": {"mode": "password"} صيغة غير موثقة في v1 → فشل فوري عند الإقلاع
-#   2) REDIRECT على المنافذ 1:65535 يخطف حركة العودة الخاصة بالسيرفر نفسه
-#   3) nf_conntrack_udp_timeout = 5 يقتل جلسات UDP بعد 5 ثوانٍ من الخمول
-#   4) Restart=on-failure بدون StartLimitIntervalSec=0 يوقف الخدمة نهائياً
-#   5) المستخدم hysteria غير موجود أصلاً → فشل فوري عند كل تشغيل
-#   6) rmem_default = 32MB يلتهم الذاكرة ويستدعي OOM Killer
-#   7) iptables -F INPUT يمسح قواعد النظام كلها
+#  الإعدادات هنا مضبوطة لتطابق تطبيق MinaProNet VPN تماماً:
+#     UDP Port  : 1-65535   (قفز على كامل المدى)
+#     Obfs      : minapronet
+#     Up/Down   : 100:100
 #
-#  الاستخدام:  sudo bash udp-hysteria-server.sh
-#  تخصيص:      sudo DOWN_MBPS=500 HOP_END=25000 bash udp-hysteria-server.sh
-#  عدة كلمات:  sudo PASSWORDS="pass1,pass2,pass3" bash udp-hysteria-server.sh
+#  الأسباب الحقيقية لتوقف الخدمة بعد ثوانٍ في السكربت الأصلي:
+#   1) nf_conntrack_udp_timeout = 5 → موت جلسات UDP بعد 5 ثوانٍ من الخمول،
+#      فتعود حزم الرد لتُخطف بقاعدة REDIRECT. هذا هو السبب الأول والأهم.
+#   2) "auth": {"mode": "password"} صيغة غير موثقة في v1 → فشل فوري
+#   3) Restart=on-failure بدون StartLimitIntervalSec=0 → توقف نهائي بعد 5 محاولات
+#   4) المستخدم hysteria غير موجود أصلاً → فشل فوري عند كل تشغيل
+#   5) rmem_default = 32MB → استنزاف الذاكرة واستدعاء OOM Killer
+#   6) iptables -F INPUT → مسح قواعد النظام، و REDIRECT بلا استثناءات يكسر DHCP
+#
+#  الاستخدام:
+#    sudo PASSWORDS="2a1d4b9896e:7823f72fcd10:16fbcee5gf" bash udp-hysteria-server.sh
 # ==============================================================================
 
 set -Eeuo pipefail
 
 # ----------------------------------------------------------------- الإعدادات
-LISTEN_PORT="${LISTEN_PORT:-36712}"      # منفذ الاستماع الأساسي
-ENABLE_HOP="${ENABLE_HOP:-1}"            # 1 = تفعيل Port Hopping ضد حجب UDP
-HOP_START="${HOP_START:-20000}"          # بداية نطاق القفز
-HOP_END="${HOP_END:-29999}"              # نهاية نطاق القفز (يجب أن تبقى < 30000)
+LISTEN_PORT="${LISTEN_PORT:-36712}"      # المنفذ الحقيقي الذي يستمع عليه hysteria
+ENABLE_HOP="${ENABLE_HOP:-1}"            # 1 = تفعيل قفز المنافذ
+HOP_START="${HOP_START:-1}"              # يطابق خانة UDP Port في التطبيق
+HOP_END="${HOP_END:-65535}"
 
-# up_mbps / down_mbps في v1 هي الحد الأقصى **لكل عميل** وليست حد السيرفر.
-# v1 يستخدم خوارزمية Brutal التي تتجاهل فقد الحزم وترسل بالسرعة المعلنة مهما حدث.
-# لذلك 1000 لكل عميل × 20 عميلاً = انهيار الخط بالكامل وانقطاع الجميع.
-# القيم الأقل هنا تعني ثباتاً أعلى بكثير مع عدد مستخدمين غير محدود.
+# up_mbps / down_mbps في v1 هي الحد الأقصى **لكل عميل**.
+# التطبيق يرسل 100:100 والسيرفر يأخذ الأصغر بين القيمتين، فاتركها 100.
 UP_MBPS="${UP_MBPS:-100}"
-DOWN_MBPS="${DOWN_MBPS:-200}"
+DOWN_MBPS="${DOWN_MBPS:-100}"
 
-OBFS_PASS="${OBFS_PASS:-minapronet}"     # نفس قيمة obfs في التطبيق
-ENABLE_OBFS="${ENABLE_OBFS:-1}"          # 0 لتعطيل التمويه تماماً
+OBFS_PASS="${OBFS_PASS:-minapronet}"     # يطابق خانة Obfs في التطبيق
+ENABLE_OBFS="${ENABLE_OBFS:-1}"
 ALPN="${ALPN:-}"                         # اتركه فارغاً إلا إذا كان التطبيق يحدده
 RESOLVER="${RESOLVER:-udp://1.1.1.1:53}" # DNS مستقل عن /etc/resolv.conf
 MAX_CONN_CLIENT="${MAX_CONN_CLIENT:-4096}"
 DISABLE_MTU_DISC="${DISABLE_MTU_DISC:-false}"
+LOG_LEVEL="${LOG_LEVEL:-info}"           # debug لعرض تفاصيل فشل المصادقة
 ENABLE_BBR="${ENABLE_BBR:-1}"
 SNI="${SNI:-www.bing.com}"
 HY_DIR="/etc/hysteria"
@@ -57,9 +60,6 @@ for t in iptables openssl timeout; do
     command -v "$t" >/dev/null 2>&1 || die "$t غير مثبت."
 done
 if [ ! -x "$HY_BIN" ]; then die "ملف hysteria التنفيذي غير موجود في $HY_BIN"; fi
-if [ "$ENABLE_HOP" = "1" ] && [ "$HOP_END" -ge 30000 ]; then
-    die "نطاق القفز يجب أن ينتهي قبل 30000 حتى لا يتعارض مع منافذ المصدر الصادرة."
-fi
 
 # --------------------------------------- التأكد أن الملف التنفيذي v1 وليس v2
 HY_VER_RAW="$("$HY_BIN" version 2>/dev/null || "$HY_BIN" --version 2>/dev/null || "$HY_BIN" -v 2>/dev/null || echo '')"
@@ -78,6 +78,7 @@ RAM_MB=$(awk '/MemTotal/{print int($2/1024)}' /proc/meminfo)
 CPUS=$(nproc 2>/dev/null || echo 1)
 IFACE=$(ip -4 route show default 2>/dev/null | awk '{print $5; exit}')
 if [ -z "${IFACE:-}" ]; then IFACE=$(ip -o link show | awk -F': ' '$2!="lo"{print $2; exit}'); fi
+[ -n "${IFACE:-}" ] || die "تعذّر تحديد واجهة الشبكة الخارجية."
 PUBIP=$(ip -4 addr show dev "$IFACE" 2>/dev/null | awk '/inet /{print $2; exit}' | cut -d/ -f1 || true)
 log "الموارد: ذاكرة ${RAM_MB}MB | معالجات ${CPUS} | واجهة ${IFACE} | IP ${PUBIP:-غير معروف}"
 
@@ -117,6 +118,14 @@ if [ -f "$HY_DIR/config.json" ]; then
             | head -1 | tr -d '"' || true)
     fi
 fi
+# آخر ملاذ: استخراجها من أحدث نسخة احتياطية
+if [ -z "$OLD_PASS" ]; then
+    LAST_BAK=$(ls -1t "$HY_DIR"/config.json.bak.* 2>/dev/null | head -1 || true)
+    if [ -n "${LAST_BAK:-}" ]; then
+        OLD_PASS=$(grep -o '"password"[[:space:]]*:[[:space:]]*"[^"]*"' "$LAST_BAK" 2>/dev/null \
+            | head -1 | sed 's/.*"password"[[:space:]]*:[[:space:]]*"//; s/"$//' || true)
+    fi
+fi
 PASSWORDS="${PASSWORDS:-${OLD_PASS:-$(head -c 24 /dev/urandom | base64 | tr -d '/+=' | head -c 24)}}"
 FIRST_PASS="${PASSWORDS%%,*}"
 
@@ -129,6 +138,16 @@ fi
 
 cat > /etc/sysctl.d/99-hysteria-multiuser.conf <<EOF
 # ===== Hysteria v1 / QUIC tuning — MinaProNet =====
+
+# --- أهم سطرين في الملف كله ---
+# القيمة 5 التي كانت في سكربتك تقتل سجل الاتصال بعد 5 ثوانٍ من الخمول،
+# فتصبح حزمة الرد "جديدة" وتقع في قاعدة REDIRECT فتضيع. هذا سبب
+# انقطاع الخدمة بعد ثوانٍ بالضبط. القيم أدناه هي المعيارية والآمنة.
+net.netfilter.nf_conntrack_udp_timeout = 60
+net.netfilter.nf_conntrack_udp_timeout_stream = 180
+net.netfilter.nf_conntrack_max = ${CT_MAX}
+net.netfilter.nf_conntrack_tcp_timeout_established = 3600
+net.netfilter.nf_conntrack_tcp_timeout_time_wait = 30
 
 # --- مخازن UDP: نرفع الحد الأقصى فقط ونُبقي الافتراضي صغيراً.
 # rmem_default الكبير يُطبَّق على كل مقبس في النظام لا على hysteria وحده.
@@ -145,14 +164,7 @@ net.ipv4.udp_mem = ${UDP_MEM_MIN} ${UDP_MEM_PRESS} ${UDP_MEM_MAX}
 net.ipv4.udp_rmem_min = 16384
 net.ipv4.udp_wmem_min = 16384
 
-# --- تتبّع الاتصالات: مهلة واقعية بدل 5 ثوانٍ التي كانت تقطع الجلسات
-net.netfilter.nf_conntrack_max = ${CT_MAX}
-net.netfilter.nf_conntrack_udp_timeout = 60
-net.netfilter.nf_conntrack_udp_timeout_stream = 180
-net.netfilter.nf_conntrack_tcp_timeout_established = 3600
-net.netfilter.nf_conntrack_tcp_timeout_time_wait = 30
-
-# --- منافذ المصدر الصادرة خارج نطاق القفز حتى لا تُخطف حركة العودة
+# --- حركة TCP الصادرة من الوكيل
 net.ipv4.ip_local_port_range = 30000 65000
 net.ipv4.tcp_tw_reuse = 1
 net.ipv4.tcp_fin_timeout = 20
@@ -179,7 +191,8 @@ EOF
 fi
 
 sysctl --system >/dev/null 2>&1 || sysctl -p /etc/sysctl.d/99-hysteria-multiuser.conf >/dev/null 2>&1 || true
-ok "إعدادات النواة مطبَّقة (conntrack=${CT_MAX} | socket buffer=$((SOCK_MAX/1048576))MB)"
+CT_NOW=$(cat /proc/sys/net/netfilter/nf_conntrack_udp_timeout 2>/dev/null || echo '?')
+ok "إعدادات النواة مطبَّقة (udp_timeout=${CT_NOW}s | conntrack=${CT_MAX})"
 
 cat > /etc/security/limits.d/99-hysteria.conf <<'EOF'
 * soft nofile 1048576
@@ -260,7 +273,6 @@ EOF
 }
 
 # --- اختبار الصيغة على الملف التنفيذي نفسه بدل التخمين ---
-# نشغّل السيرفر على منفذ مؤقت لأربع ثوانٍ: إن بقي يعمل فالصيغة مقبولة.
 PROBE_OUT=""
 probe_auth_style() {
     local style="$1" tmp probe_port out rc save_port
@@ -283,13 +295,13 @@ log "اختبار صيغة المصادقة المدعومة في هذا الإ�
 AUTH_STYLE=""
 if probe_auth_style "array"; then
     AUTH_STYLE="array"
-    ok "الصيغة المدعومة: mode=passwords (مصفوفة) — الصحيحة لـ v1.1 فما فوق"
+    ok "الصيغة المدعومة: mode=passwords (مصفوفة)"
 elif probe_auth_style "object"; then
     AUTH_STYLE="object"
     warn "إصدار قديم: mode=password (كائن). يدعم كلمة مرور واحدة فقط."
 else
     echo "$PROBE_OUT" | tail -20
-    die "فشل تشغيل hysteria بأي من الصيغتين. راجع المخرجات أعلاه (شهادة؟ صلاحيات؟ منفذ مشغول؟)."
+    die "فشل تشغيل hysteria بأي من الصيغتين. راجع المخرجات أعلاه."
 fi
 
 STAMP=$(date +%s)
@@ -300,7 +312,7 @@ chmod 640 "$HY_DIR/config.json"
 ok "تم إنشاء $HY_DIR/config.json"
 
 # ====================================================== 4) الجدار الناري
-log "إعادة بناء قواعد الجدار الناري بشكل آمن..."
+log "إعادة بناء قواعد الجدار الناري..."
 
 cat > "$HY_DIR/firewall.sh" <<EOFW
 #!/usr/bin/env bash
@@ -312,39 +324,56 @@ HOP_END="${HOP_END}"
 ENABLE_HOP="${ENABLE_HOP}"
 IFACE="${IFACE}"
 
-# --- حذف القواعد الخطيرة القديمة (REDIRECT على كامل المنافذ 1:65535) ---
+# --- حذف القواعد القديمة المكتوبة مباشرة في PREROUTING ---
 while read -r spec; do
     [ -z "\$spec" ] && continue
     # shellcheck disable=SC2086
     iptables -t nat -D PREROUTING \${spec#-A PREROUTING } 2>/dev/null || true
-done < <(iptables-save -t nat 2>/dev/null | grep -E '^-A PREROUTING .*(dport 1:65535|dports 1:65535)' || true)
+done < <(iptables-save -t nat 2>/dev/null | grep -E '^-A PREROUTING .*REDIRECT.*(dport|dports) (1:65535|1-65535)' || true)
 
-# --- حذف قاعدة السماح المفتوحة لكل UDP ---
+# --- حذف قاعدة السماح المفتوحة لكل UDP التي كان السكربت القديم يضيفها ---
 while iptables -C INPUT -p udp -j ACCEPT 2>/dev/null; do
     iptables -D INPUT -p udp -j ACCEPT 2>/dev/null || break
 done
 
-# --- سلسلة NAT مخصصة لقفز المنافذ ---
+# ============================ سلسلة قفز المنافذ ============================
 iptables -t nat -N HY_HOP 2>/dev/null || true
 iptables -t nat -F HY_HOP
 iptables -t nat -C PREROUTING -j HY_HOP 2>/dev/null || iptables -t nat -I PREROUTING 1 -j HY_HOP
+
 if [ "\$ENABLE_HOP" = "1" ]; then
+    # --- استثناءات إجبارية قبل إعادة التوجيه ---
+    # بدونها تلتهم القاعدة حزم DHCP الخاصة بالسيرفر نفسه فينقطع عنه الإنترنت
+    # عند تجديد عنوان الـ IP، وتخطف أيضاً منافذ أي خدمة UDP أخرى على الجهاز.
+    EXCLUDE="67 68 546 547"
+    if command -v ss >/dev/null 2>&1; then
+        # العنوان المحلي هو أول حقل ينتهي بـ :رقم — أكثر ثباتاً من رقم حقل ثابت
+        OTHERS=\$(ss -lun 2>/dev/null | awk 'NR>1{for(i=1;i<=NF;i++) if(\$i ~ /:[0-9]+\$/){sub(/.*:/,"",\$i); print \$i; break}}' \\
+                 | grep -E '^[0-9]+\$' | sort -un || true)
+        EXCLUDE="\$EXCLUDE \$OTHERS"
+    fi
+    for p in \$EXCLUDE; do
+        case "\$p" in ''|*[!0-9]*) continue;; esac
+        [ "\$p" = "\$LISTEN_PORT" ] && continue
+        [ "\$p" -lt "\$HOP_START" ] && continue
+        [ "\$p" -gt "\$HOP_END" ] && continue
+        iptables -t nat -A HY_HOP -i "\$IFACE" -p udp --dport "\$p" -j RETURN
+    done
+
+    # --- إعادة التوجيه الفعلية ---
     iptables -t nat -A HY_HOP -i "\$IFACE" -p udp --dport "\$HOP_START":"\$HOP_END" \\
         -j REDIRECT --to-ports "\$LISTEN_PORT"
 fi
 
-# --- سلسلة السماح في INPUT (بدون مسح قواعد النظام) ---
+# ============================ السماح في INPUT ============================
+# الحزم المُعاد توجيهها تصل إلى INPUT وقد صار منفذها LISTEN_PORT،
+# لذلك سطر واحد يكفي ولا داعي لفتح كل منافذ UDP كما كان يفعل السكربت القديم.
 iptables -N HY_IN 2>/dev/null || true
 iptables -F HY_IN
 iptables -C INPUT -j HY_IN 2>/dev/null || iptables -I INPUT 1 -j HY_IN
 iptables -A HY_IN -p udp --dport "\$LISTEN_PORT" -j ACCEPT
-if [ "\$ENABLE_HOP" = "1" ]; then
-    iptables -A HY_IN -p udp --dport "\$HOP_START":"\$HOP_END" -j ACCEPT
-fi
 
-# --- تعطيل تتبّع الاتصالات للمنفذ الأساسي عند إيقاف القفز ---
-# يمنع امتلاء جدول conntrack مع آلاف المستخدمين.
-# لا يُفعَّل مع القفز لأن NAT العكسي يحتاج conntrack ليُعيد منفذ المصدر الصحيح.
+# --- عند إيقاف القفز: تعطيل تتبّع الاتصالات لتوفير جدول conntrack ---
 iptables -t raw -N HY_RAW 2>/dev/null || true
 iptables -t raw -F HY_RAW
 iptables -t raw -C PREROUTING -j HY_RAW 2>/dev/null || iptables -t raw -I PREROUTING 1 -j HY_RAW
@@ -354,17 +383,19 @@ if [ "\$ENABLE_HOP" != "1" ]; then
     iptables -t raw -I OUTPUT 1 -p udp --sport "\$LISTEN_PORT" -j NOTRACK
 fi
 
-# --- IPv6 ---
+# ============================ IPv6 ============================
 if command -v ip6tables >/dev/null 2>&1; then
     ip6tables -N HY_IN 2>/dev/null || true
     ip6tables -F HY_IN 2>/dev/null || true
     ip6tables -C INPUT -j HY_IN 2>/dev/null || ip6tables -I INPUT 1 -j HY_IN 2>/dev/null || true
     ip6tables -A HY_IN -p udp --dport "\$LISTEN_PORT" -j ACCEPT 2>/dev/null || true
     if [ "\$ENABLE_HOP" = "1" ]; then
-        ip6tables -A HY_IN -p udp --dport "\$HOP_START":"\$HOP_END" -j ACCEPT 2>/dev/null || true
         ip6tables -t nat -N HY_HOP 2>/dev/null || true
         ip6tables -t nat -F HY_HOP 2>/dev/null || true
         ip6tables -t nat -C PREROUTING -j HY_HOP 2>/dev/null || ip6tables -t nat -I PREROUTING 1 -j HY_HOP 2>/dev/null || true
+        for p in 546 547; do
+            ip6tables -t nat -A HY_HOP -i "\$IFACE" -p udp --dport "\$p" -j RETURN 2>/dev/null || true
+        done
         ip6tables -t nat -A HY_HOP -i "\$IFACE" -p udp --dport "\$HOP_START":"\$HOP_END" \\
             -j REDIRECT --to-ports "\$LISTEN_PORT" 2>/dev/null || true
     fi
@@ -377,12 +408,11 @@ chown root:root "$HY_DIR/firewall.sh"
 chmod 700 "$HY_DIR/firewall.sh"
 bash "$HY_DIR/firewall.sh" || warn "تحذير: بعض قواعد الجدار الناري لم تُطبَّق."
 if [ "$ENABLE_HOP" = "1" ]; then
-    ok "الجدار الناري جاهز (نطاق القفز ${HOP_START}-${HOP_END} ← ${LISTEN_PORT})"
+    ok "قفز المنافذ مفعّل: ${HOP_START}-${HOP_END} ← ${LISTEN_PORT} على ${IFACE}"
 else
-    ok "الجدار الناري جاهز (منفذ واحد ${LISTEN_PORT} مع NOTRACK)"
+    ok "منفذ واحد: ${LISTEN_PORT}"
 fi
 
-# وحدة تُعيد تطبيق القواعد بعد كل إقلاع (كانت مفقودة رغم الإشارة إليها في After=)
 cat > /etc/systemd/system/hysteria-firewall.service <<EOF
 [Unit]
 Description=Hysteria firewall rules
@@ -416,6 +446,7 @@ Type=simple
 User=hysteria
 Group=hysteria
 WorkingDirectory=${HY_DIR}
+Environment=LOGGING_LEVEL=${LOG_LEVEL}
 ExecStart=${HY_BIN} server --config ${HY_DIR}/config.json
 Restart=always
 RestartSec=3
@@ -443,23 +474,26 @@ systemctl restart "$SVC" || true
 cat > /usr/local/bin/hy-status <<EOF
 #!/usr/bin/env bash
 echo "== حالة الخدمة =="
-systemctl --no-pager -l status ${SVC} | head -12
+systemctl --no-pager -l status ${SVC} | head -10
 echo
 echo "== منفذ الاستماع =="
-ss -lunp 2>/dev/null | grep -E ":${LISTEN_PORT}[[:space:]]" || echo "لا يوجد استماع على ${LISTEN_PORT}!"
+ss -lunp 2>/dev/null | grep -E ":${LISTEN_PORT}[[:space:]]" || echo "!! لا يوجد استماع على ${LISTEN_PORT}"
 echo
-echo "== الاتصالات المتتبَّعة =="
-echo "الحالي: \$(cat /proc/sys/net/netfilter/nf_conntrack_count 2>/dev/null || echo -)"
-echo "الأقصى: \$(cat /proc/sys/net/netfilter/nf_conntrack_max 2>/dev/null || echo -)"
+echo "== عدّادات قفز المنافذ (يجب أن ترتفع عند محاولة الاتصال) =="
+iptables -t nat -L HY_HOP -n -v 2>/dev/null | tail -n +3
 echo
-echo "== أخطاء استقبال UDP (يجب أن تبقى شبه ثابتة) =="
-netstat -su 2>/dev/null | grep -iE 'receive errors|RcvbufErrors' || echo "netstat غير مثبت"
+echo "== عدّاد قبول الحزم =="
+iptables -L HY_IN -n -v 2>/dev/null | tail -n +3
 echo
-echo "== قواعد قفز المنافذ =="
-iptables -t nat -L HY_HOP -n 2>/dev/null | tail -n +3
+echo "== conntrack =="
+echo "الحالي: \$(cat /proc/sys/net/netfilter/nf_conntrack_count 2>/dev/null || echo -) / \$(cat /proc/sys/net/netfilter/nf_conntrack_max 2>/dev/null || echo -)"
+echo "udp_timeout: \$(cat /proc/sys/net/netfilter/nf_conntrack_udp_timeout 2>/dev/null || echo -)s"
 echo
-echo "== آخر 15 سطر من السجل =="
-journalctl -u ${SVC} -n 15 --no-pager
+echo "== كلمة المرور المضبوطة على السيرفر =="
+grep -o '"auth".*' /etc/hysteria/config.json 2>/dev/null | head -1
+echo
+echo "== آخر 20 سطر من السجل =="
+journalctl -u ${SVC} -n 20 --no-pager
 EOF
 chmod +x /usr/local/bin/hy-status
 
@@ -472,24 +506,29 @@ if systemctl is-active --quiet "$SVC" && ss -lunp 2>/dev/null | grep -qE ":${LIS
     RESTARTS=$(systemctl show -p NRestarts --value "$SVC" 2>/dev/null || echo 0)
     ok "الخدمة تعمل بثبات (مرات إعادة التشغيل: ${RESTARTS})"
     echo
-    echo "──────────────── بيانات الاتصال ────────────────"
-    echo " الخادم           : ${PUBIP:-<ضع IP السيرفر>}"
-    echo " المنفذ           : ${LISTEN_PORT}"
-    if [ "$ENABLE_HOP" = "1" ]; then echo " نطاق القفز       : ${HOP_START}-${HOP_END}"; fi
-    echo " كلمة المرور      : ${PASSWORDS}"
-    if [ "$ENABLE_OBFS" = "1" ]; then echo " obfs (xplus)     : ${OBFS_PASS}"; fi
-    echo " up/down لكل عميل : ${UP_MBPS} / ${DOWN_MBPS} Mbps"
-    echo " SNI (peer)       : ${SNI}  — فعّل insecure لأن الشهادة ذاتية التوقيع"
+    echo "════════════ اضبط التطبيق بهذه القيم حرفياً ════════════"
+    echo " UDP Server        : ${PUBIP:-<IP السيرفر>}"
+    echo " UDP Port          : ${HOP_START}-${HOP_END}"
+    if [ "$ENABLE_OBFS" = "1" ]; then
+        echo " Obfs              : ${OBFS_PASS}"
+    else
+        echo " Obfs              : (اتركه فارغاً)"
+    fi
+    echo " Auth              : ${FIRST_PASS}"
+    echo " Up Down Limit     : ${UP_MBPS}:${DOWN_MBPS}"
+    echo "═══════════════════════════════════════════════════════"
     echo
-    Q="protocol=udp&auth=${FIRST_PASS}&peer=${SNI}&insecure=1&upmbps=${UP_MBPS}&downmbps=${DOWN_MBPS}"
-    if [ "$ENABLE_OBFS" = "1" ]; then Q="${Q}&obfs=xplus&obfsParam=${OBFS_PASS}"; fi
-    if [ -n "$ALPN" ];            then Q="${Q}&alpn=${ALPN}"; fi
-    if [ "$ENABLE_HOP" = "1" ];   then Q="${Q}&mport=${HOP_START}-${HOP_END}"; fi
-    echo " رابط v1 للتطبيق:"
-    echo " hysteria://${PUBIP:-SERVER_IP}:${LISTEN_PORT}?${Q}#MinaProNet"
-    echo "────────────────────────────────────────────────"
+    if [ -n "${OLD_PASS:-}" ] && [ "$OLD_PASS" = "$FIRST_PASS" ]; then
+        ok "كلمة المرور مأخوذة من إعدادك السابق (لم تتغير)."
+    else
+        warn "كلمة المرور جديدة! يجب تحديث خانة Auth في التطبيق."
+        warn "لتثبيت كلمة مرور محددة أعد التشغيل هكذا:"
+        echo "  sudo PASSWORDS=\"القيمة_التي_في_التطبيق\" bash \$0"
+    fi
     echo
-    echo " للفحص في أي وقت:  hy-status"
+    echo " لمتابعة محاولات الاتصال مباشرة أثناء الضغط على Connect:"
+    echo "   journalctl -u ${SVC} -f"
+    echo " وللفحص الشامل:  hy-status"
 else
     warn "الخدمة لم تستقر. مخرجات السجل:"
     journalctl -u "$SVC" -n 30 --no-pager || true
