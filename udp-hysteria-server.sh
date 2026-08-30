@@ -1,304 +1,202 @@
 #!/usr/bin/env bash
 # ==============================================================================
-#  MinaProNet VPN — إصلاح التصفح: تشغيل badvpn-udpgw
+#  MinaProNet VPN — إصلاح  sendto: operation not permitted
 #
-#  التشخيص المؤكَّد بالقياس:
-#   • سجل hysteria:  dst:127.0.0.1:7300 → connection refused
-#     التطبيق يمرّر كل حركة UDP (وأولها DNS) عبر udpgw على هذا المنفذ.
-#   • اختبار python: errno=98 Address already in use
-#   • ss -ltn:       فارغ
+#  تقدّم مؤكَّد: إصلاح udpgw نجح. السجل صار يعرض وجهات حقيقية
+#  (142.250.129.156 لجوجل وغيرها) بدل 127.0.0.1:7300 فقط.
 #
-#  المنفذ 7300 محجوز فعلاً، لكن بمقبس TCP استُدعي عليه bind() دون listen().
-#  هذا النوع موجود في جدول bhash فقط ولا يظهر في ss ولا netstat ولا lsof،
-#  ولا يتجاوزه SO_REUSEADDR. لذلك فشل كل من python وbadvpn بالخطأ نفسه.
+#  العطل المتبقي:
+#     write udp [::]:36712->CLIENT: sendto: operation not permitted
+#  EPERM على sendto تعني أن netfilter أسقط الحزمة الصادرة، فالرد
+#  لا يغادر السيرفر أصلاً.
 #
-#  الحل: تشغيل udpgw على منفذ حر، وتحويل اتصالات hysteria الصادرة نحو
-#  7300 إليه عبر سلسلة OUTPUT في جدول nat. hysteria يظل يطلب 7300 ولن
-#  يلاحظ شيئاً. ويُحاول تحرير المنفذ أولاً قبل اللجوء للتحويل.
+#  السبب المرجَّح — وهو من صنعي:
+#  ردود hysteria تحتاج ترجمة NAT عكسية (36712 ← منفذ القفز) مخزّنة
+#  في سجل conntrack. فرضتُ على حركة القفز مهلة 5/8 ثوانٍ، فينتهي
+#  عمر السجل بينما اتصال QUIC حي، فيُنشأ سجل ثانٍ زوج ذهابه مطابق
+#  لزوج عودة الأول ⇒ تصادم ⇒ NF_DROP ⇒ EPERM.
 #
-#  الاستخدام:  sudo bash udpgw-setup.sh
+#  هذا السكربت يقيس أولاً (عدّاد insert_failed) ثم يصلح ثم يعيد
+#  القياس، فلا يعتمد على الظن.
+#
+#  الاستخدام:  sudo bash fix-eperm.sh
 # ==============================================================================
 
 set -Eeuo pipefail
 export PATH="/usr/sbin:/sbin:/usr/local/bin:$PATH"
 
-APP_PORT="${APP_PORT:-auto}"        # المنفذ الذي يطلبه التطبيق
-MAX_CLIENTS="${MAX_CLIENTS:-1000}"
-MAX_CONN_PER_CLIENT="${MAX_CONN_PER_CLIENT:-10}"
 SVC="hysteria-server"
-BUILD_PREFIX=/opt/badvpn
-HELPER=/etc/hysteria/udpgw-redirect.sh
+SYSCTL_FILE="/etc/sysctl.d/99-hysteria-multiuser.conf"
+FW="/etc/hysteria/firewall.sh"
+MEASURE="${MEASURE:-20}"      # مدة القياس بالثواني
 
 log()  { printf '\033[1;36m[*]\033[0m %s\n' "$*"; }
 ok()   { printf '\033[1;32m[✓]\033[0m %s\n' "$*"; }
 warn() { printf '\033[1;33m[!]\033[0m %s\n' "$*"; }
 die()  { printf '\033[1;31m[✗]\033[0m %s\n' "$*" >&2; exit 1; }
+P()    { printf '  %-40s %s\n' "$1" "$2"; }
 
 [ "$(id -u)" -eq 0 ] || die "يجب تشغيل السكربت بصلاحيات root."
-tcp_ok() { timeout 4 bash -c "exec 3<>/dev/tcp/$1/$2" >/dev/null 2>&1; }
 
-# الفحص الوحيد الموثوق: محاولة ارتباط حقيقية
-can_bind() {
-    command -v python3 >/dev/null 2>&1 || return 0
-    local r
-    r=$(python3 - "$1" <<'PY' 2>&1 || true
-import socket, sys
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-try:
-    s.bind(("127.0.0.1", int(sys.argv[1]))); s.listen(1); print("OK")
-except OSError as e:
-    print("FAIL errno=%d %s" % (e.errno, e.strerror))
-finally:
-    s.close()
-PY
-)
-    BIND_RESULT="$r"
-    case "$r" in OK*) return 0;; *) return 1;; esac
+# جمع عمود سداسي عشري من /proc/net/stat/nf_conntrack حسب اسمه
+ct_stat() {
+    local col total=0 v
+    [ -r /proc/net/stat/nf_conntrack ] || { echo 0; return; }
+    col=$(awk -v n="$1" 'NR==1{for(i=1;i<=NF;i++) if($i==n){print i; exit}}' /proc/net/stat/nf_conntrack)
+    [ -n "$col" ] || { echo 0; return; }
+    while read -r v; do
+        [ -z "$v" ] && continue
+        case "$v" in *[!0-9a-fA-F]*) continue;; esac
+        total=$(( total + 16#$v ))
+    done < <(awk -v c="$col" 'NR>1{print $c}' /proc/net/stat/nf_conntrack)
+    echo "$total"
 }
 
-# ==================== ١) المنفذ الذي يطلبه التطبيق ====================
-if [ "$APP_PORT" = "auto" ]; then
-    log "قراءة سجل hysteria..."
-    D=$(journalctl -u "$SVC" -n 5000 --no-pager 2>/dev/null \
-        | grep -oE 'dst:127\.0\.0\.1:[0-9]+' | grep -oE '[0-9]+$' \
-        | sort | uniq -c | sort -rn | head -1 | awk '{print $2}' || true)
-    if [ -n "${D:-}" ]; then APP_PORT="$D"; ok "المنفذ المطلوب: ${APP_PORT}"
-    else APP_PORT=7300; warn "لا طلبات في السجل — سيُستخدم 7300."; fi
+# ==================== ١) القياس قبل الإصلاح ====================
+echo "════════════ القياس قبل الإصلاح (${MEASURE} ثانية) ════════════"
+IF0=$(ct_stat insert_failed); DR0=$(ct_stat drop)
+P "insert_failed الآن:" "$IF0"
+P "drop الآن:" "$DR0"
+P "conntrack مستخدم/أقصى:" "$(cat /proc/sys/net/netfilter/nf_conntrack_count 2>/dev/null || echo -)/$(cat /proc/sys/net/netfilter/nf_conntrack_max 2>/dev/null || echo -)"
+P "مهلة UDP:" "$(cat /proc/sys/net/netfilter/nf_conntrack_udp_timeout 2>/dev/null || echo -)s / $(cat /proc/sys/net/netfilter/nf_conntrack_udp_timeout_stream 2>/dev/null || echo -)s"
+
+echo
+echo "  سياسات المهلة القصيرة المطبَّقة:"
+if iptables -t raw -S HY_RAW 2>/dev/null | grep -q 'CT --timeout'; then
+    echo "    ✔ قاعدة CT في جدول raw (nfct)"
 fi
-case "$APP_PORT" in ''|*[!0-9]*) die "منفذ غير صالح: $APP_PORT";; esac
-
-if tcp_ok 127.0.0.1 "$APP_PORT"; then
-    ok "يوجد بالفعل من يستجيب على 127.0.0.1:${APP_PORT}"
-    exit 0
-fi
-
-# ==================== ٢) محاولة تحرير المنفذ ====================
-BIND_RESULT=""
-LISTEN_PORT="$APP_PORT"
-NEED_REDIRECT=0
-
-if ! can_bind "$APP_PORT"; then
-    warn "المنفذ ${APP_PORT} محجوز: ${BIND_RESULT}"
-    echo "  من يحتجزه:"
-    ss -tanp 2>/dev/null | grep -E "[:.]${APP_PORT}[[:space:]]" | sed 's/^/    tcp  /' || true
-    ss -uanp 2>/dev/null | grep -E "[:.]${APP_PORT}[[:space:]]" | sed 's/^/    udp  /' || true
-    command -v lsof  >/dev/null 2>&1 && lsof -nP -i :"$APP_PORT" 2>/dev/null | sed 's/^/    lsof /' || true
-    command -v fuser >/dev/null 2>&1 && fuser -n tcp "$APP_PORT" 2>&1 | sed 's/^/    fuser /' || true
-
-    # قتل ما يمكن العثور عليه
-    KILLED=0
-    for pid in $(ss -tanp 2>/dev/null | grep -E "[:.]${APP_PORT}[[:space:]]" \
-                 | grep -oE 'pid=[0-9]+' | cut -d= -f2 | sort -u); do
-        warn "  إيقاف العملية ${pid} ($(cat /proc/"$pid"/comm 2>/dev/null || echo '?'))"
-        kill "$pid" 2>/dev/null || true; KILLED=1
-    done
-    if command -v fuser >/dev/null 2>&1; then
-        fuser -k -n tcp "$APP_PORT" >/dev/null 2>&1 && KILLED=1 || true
-    fi
-    [ "$KILLED" = "1" ] && sleep 2
-
-    if can_bind "$APP_PORT"; then
-        ok "تم تحرير المنفذ ${APP_PORT}"
-    else
-        # مقبس مرتبط بلا listen لا تراه أي أداة ولا يمكن قتله.
-        # نشغّل udpgw على منفذ حر ونحوّل إليه.
-        warn "تعذّر تحديد المُحتجِز — سيُستخدم التحويل بدلاً من الصراع معه."
-        LISTEN_PORT=""
-        for p in $(seq 7301 7399); do
-            if can_bind "$p"; then LISTEN_PORT="$p"; break; fi
-        done
-        [ -n "$LISTEN_PORT" ] || die "لا يوجد منفذ حر في المدى 7301-7399."
-        NEED_REDIRECT=1
-        ok "سيعمل udpgw على ${LISTEN_PORT} مع تحويل ${APP_PORT} إليه"
-    fi
+if nft list table ip hyhop >/dev/null 2>&1; then
+    echo "    ✔ جدول nftables باسم hyhop"
 fi
 
-# ==================== ٣) الملفات التنفيذية المرشَّحة ====================
-CANDIDATES=""
-add_cand() { [ -x "$1" ] && case " $CANDIDATES " in *" $1 "*) : ;; *) CANDIDATES="$CANDIDATES $1";; esac; return 0; }
+echo
+echo "  قواعد إسقاط محتملة في OUTPUT:"
+iptables -L OUTPUT -n -v 2>/dev/null | awk 'NR>2 && ($3=="DROP"||$3=="REJECT")' | sed 's/^/    /' || true
+iptables -L OUTPUT -n -v 2>/dev/null | head -2 | sed 's/^/    /' || true
 
-if [ ! -x /usr/bin/badvpn-udpgw ] && [ ! -x "$BUILD_PREFIX/bin/badvpn-udpgw" ] \
-   && [ ! -x /usr/local/bin/badvpn-udpgw ]; then
-    log "تركيب حزمة badvpn..."
-    (DEBIAN_FRONTEND=noninteractive timeout 180 apt-get install -y badvpn >/dev/null 2>&1 \
-     || (timeout 240 apt-get update >/dev/null 2>&1 \
-         && DEBIAN_FRONTEND=noninteractive timeout 180 apt-get install -y badvpn >/dev/null 2>&1)) || true
-fi
-add_cand /usr/bin/badvpn-udpgw
-add_cand "$BUILD_PREFIX/bin/badvpn-udpgw"
-add_cand /usr/local/bin/badvpn-udpgw
-[ -n "$CANDIDATES" ] || die "لا يوجد badvpn-udpgw. ثبّته: apt install -y badvpn"
+echo
+echo "  رسائل النواة عن conntrack:"
+dmesg 2>/dev/null | grep -i 'nf_conntrack.*table full' | tail -3 | sed 's/^/    /' || echo "    لا شيء"
 
-# ==================== ٤) اختيار ملف تنفيذي يعمل ====================
-WORKING_BIN=""; WORKING_ARGS=""; LAST_OUT=""
-try_bin() {
-    local b="$1"; shift
-    local out rc=0
-    out=$(timeout 3 "$b" "$@" 2>&1) || rc=$?
-    LAST_OUT="$out"
-    [ "$rc" -eq 124 ]
-}
-
-select_binary() {   # $1 = المنفذ المراد الاستماع عليه
-    local port="$1" c
-    WORKING_BIN=""; WORKING_ARGS=""
-    for c in $CANDIDATES; do
-        printf '      %s — ' "$c"
-        if try_bin "$c" --listen-addr "127.0.0.1:${port}" \
-                --max-clients "$MAX_CLIENTS" --max-connections-for-client "$MAX_CONN_PER_CLIENT"; then
-            WORKING_BIN="$c"
-            WORKING_ARGS="--listen-addr 127.0.0.1:${port} --max-clients ${MAX_CLIENTS} --max-connections-for-client ${MAX_CONN_PER_CLIENT}"
-            echo "نجح"; return 0
-        fi
-        if try_bin "$c" --listen-addr "127.0.0.1:${port}"; then
-            WORKING_BIN="$c"; WORKING_ARGS="--listen-addr 127.0.0.1:${port}"
-            echo "نجح (معاملات مبسّطة)"; return 0
-        fi
-        echo "فشل"
-    done
-    return 1
-}
-
-log "اختبار التشغيل على المنفذ ${LISTEN_PORT}..."
-if ! select_binary "$LISTEN_PORT"; then
-    # قد يكون python3 غائباً فلم يُكتشف احتجاز المنفذ مبكراً.
-    # نجرّب منفذاً بديلاً مع التحويل بدل الاستسلام.
-    if [ "$NEED_REDIRECT" = "0" ]; then
-        warn "فشل التشغيل على ${LISTEN_PORT} — تجربة منفذ بديل مع التحويل..."
-        for p in $(seq 7301 7399); do
-            if select_binary "$p"; then
-                LISTEN_PORT="$p"; NEED_REDIRECT=1
-                ok "سيعمل udpgw على ${LISTEN_PORT} مع تحويل ${APP_PORT} إليه"
-                break
-            fi
-        done
-    fi
-fi
-
-if [ -z "$WORKING_BIN" ]; then
-    echo; echo "آخر خطأ:"; printf '%s\n' "$LAST_OUT" | sed 's/^/    /'
-    die "تعذّر تشغيل udpgw على أي ملف تنفيذي أو منفذ."
-fi
-ok "الملف المعتمد: ${WORKING_BIN}"
-
-# ==================== ٥) سكربت التحويل ====================
-mkdir -p /etc/hysteria
-cat > "$HELPER" <<EOF
-#!/usr/bin/env bash
-# تحويل اتصالات hysteria الصادرة نحو المنفذ الذي يطلبه التطبيق
-set -uo pipefail
-export PATH="/usr/sbin:/sbin:\$PATH"
-APP_PORT=${APP_PORT}
-LISTEN_PORT=${LISTEN_PORT}
-NEED_REDIRECT=${NEED_REDIRECT}
-
-iptables -C INPUT -i lo -j ACCEPT >/dev/null 2>&1 || iptables -I INPUT 1 -i lo -j ACCEPT >/dev/null 2>&1
-
-# إزالة أي تحويل سابق
-while iptables -t nat -C OUTPUT -d 127.0.0.1/32 -p tcp --dport "\$APP_PORT" \\
-        -j REDIRECT --to-ports "\$LISTEN_PORT" >/dev/null 2>&1; do
-    iptables -t nat -D OUTPUT -d 127.0.0.1/32 -p tcp --dport "\$APP_PORT" \\
-        -j REDIRECT --to-ports "\$LISTEN_PORT" >/dev/null 2>&1 || break
-done
-
-if [ "\$NEED_REDIRECT" = "1" ]; then
-    iptables -t nat -A OUTPUT -d 127.0.0.1/32 -p tcp --dport "\$APP_PORT" \\
-        -j REDIRECT --to-ports "\$LISTEN_PORT" >/dev/null 2>&1
-fi
-exit 0
-EOF
-chmod 700 "$HELPER"
-bash "$HELPER" || warn "تعذّر تطبيق قاعدة التحويل."
-
-# ==================== ٦) الخدمة ====================
-log "إنشاء خدمة badvpn-udpgw..."
-cat > /etc/systemd/system/badvpn-udpgw.service <<EOF
-[Unit]
-Description=BadVPN udpgw - UDP forwarding for VPN clients
-After=network-online.target
-Wants=network-online.target
-StartLimitIntervalSec=0
-StartLimitBurst=0
-
-[Service]
-Type=simple
-ExecStartPre=/bin/bash ${HELPER}
-ExecStart=${WORKING_BIN} ${WORKING_ARGS}
-Restart=always
-RestartSec=3
-LimitNOFILE=1048576
-LimitNPROC=65535
-TasksMax=infinity
-OOMScoreAdjust=-500
-
-[Install]
-WantedBy=multi-user.target
-EOF
-
-mkdir -p "/etc/systemd/system/${SVC}.service.d"
-cat > "/etc/systemd/system/${SVC}.service.d/udpgw.conf" <<EOF
-[Unit]
-Wants=badvpn-udpgw.service
-After=badvpn-udpgw.service
-EOF
-
-systemctl daemon-reload
-systemctl reset-failed badvpn-udpgw.service >/dev/null 2>&1 || true
-systemctl enable badvpn-udpgw.service >/dev/null 2>&1 || true
-systemctl restart badvpn-udpgw.service
-
-if ! systemctl is-active --quiet "$SVC"; then
-    log "تشغيل خدمة hysteria..."
-    systemctl reset-failed "$SVC" >/dev/null 2>&1 || true
-    systemctl start "$SVC" >/dev/null 2>&1 || true
-fi
-
-# ==================== ٧) التحقق ====================
-log "التحقق..."
-sleep 4
-FAIL=0
-
-if systemctl is-active --quiet badvpn-udpgw.service; then
-    ok "خدمة udpgw تعمل على ${LISTEN_PORT}"
+log "قياس معدل الفشل خلال ${MEASURE} ثانية... (اترك مستخدماً متصلاً)"
+sleep "$MEASURE"
+IF1=$(ct_stat insert_failed); DR1=$(ct_stat drop)
+DIF=$(( IF1 - IF0 )); DDR=$(( DR1 - DR0 ))
+echo
+P "ارتفاع insert_failed:" "$DIF"
+P "ارتفاع drop:" "$DDR"
+if [ "$DIF" -gt 0 ]; then
+    warn "تأكد التصادم: ${DIF} فشل إدراج خلال ${MEASURE} ثانية."
+    warn "هذا هو مصدر operation not permitted."
 else
-    warn "خدمة udpgw متوقفة:"
-    journalctl -u badvpn-udpgw.service -n 12 --no-pager | sed 's/^/    /' || true
-    FAIL=1
+    warn "لم يرتفع insert_failed. السبب قد يكون قاعدة إسقاط في OUTPUT."
+    warn "سيُطبَّق الإصلاح على أي حال ثم يُعاد القياس."
 fi
 
-# الاختبار الحاسم: نفس ما يفعله hysteria بالضبط
-if tcp_ok 127.0.0.1 "$APP_PORT"; then
-    ok "الاتصال بـ 127.0.0.1:${APP_PORT} ناجح — هذا ما يطلبه التطبيق"
+# ==================== ٢) الإصلاح ====================
+echo
+echo "════════════ تطبيق الإصلاح ════════════"
+
+# إزالة سياسات المهلة القصيرة التي سببت انتهاء ترجمة NAT مبكراً
+log "إزالة سياسات المهلة القصيرة..."
+nft delete table ip hyhop >/dev/null 2>&1 || true
+iptables -t raw -F HY_RAW >/dev/null 2>&1 || true
+if command -v nfct >/dev/null 2>&1; then
+    nfct timeout delete hyhop >/dev/null 2>&1 || true
+fi
+# منع إعادة إضافتها عند الإقلاع دون المساس بنطاق القفز
+if [ -f "$FW" ]; then
+    sed -i 's/^HOP_CT_MODE=.*/HOP_CT_MODE="0"/' "$FW"
+    ok "عُطِّلت السياسة في ${FW} مع بقاء نطاق القفز كما هو"
+fi
+
+# مهلة سخية تبقي ترجمة NAT حيّة طوال عمر اتصال QUIC
+log "ضبط مهل conntrack..."
+RAM_MB=$(awk '/MemTotal/{print int($2/1024)}' /proc/meminfo)
+CT_MAX=$(( RAM_MB * 256 ))
+[ "$CT_MAX" -gt 2097152 ] && CT_MAX=2097152
+[ "$CT_MAX" -lt 262144 ]  && CT_MAX=262144
+CT_BUCKETS=$(( CT_MAX / 4 ))
+if [ -w /sys/module/nf_conntrack/parameters/hashsize ]; then
+    echo "$CT_BUCKETS" > /sys/module/nf_conntrack/parameters/hashsize 2>/dev/null || true
+fi
+
+sysctl -w net.netfilter.nf_conntrack_udp_timeout=120 >/dev/null 2>&1 || true
+sysctl -w net.netfilter.nf_conntrack_udp_timeout_stream=300 >/dev/null 2>&1 || true
+sysctl -w net.netfilter.nf_conntrack_max="$CT_MAX" >/dev/null 2>&1 || true
+
+if [ -f "$SYSCTL_FILE" ]; then
+    sed -i "s/^net.netfilter.nf_conntrack_udp_timeout = .*/net.netfilter.nf_conntrack_udp_timeout = 120/" "$SYSCTL_FILE"
+    sed -i "s/^net.netfilter.nf_conntrack_udp_timeout_stream = .*/net.netfilter.nf_conntrack_udp_timeout_stream = 300/" "$SYSCTL_FILE"
+    sed -i "s/^net.netfilter.nf_conntrack_max = .*/net.netfilter.nf_conntrack_max = ${CT_MAX}/" "$SYSCTL_FILE"
 else
-    warn "ما زال الاتصال بـ ${APP_PORT} فاشلاً"
-    [ "$NEED_REDIRECT" = "1" ] && iptables -t nat -L OUTPUT -n -v | grep -i redirect | sed 's/^/    /' || true
-    FAIL=1
+    cat > "$SYSCTL_FILE" <<EOF
+net.netfilter.nf_conntrack_udp_timeout = 120
+net.netfilter.nf_conntrack_udp_timeout_stream = 300
+net.netfilter.nf_conntrack_max = ${CT_MAX}
+EOF
+fi
+ok "المهل: 120s / 300s | conntrack_max: ${CT_MAX}"
+
+# تنظيف السجلات العالقة حتى تبدأ الترجمات من جديد
+if command -v conntrack >/dev/null 2>&1; then
+    conntrack -D -p udp >/dev/null 2>&1 || true
+    ok "مُسحت سجلات UDP القديمة"
 fi
 
+# ==================== ٣) تشغيل الخدمات ====================
+if systemctl list-unit-files 2>/dev/null | grep -q badvpn-udpgw; then
+    systemctl is-active --quiet badvpn-udpgw.service || systemctl start badvpn-udpgw.service >/dev/null 2>&1 || true
+fi
+log "إعادة تشغيل hysteria..."
+systemctl reset-failed "$SVC" >/dev/null 2>&1 || true
+systemctl restart "$SVC" >/dev/null 2>&1 || systemctl start "$SVC" >/dev/null 2>&1 || true
+sleep 5
 if systemctl is-active --quiet "$SVC"; then
     ok "خدمة hysteria تعمل"
 else
     warn "خدمة hysteria متوقفة:"
-    journalctl -u "$SVC" -n 12 --no-pager | sed 's/^/    /' || true
-    FAIL=1
+    journalctl -u "$SVC" -n 15 --no-pager | sed 's/^/    /' || true
+fi
+
+# ==================== ٤) القياس بعد الإصلاح ====================
+echo
+echo "════════════ القياس بعد الإصلاح (${MEASURE} ثانية) ════════════"
+log "اطلب من مستخدم أن يتصل ويتصفح الآن..."
+IF2=$(ct_stat insert_failed); DR2=$(ct_stat drop)
+sleep "$MEASURE"
+IF3=$(ct_stat insert_failed); DR3=$(ct_stat drop)
+DIF2=$(( IF3 - IF2 )); DDR2=$(( DR3 - DR2 ))
+P "ارتفاع insert_failed:" "$DIF2   (كان ${DIF})"
+P "ارتفاع drop:" "$DDR2   (كان ${DDR})"
+
+echo
+echo "  أخطاء EPERM في آخر ${MEASURE} ثانية:"
+EP=$(journalctl -u "$SVC" --since "${MEASURE} seconds ago" --no-pager 2>/dev/null \
+     | grep -c 'operation not permitted' || true)
+P "عددها:" "${EP:-0}"
+
+echo
+if [ "${EP:-0}" = "0" ] && [ "$DIF2" -le 0 ]; then
+    echo "════════════════════════════════════════════════════"
+    echo " اختفى الخطأ. جرّب التصفح من التطبيق الآن."
+    echo "════════════════════════════════════════════════════"
+else
+    warn "ما زال الخطأ موجوداً. أرسل لي مخرجات هذه الأوامر:"
+    echo
+    echo "  iptables -L OUTPUT -n -v --line-numbers | head -30"
+    echo "  iptables -t nat -L POSTROUTING -n -v | head -20"
+    echo "  nft list ruleset | head -60"
+    echo "  journalctl -u ${SVC} -n 20 --no-pager"
+    echo
+    echo "الحالة الحالية:"
+    echo "--- filter OUTPUT ---"
+    iptables -L OUTPUT -n -v --line-numbers 2>/dev/null | head -20 | sed 's/^/  /' || true
+    echo "--- nat POSTROUTING ---"
+    iptables -t nat -L POSTROUTING -n -v 2>/dev/null | head -12 | sed 's/^/  /' || true
+    echo "--- nft ruleset (أسماء الجداول) ---"
+    nft list tables 2>/dev/null | sed 's/^/  /' || echo "  لا يوجد"
 fi
 
 echo
-if [ "$FAIL" = "0" ]; then
-    echo "════════════════════════════════════════════════════"
-    echo " جاهز."
-    echo "   udpgw     : ${WORKING_BIN}"
-    echo "   يستمع على : 127.0.0.1:${LISTEN_PORT}"
-    if [ "$NEED_REDIRECT" = "1" ]; then
-        echo "   التحويل   : ${APP_PORT} ← ${LISTEN_PORT} (المنفذ الأصلي محجوز)"
-    fi
-    echo
-    echo " افتح التطبيق واتصل ثم جرّب التصفح."
-    echo " للمراقبة:  journalctl -u ${SVC} -f"
-    echo " يجب أن تختفي أسطر connection refused وتظهر"
-    echo " وجهات حقيقية مثل  dst:142.250.x.x:443"
-    echo "════════════════════════════════════════════════════"
-else
-    die "بقيت مشكلة — راجع المخرجات أعلاه."
-fi
+echo " للمراقبة المباشرة:  journalctl -u ${SVC} -f"
