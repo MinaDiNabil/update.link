@@ -6,14 +6,16 @@
 #   sudo bash install-udp.sh uninstall    remove everything again
 #
 # Installs one server for every UDP mode of the MinaProNet app, side by side
-# on one machine, each on its own slice of the UDP port space:
+# on one machine. All of them share every UDP port: a client of any protocol
+# may be given any port, or 1-65535, and the first packet tells which server
+# it belongs to (firewall.sh and front.go, below, say how).
 #
-#   mode in the app          server                          client ports
-#   UDP Hysteria, SlowUDP    hysteria v1.3.5                 20000-29999
-#   UDP Custom               hysteria v1.3.5 + UDP Custom    30000-39999
-#                            hello (user and password)
-#   ZIVPN UDP                Hysteria 2 v2.6.0 + ZIVPN names 6000-19999
-#   UDP Request              mina-udp (in this file)         1-1023
+#   mode in the app          server
+#   UDP Hysteria, SlowUDP    hysteria v1.3.5
+#   UDP Custom               hysteria v1.3.5 + UDP Custom hello (user and
+#                            password)
+#   ZIVPN UDP                Hysteria 2 v2.6.0 + ZIVPN names
+#   UDP Request              mina-udp (in this file)
 #
 # plus udpgw on 127.0.0.1:7300, which the app's hysteria modes send the
 # phone's UDP traffic (DNS, games, calls) through.
@@ -64,19 +66,18 @@ declare -A GO_SHA256=(
   [1.23.12-arm64]=52ce172f96e21da53b1ae9079808560d49b02ac86cecfa457217597f9bc28ab3
 )
 
-# Ports. The ZIVPN ones are what the app (and every ZIVPN client) dials and
-# cannot change; UDP Custom's 36712 is that protocol's default.
-# UDP Request clients send each datagram to a random port of their range, so
-# its server listens on every port of this one. Below 1024 on purpose: no
-# client or NAT ever picks such a port as its own source port, so nothing
-# else's traffic can land here.
-REQUEST_RANGE=1-1023
+# The ports the three hysteria servers themselves listen on; clients reach
+# them on any port (firewall.sh). 5667 and 36712 are those protocols' own
+# defaults.
 ZIVPN_PORT=5667
-ZIVPN_RANGE=6000-19999
 HYSTERIA_PORT=20000
-HYSTERIA_RANGE=20000-29999
 CUSTOM_PORT=36712
-CUSTOM_RANGE=30000-39999
+# What clients are told to use.
+CLIENT_PORTS=1-65535
+# Where every other UDP packet is handed to mina-udp, and the firewall mark
+# its answers carry.
+FRONT_PORT=8989
+FRONT_MARK=0x400000
 # Where the app's tun2socks looks for udpgw (its "Udpgw" setting), reached
 # through the tunnel, so on loopback only.
 UDPGW_ADDR=127.0.0.1:7300
@@ -84,12 +85,15 @@ REQUEST_TUN=minaudp0
 REQUEST_NET=10.66.0.1/16
 REQUEST_SUBNET=10.66.0.0/16
 # Left to whatever else runs here: DNS, DHCP, TFTP, Kerberos, rpcbind, NTP,
-# NetBIOS, SNMP, QUIC/HTTP3, IPsec, syslog, RIP, DHCPv6. (A port another
-# program is already listening on is left alone as well, listed or not.)
-DEFAULT_EXCLUDE=53,67,68,69,88,111,123,137,138,161,162,443,500,514,520,546,547
+# NetBIOS, SNMP, QUIC/HTTP3, IPsec, syslog, RIP, DHCPv6, OpenVPN, IPsec
+# NAT-T, WireGuard. (A port another program is already listening on is left
+# alone as well, listed or not.)
+DEFAULT_EXCLUDE=53,67,68,69,88,111,123,137,138,161,162,443,500,514,520,546,547,1194,4500,51820
 # The obfuscation keys the app sends for these two; fixed by the protocols.
 CUSTOM_OBFS='2023@ePro.Dev.Team'
 ZIVPN_OBFS='hu``hqb`c'
+# UDP Hysteria and SlowUDP: typed into the app as "Obfs".
+HYSTERIA_OBFS=minapronet
 
 if [ -t 1 ]; then
   B=$'\e[1m' G=$'\e[32m' R=$'\e[31m' Y=$'\e[33m' N=$'\e[0m'
@@ -103,7 +107,7 @@ die() { echo "${R}error:${N} $*" >&2; exit 1; }
 # --- embedded files (generated) ---------------------------------------------
 
 # Changes whenever a source below does, which makes build() rebuild.
-SOURCES_ID=69f4e40595c94d3e
+SOURCES_ID=fbf7fe3309db369e
 
 write_sources() {
   local d=$1
@@ -112,6 +116,470 @@ write_sources() {
 module minaudp
 
 go 1.21
+
+require golang.org/x/crypto v0.26.0
+
+require golang.org/x/sys v0.23.0 // indirect
+__MINA_UDP_EOF__
+  mkdir -p "$d/minaudp"
+  cat > "$d/minaudp/go.sum" <<'__MINA_UDP_EOF__'
+golang.org/x/crypto v0.26.0 h1:RrRspgV4mU+YwB4FYnuBoKsUapNIL5cohGAmSH3azsw=
+golang.org/x/crypto v0.26.0/go.mod h1:GY7jblb9wI+FOo5y8/S2oY4zWP07AkOJ4+jxCqdqn54=
+golang.org/x/sys v0.23.0 h1:YfKFowiIMvtgl1UERQoTPPToxltDeZfbj4H7dVUCwmM=
+golang.org/x/sys v0.23.0/go.mod h1:/VUhepiaJMQUp4+oa/7Zr1D23ma6VTLIYjOOTFZPUcA=
+__MINA_UDP_EOF__
+  mkdir -p "$d/minaudp"
+  cat > "$d/minaudp/front.go" <<'__MINA_UDP_EOF__'
+// The front door: every UDP port of the machine that nothing else owns
+// arrives here (iptables TPROXY, see firewall.sh), so a client of any of the
+// four protocols may use any port, and the same ports serve all of them.
+//
+// A UDP Request datagram is recognised by its framing and handled in this
+// process (request.go). Anything else is for one of the three hysteria
+// servers, and is relayed: sent on to the server from a local socket that
+// stands for that QUIC connection, and whatever the server sends back to
+// that socket goes out to the client, from the port the client last wrote
+// to, to the address it last wrote from.
+//
+// A connection is told by its connection ID, not by the client's address.
+// That is what the app's own Hysteria client needs: it sends every single
+// packet to the next port of its range, and behind a carrier's NAT every
+// port it sends to gives it another source port, so no two of its packets
+// share an address. (An earlier version had the kernel translate by client
+// address, via ipsets. It worked in every test without a NAT in front of
+// the client and with no real phone.)
+//
+// Which server a packet is for shows once that server's obfuscation key is
+// applied to its first bytes:
+//
+//   - a long header (a connection being opened) carries a QUIC version
+//     number, which only the right key yields;
+//   - a short header (every later packet) starts with the connection ID
+//     the server chose, which the relay learnt from the server's own
+//     handshake packets;
+//   - a short header with an ID not seen before (the client moved on to
+//     another of the IDs the server gave it, or this process restarted) is
+//     handed to every server whose key yields a well-formed header. The one
+//     it belongs to answers, the others cannot decrypt it and drop it.
+//
+// Answers of the UDP Request server and of the relays have to leave from
+// the port the client wrote to, which may be any of 65535, so they are sent
+// through a raw socket with the UDP header written here.
+
+package main
+
+import (
+	"crypto/sha256"
+	"encoding/binary"
+	"fmt"
+	"log"
+	"net"
+	"net/netip"
+	"sync"
+	"sync/atomic"
+	"syscall"
+	"time"
+
+	"golang.org/x/crypto/blake2b"
+)
+
+const (
+	ipTransparent     = 19 // IP_TRANSPARENT
+	ipRecvOrigDstAddr = 20 // IP_RECVORIGDSTADDR, and the type of its cmsg
+	soMark            = 36 // SO_MARK
+	soRcvBufForce     = 33 // SO_RCVBUFFORCE
+	soSndBufForce     = 32 // SO_SNDBUFFORCE
+)
+
+// --- receiving -------------------------------------------------------------
+
+// listenTransparent opens the socket TPROXY hands the packets to. With
+// IP_RECVORIGDSTADDR every datagram comes with the address and port the
+// client actually sent it to.
+func listenTransparent(port int) (int, error) {
+	fd, err := syscall.Socket(syscall.AF_INET, syscall.SOCK_DGRAM|syscall.SOCK_CLOEXEC, 0)
+	if err != nil {
+		return 0, err
+	}
+	for _, o := range [][3]int{
+		{syscall.SOL_IP, ipTransparent, 1},
+		{syscall.SOL_IP, ipRecvOrigDstAddr, 1},
+		{syscall.SOL_SOCKET, soRcvBufForce, 32 << 20},
+	} {
+		if err := syscall.SetsockoptInt(fd, o[0], o[1], o[2]); err != nil {
+			syscall.Close(fd)
+			return 0, fmt.Errorf("setsockopt %d: %w", o[1], err)
+		}
+	}
+	if err := syscall.Bind(fd, &syscall.SockaddrInet4{Port: port}); err != nil {
+		syscall.Close(fd)
+		return 0, fmt.Errorf("bind :%d: %w", port, err)
+	}
+	return fd, nil
+}
+
+// origDst returns the destination a datagram was sent to, from recvmsg's
+// control data.
+func origDst(oob []byte) (netip.AddrPort, bool) {
+	msgs, err := syscall.ParseSocketControlMessage(oob)
+	if err != nil {
+		return netip.AddrPort{}, false
+	}
+	for _, m := range msgs {
+		// struct sockaddr_in: family u16, port u16 BE, addr [4].
+		if m.Header.Level == syscall.SOL_IP && m.Header.Type == ipRecvOrigDstAddr && len(m.Data) >= 8 {
+			return netip.AddrPortFrom(netip.AddrFrom4([4]byte(m.Data[4:8])), binary.BigEndian.Uint16(m.Data[2:4])), true
+		}
+	}
+	return netip.AddrPort{}, false
+}
+
+// --- sending ---------------------------------------------------------------
+
+// rawSender writes UDP datagrams with any source address and port. It builds
+// the IP header itself (IPPROTO_RAW), which means fragmenting too: answers
+// of this protocol are up to 4096 bytes.
+type rawSender struct {
+	fd   int
+	id   atomic.Uint32
+	frag atomic.Int32 // bytes of IP payload per fragment, a multiple of 8
+}
+
+func newRawSender(mark int) (*rawSender, error) {
+	fd, err := syscall.Socket(syscall.AF_INET, syscall.SOCK_RAW|syscall.SOCK_CLOEXEC|syscall.SOCK_NONBLOCK, syscall.IPPROTO_RAW)
+	if err != nil {
+		return nil, err
+	}
+	// The mark is how firewall.sh keeps these packets out of connection
+	// tracking.
+	if err := syscall.SetsockoptInt(fd, syscall.SOL_SOCKET, soMark, mark); err != nil {
+		syscall.Close(fd)
+		return nil, err
+	}
+	_ = syscall.SetsockoptInt(fd, syscall.SOL_SOCKET, soSndBufForce, 32<<20)
+	r := &rawSender{fd: fd}
+	r.frag.Store(1480)
+	return r, nil
+}
+
+func sum16(b []byte, s uint32) uint32 {
+	for ; len(b) >= 2; b = b[2:] {
+		s += uint32(b[0])<<8 | uint32(b[1])
+	}
+	if len(b) == 1 {
+		s += uint32(b[0]) << 8
+	}
+	return s
+}
+
+// send never blocks: with the socket's buffer full the datagram is dropped,
+// as the network would.
+func (r *rawSender) send(from, to netip.AddrPort, payload []byte) {
+	src, dst := from.Addr().As4(), to.Addr().As4()
+	udp := make([]byte, 8+len(payload))
+	binary.BigEndian.PutUint16(udp[0:], from.Port())
+	binary.BigEndian.PutUint16(udp[2:], to.Port())
+	binary.BigEndian.PutUint16(udp[4:], uint16(len(udp)))
+	copy(udp[8:], payload)
+	s := sum16(src[:], 0)
+	s = sum16(dst[:], s)
+	s += syscall.IPPROTO_UDP + uint32(len(udp))
+	s = sum16(udp, s)
+	for s>>16 != 0 {
+		s = s&0xffff + s>>16
+	}
+	if c := ^uint16(s); c != 0 {
+		binary.BigEndian.PutUint16(udp[6:], c)
+	} else {
+		binary.BigEndian.PutUint16(udp[6:], 0xffff)
+	}
+
+	id := uint16(r.id.Add(1))
+	sa := &syscall.SockaddrInet4{Addr: dst}
+	for try := 0; try < 2; try++ {
+		step := int(r.frag.Load())
+		ok := true
+		for off := 0; off < len(udp); off += step {
+			end := off + step
+			more := uint16(0x2000)
+			if end >= len(udp) {
+				end, more = len(udp), 0
+			}
+			p := make([]byte, 20+end-off)
+			p[0] = 0x45
+			binary.BigEndian.PutUint16(p[2:], uint16(len(p)))
+			binary.BigEndian.PutUint16(p[4:], id)
+			binary.BigEndian.PutUint16(p[6:], more|uint16(off/8))
+			p[8] = 64
+			p[9] = syscall.IPPROTO_UDP
+			copy(p[12:], src[:])
+			copy(p[16:], dst[:])
+			copy(p[20:], udp[off:end])
+			if err := syscall.Sendto(r.fd, p, 0, sa); err == syscall.EMSGSIZE && step > 1024 {
+				// The link's MTU is under 1500: smaller pieces from now on.
+				r.frag.Store(1024)
+				ok = false
+				break
+			}
+		}
+		if ok {
+			return
+		}
+	}
+}
+
+// --- relaying to the hysteria servers --------------------------------------
+
+const (
+	// A relay nothing has passed through for this long is closed. QUIC
+	// clients keep their connection alive every 10 s.
+	relayIdle = 90 * time.Second
+	// One that the server never answered: not its connection after all.
+	relayUnanswered = 8 * time.Second
+	maxRelays       = 200000
+	// Unanswered relays one client IP may have open, so that noise cannot
+	// use up the sockets.
+	maxUnanswered = 64
+)
+
+type quicBackend struct {
+	idx  uint8
+	name string
+	addr *net.UDPAddr // the server, on loopback
+	salt int
+	key  []byte
+	hash func([]byte) [32]byte
+}
+
+// plain undoes the obfuscation of the first n (at most 32) bytes of a QUIC
+// packet.
+func (b *quicBackend) plain(d []byte, n int) []byte {
+	if len(d) < b.salt+n {
+		return nil
+	}
+	k := b.hash(append(append(make([]byte, 0, len(b.key)+b.salt), b.key...), d[:b.salt]...))
+	out := make([]byte, n)
+	for i := range out {
+		out[i] = d[b.salt+i] ^ k[i]
+	}
+	return out
+}
+
+func quicVersion(v uint32) bool {
+	switch v {
+	case 1, 0x6b3343cf, 0x709a50c4, 0xff00001d:
+		return true
+	}
+	return false
+}
+
+// flowKey names a QUIC connection: the server, the client's IP and the
+// first bytes of the connection ID its packets carry.
+type flowKey struct {
+	b   uint8
+	ip  netip.Addr
+	cid [4]byte
+}
+
+// relay is the local socket one connection reaches its server through.
+type relay struct {
+	b    *quicBackend
+	conn *net.UDPConn
+	ip   netip.Addr
+	keys []flowKey // guarded by front.mu
+
+	mu       sync.Mutex
+	client   netip.AddrPort // where the client last wrote from
+	local    netip.AddrPort // and to
+	answered atomic.Bool
+	last     atomic.Int64 // unix nanoseconds of the last packet either way
+}
+
+type front struct {
+	backends []*quicBackend
+	out      *rawSender
+	debug    bool // log every relay opened and closed
+
+	mu         sync.Mutex
+	flows      map[flowKey]*relay
+	relays     int
+	unanswered map[netip.Addr]int
+}
+
+func newFront(out *rawSender, hysteria, custom, zivpn string, hyPort, ucPort, ziPort int) *front {
+	sha := func(b []byte) [32]byte { return sha256.Sum256(b) }
+	lo := func(port int) *net.UDPAddr { return &net.UDPAddr{IP: net.IPv4(127, 0, 0, 1), Port: port} }
+	return &front{
+		backends: []*quicBackend{
+			{idx: 0, name: "hysteria", addr: lo(hyPort), salt: 16, key: []byte(hysteria), hash: sha},
+			{idx: 1, name: "udp-custom", addr: lo(ucPort), salt: 16, key: []byte(custom), hash: sha},
+			{idx: 2, name: "zivpn", addr: lo(ziPort), salt: 8, key: []byte(zivpn), hash: blake2b.Sum256},
+		},
+		out:        out,
+		flows:      map[flowKey]*relay{},
+		unanswered: map[netip.Addr]int{},
+	}
+}
+
+// open makes the relay for key. Called with f.mu held.
+func (f *front) open(b *quicBackend, key flowKey) *relay {
+	if f.relays >= maxRelays || f.unanswered[key.ip] >= maxUnanswered {
+		return nil
+	}
+	conn, err := net.DialUDP("udp4", nil, b.addr)
+	if err != nil {
+		return nil
+	}
+	_ = conn.SetReadBuffer(4 << 20)
+	_ = conn.SetWriteBuffer(4 << 20)
+	r := &relay{b: b, conn: conn, ip: key.ip, keys: []flowKey{key}}
+	r.last.Store(time.Now().UnixNano())
+	f.flows[key] = r
+	f.relays++
+	f.unanswered[key.ip]++
+	if f.debug {
+		log.Printf("front: relay opened for %s, %s id %x (%d open)", key.ip, b.name, key.cid, f.relays)
+	}
+	go f.pump(r)
+	return r
+}
+
+// forward passes a client's packet on through r.
+func (r *relay) forward(d []byte, from, local netip.AddrPort) {
+	r.mu.Lock()
+	r.client, r.local = from, local
+	r.mu.Unlock()
+	r.last.Store(time.Now().UnixNano())
+	_, _ = r.conn.Write(d)
+}
+
+// pump passes what the server sends to r's socket on to the client, until
+// the relay has been idle too long.
+func (f *front) pump(r *relay) {
+	buf := make([]byte, 65535)
+	for {
+		_ = r.conn.SetReadDeadline(time.Now().Add(2 * time.Second))
+		n, err := r.conn.Read(buf)
+		if err != nil {
+			idle := relayIdle
+			if !r.answered.Load() {
+				idle = relayUnanswered
+			}
+			if ne, ok := err.(net.Error); ok && ne.Timeout() && time.Since(time.Unix(0, r.last.Load())) < idle {
+				continue
+			}
+			break
+		}
+		r.last.Store(time.Now().UnixNano())
+		r.mu.Lock()
+		client, local := r.client, r.local
+		r.mu.Unlock()
+		f.out.send(local, client, buf[:n])
+		if !r.answered.Load() {
+			r.answered.Store(true)
+			f.mu.Lock()
+			f.unanswered[r.ip]--
+			if f.unanswered[r.ip] <= 0 {
+				delete(f.unanswered, r.ip)
+			}
+			f.mu.Unlock()
+		}
+		// The server's handshake packets carry the connection ID it chose,
+		// which is what the client's packets will carry from now on.
+		if h := r.b.plain(buf[:n], 32); h != nil && h[0]&0xc0 == 0xc0 && quicVersion(binary.BigEndian.Uint32(h[1:5])) {
+			if dl := int(h[5]); dl <= 20 && 7+dl+4 <= len(h) && h[6+dl] >= 4 {
+				key := flowKey{b: r.b.idx, ip: r.ip}
+				copy(key.cid[:], h[7+dl:])
+				f.mu.Lock()
+				if _, ok := f.flows[key]; !ok {
+					f.flows[key] = r
+					r.keys = append(r.keys, key)
+				}
+				f.mu.Unlock()
+			}
+		}
+	}
+	f.mu.Lock()
+	for _, k := range r.keys {
+		if f.flows[k] == r {
+			delete(f.flows, k)
+		}
+	}
+	f.relays--
+	if !r.answered.Load() {
+		f.unanswered[r.ip]--
+		if f.unanswered[r.ip] <= 0 {
+			delete(f.unanswered, r.ip)
+		}
+	}
+	if f.debug {
+		log.Printf("front: relay closed for %s, %s (answered: %v, %d open)", r.ip, r.b.name, r.answered.Load(), f.relays)
+	}
+	f.mu.Unlock()
+	r.conn.Close()
+}
+
+// candidate is a server a packet may be for, with the key of the
+// connection it would then belong to.
+type candidate struct {
+	b    *quicBackend
+	key  flowKey
+	long bool
+}
+
+// candidates reads d under each server's key.
+func (f *front) candidates(d []byte, ip netip.Addr) []candidate {
+	var out []candidate
+	for _, b := range f.backends {
+		h := b.plain(d, 10)
+		if h == nil || h[0]&0x40 == 0 {
+			continue
+		}
+		c := candidate{b: b, key: flowKey{b: b.idx, ip: ip}}
+		if h[0]&0x80 != 0 {
+			if !quicVersion(binary.BigEndian.Uint32(h[1:5])) {
+				continue
+			}
+			// Only the right key yields a version number.
+			c.long = true
+			copy(c.key.cid[:], h[6:10])
+			return []candidate{c}
+		}
+		copy(c.key.cid[:], h[1:5])
+		out = append(out, c)
+	}
+	return out
+}
+
+// relayPacket takes a datagram that is not UDP Request's.
+func (f *front) relayPacket(d []byte, from, local netip.AddrPort) {
+	cands := f.candidates(d, from.Addr())
+	if len(cands) == 0 {
+		return
+	}
+	var to [3]*relay
+	n := 0
+	f.mu.Lock()
+	for _, c := range cands {
+		if r := f.flows[c.key]; r != nil {
+			// A connection ID one server is known to use: that settles it.
+			to[0], n = r, 1
+			break
+		}
+	}
+	if n == 0 {
+		for _, c := range cands {
+			if r := f.open(c.b, c.key); r != nil {
+				to[n] = r
+				n++
+			}
+		}
+	}
+	f.mu.Unlock()
+	for _, r := range to[:n] {
+		r.forward(d, from, local)
+	}
+}
 __MINA_UDP_EOF__
   mkdir -p "$d/minaudp"
   cat > "$d/minaudp/main.go" <<'__MINA_UDP_EOF__'
@@ -470,13 +938,13 @@ package main
 // Where this differs from the original server, it is only in what a client
 // cannot see:
 //
-//   - Every port of the client range is a socket of this server. The
-//     original listens on one port and has iptables REDIRECT the range to
-//     it; a client sends each datagram to a random port, so that is a new
-//     NAT mapping per datagram, and under load they collide in conntrack and
-//     the kernel drops the packets (and fills the table). Here an answer
-//     just leaves from the socket its slot arrived on, and the firewall
-//     rules keep these ports out of connection tracking altogether.
+//   - Any UDP port reaches this server (front.go), where the original
+//     listens on one port and has iptables REDIRECT a range to it. A client
+//     sends each datagram to a random port, so that is a new NAT mapping per
+//     datagram, and under load they collide in conntrack and the kernel
+//     drops the packets (and fills the table). Here nothing is translated:
+//     an answer is written with the port its slot arrived on as its source,
+//     and the firewall rules keep these packets out of connection tracking.
 //   - Packets are written to the tun device in arrival order from one
 //     goroutine (the original's per-message goroutines reorder them and
 //     drop beyond five in flight).
@@ -502,8 +970,6 @@ import (
 	"os"
 	"os/exec"
 	"os/signal"
-	"strconv"
-	"strings"
 	"sync"
 	"syscall"
 	"time"
@@ -568,12 +1034,12 @@ func (c *cfbCrypt) decrypt(p []byte) []byte {
 	return out
 }
 
-// slot is one answer the server may send: from the socket (port) the
-// client's datagram arrived on, to the address it came from.
+// slot is one answer the server may send: from the address and port the
+// client's datagram was sent to, to the address it came from.
 type slot struct {
-	fd   int
-	addr netip.AddrPort
-	at   time.Time
+	local netip.AddrPort
+	addr  netip.AddrPort
+	at    time.Time
 }
 
 type session struct {
@@ -596,7 +1062,9 @@ type lease struct {
 }
 
 type requestServer struct {
-	epfd      int
+	fd        int // the transparent socket every port arrives on
+	out       *rawSender
+	front     *front
 	tun       *os.File
 	key       *rsa.PrivateKey
 	pubMsg    []byte
@@ -710,7 +1178,7 @@ func (s *requestServer) flush(c *session) {
 			n++
 		}
 		c.queue = c.queue[n:]
-		sendTo(sl.fd, buf, sl.addr)
+		s.out.send(sl.local, sl.addr, buf)
 	}
 	if len(c.queue) == 0 {
 		c.queue = nil
@@ -721,9 +1189,12 @@ func isHello(m []byte) bool {
 	return len(m) >= 10 && len(m) <= 64 && m[len(m)-1] == msgHelloSuffix
 }
 
-func (s *requestServer) handleDatagram(d []byte, from netip.AddrPort, fd int) {
+// handleDatagram reports whether d was a UDP Request datagram: one of a
+// session there is, or framed exactly like one. Anything else belongs to
+// another protocol.
+func (s *requestServer) handleDatagram(d []byte, from, local netip.AddrPort) bool {
 	if len(d) < clientIDLen+1 {
-		return
+		return false
 	}
 	var cid [clientIDLen]byte
 	copy(cid[:], d)
@@ -732,7 +1203,8 @@ func (s *requestServer) handleDatagram(d []byte, from netip.AddrPort, fd int) {
 		counter = 1
 	}
 	var msgs [][]byte
-	for rest := d[clientIDLen+1:]; len(rest) >= 2; {
+	rest := d[clientIDLen+1:]
+	for len(rest) >= 2 {
 		l := int(binary.BigEndian.Uint16(rest))
 		if len(rest) < 2+l {
 			break
@@ -740,12 +1212,16 @@ func (s *requestServer) handleDatagram(d []byte, from netip.AddrPort, fd int) {
 		msgs = append(msgs, rest[2:2+l])
 		rest = rest[2+l:]
 	}
+	framed := len(rest) == 0
 
 	now := time.Now()
 	s.mu.RLock()
 	c := s.sessions[cid]
 	s.mu.RUnlock()
 	if c == nil {
+		if !framed {
+			return false
+		}
 		// Only a hello starts a session; anything else is a poll for one
 		// that is gone, which the client notices by its pings going
 		// unanswered.
@@ -754,13 +1230,13 @@ func (s *requestServer) handleDatagram(d []byte, from netip.AddrPort, fd int) {
 			hello = hello || isHello(m)
 		}
 		if !hello {
-			return
+			return true
 		}
 		s.mu.Lock()
 		if c = s.sessions[cid]; c == nil {
 			if len(s.sessions) >= maxPending+len(s.byIP) {
 				s.mu.Unlock()
-				return
+				return true
 			}
 			c = &session{cid: cid, lastSeen: now}
 			s.sessions[cid] = c
@@ -771,7 +1247,7 @@ func (s *requestServer) handleDatagram(d []byte, from netip.AddrPort, fd int) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 	for i := 0; i < counter; i++ {
-		c.slots = append(c.slots, slot{fd, from, now})
+		c.slots = append(c.slots, slot{local, from, now})
 	}
 	if over := len(c.slots) - maxSlots; over > 0 {
 		c.slots = c.slots[over:]
@@ -780,6 +1256,7 @@ func (s *requestServer) handleDatagram(d []byte, from netip.AddrPort, fd int) {
 		s.handleMessage(c, m, now)
 	}
 	s.flush(c)
+	return true
 }
 
 // handleMessage is called with c.mu held.
@@ -900,106 +1377,28 @@ func (s *requestServer) handleAuth(c *session, m []byte, now time.Time) {
 	reply(&ResponseAuth{Status: true, IP: ip4[:], Cooke: c.cookie})
 }
 
-// --- sockets ---------------------------------------------------------------
-
-// sendTo never blocks: with the socket's buffer full the datagram is dropped,
-// as the network would.
-func sendTo(fd int, b []byte, to netip.AddrPort) {
-	_ = syscall.Sendto(fd, b, 0, &syscall.SockaddrInet4{Port: int(to.Port()), Addr: to.Addr().As4()})
-}
-
-// parsePorts turns "1-1023" minus the comma list exclude into port numbers.
-func parsePorts(spec, exclude string) ([]int, error) {
-	skip := map[int]bool{}
-	for _, f := range strings.Split(exclude, ",") {
-		if f = strings.TrimSpace(f); f != "" {
-			p, err := strconv.Atoi(f)
-			if err != nil {
-				return nil, fmt.Errorf("bad port %q", f)
-			}
-			skip[p] = true
-		}
-	}
-	var out []int
-	for _, f := range strings.Split(spec, ",") {
-		f = strings.TrimSpace(f)
-		if f == "" {
-			continue
-		}
-		lo, hi, isRange := strings.Cut(f, "-")
-		a, err := strconv.Atoi(lo)
-		b := a
-		if err == nil && isRange {
-			b, err = strconv.Atoi(hi)
-		}
-		if err != nil || a < 1 || b > 65535 || a > b {
-			return nil, fmt.Errorf("bad port range %q", f)
-		}
-		for p := a; p <= b; p++ {
-			if !skip[p] {
-				out = append(out, p)
-			}
-		}
-	}
-	if len(out) == 0 {
-		return nil, errors.New("no ports")
-	}
-	return out, nil
-}
-
-// listenPorts binds a socket to each port and registers it with epoll. A
-// port something else on the machine already holds is skipped: datagrams a
-// client sends there are lost like any other lost datagram.
-func listenPorts(ports []int) (epfd int, bound int, busy []int, err error) {
-	epfd, err = syscall.EpollCreate1(syscall.EPOLL_CLOEXEC)
-	if err != nil {
-		return 0, 0, nil, err
-	}
-	for _, p := range ports {
-		fd, err := syscall.Socket(syscall.AF_INET, syscall.SOCK_DGRAM|syscall.SOCK_NONBLOCK|syscall.SOCK_CLOEXEC, 0)
-		if err != nil {
-			return 0, 0, nil, fmt.Errorf("socket: %w (is LimitNOFILE high enough?)", err)
-		}
-		if err := syscall.Bind(fd, &syscall.SockaddrInet4{Port: p}); err != nil {
-			syscall.Close(fd)
-			busy = append(busy, p)
-			continue
-		}
-		ev := syscall.EpollEvent{Events: syscall.EPOLLIN, Fd: int32(fd)}
-		if err := syscall.EpollCtl(epfd, syscall.EPOLL_CTL_ADD, fd, &ev); err != nil {
-			return 0, 0, nil, err
-		}
-		bound++
-	}
-	return epfd, bound, busy, nil
-}
-
-// udpLoop reads every socket from this one goroutine, so a client's
+// udpLoop reads the one socket from this one goroutine, so a client's
 // packets reach the tun device in the order they arrived.
 func (s *requestServer) udpLoop() {
-	events := make([]syscall.EpollEvent, 256)
 	buf := make([]byte, 65535)
+	oob := make([]byte, 128)
 	for {
-		n, err := syscall.EpollWait(s.epfd, events, -1)
+		n, oobn, _, from, err := syscall.Recvmsg(s.fd, buf, oob, 0)
 		if err != nil {
-			if err == syscall.EINTR {
+			if err == syscall.EINTR || err == syscall.EAGAIN {
 				continue
 			}
-			log.Printf("epoll: %v", err)
+			log.Printf("recvmsg: %v", err)
 			return
 		}
-		for _, ev := range events[:n] {
-			fd := int(ev.Fd)
-			// A bounded burst per socket, so one busy port cannot starve the rest.
-			for i := 0; i < 64; i++ {
-				l, from, err := syscall.Recvfrom(fd, buf, 0)
-				if err != nil {
-					break
-				}
-				if sa, ok := from.(*syscall.SockaddrInet4); ok {
-					s.handleDatagram(buf[:l], netip.AddrPortFrom(netip.AddrFrom4(sa.Addr), uint16(sa.Port)), fd)
-				}
-			}
+		sa, ok := from.(*syscall.SockaddrInet4)
+		local, ok2 := origDst(oob[:oobn])
+		if !ok || !ok2 {
+			continue
+		}
+		src := netip.AddrPortFrom(netip.AddrFrom4(sa.Addr), uint16(sa.Port))
+		if !s.handleDatagram(buf[:n], src, local) {
+			s.front.relayPacket(buf[:n], src, local)
 		}
 	}
 }
@@ -1052,7 +1451,7 @@ func (s *requestServer) housekeeping() {
 		for _, c := range list {
 			c.mu.Lock()
 			for len(c.slots) > 0 && c.slots[0].at.Before(due) {
-				sendTo(c.slots[0].fd, nil, c.slots[0].addr)
+				s.out.send(c.slots[0].local, c.slots[0].addr, nil)
 				c.slots = c.slots[1:]
 			}
 			if sweep {
@@ -1159,8 +1558,15 @@ func (s *requestServer) loadSessions(path string) int {
 
 func requestCommand(args []string) int {
 	fs := flag.NewFlagSet("request", flag.ExitOnError)
-	ports := fs.String("ports", "1-1023", "UDP ports to listen on: every port of the range clients send to")
-	exclude := fs.String("exclude", "", "ports of that range to leave alone (comma list)")
+	listen := fs.Int("listen", 8989, "port of the transparent socket (where firewall.sh's TPROXY rule delivers)")
+	mark := fs.Int("mark", 0x400000, "firewall mark on the answers (firewall.sh keeps them untracked by it)")
+	hyObfs := fs.String("hysteria-obfs", "", "obfs key of the hysteria v1 server")
+	hyPort := fs.Int("hysteria-port", 20000, "port of the hysteria v1 server")
+	ucPort := fs.Int("custom-port", 36712, "port of the UDP Custom server")
+	ziPort := fs.Int("zivpn-port", 5667, "port of the ZIVPN server")
+	// The keys every UDP Custom and every ZIVPN client is built with.
+	ucObfs := fs.String("custom-obfs", "2023@ePro.Dev.Team", "obfs key of the UDP Custom server")
+	ziObfs := fs.String("zivpn-obfs", "hu``hqb`c", "obfs key of the ZIVPN server")
 	tunName := fs.String("tun", "minaudp0", "tun device name")
 	network := fs.String("net", "10.66.0.1/16", "tunnel network, the address being the server's")
 	mtu := fs.Int("mtu", 1250, "tun MTU (the client's is 1250)")
@@ -1170,6 +1576,7 @@ func requestCommand(args []string) int {
 	// 60 ms / 1 % loss link, one client downloads at 30 Mbit/s with 4096 and
 	// at 1 Mbit/s with answers kept under the MTU (1400).
 	maxAnswer := fs.Int("max-answer", 4096, "largest answer datagram in bytes")
+	debug := fs.Bool("debug", false, "log every relay the front opens and closes")
 	state := fs.String("state", "", "file the sessions are saved in across restarts (none if empty)")
 	_ = fs.Parse(args)
 
@@ -1184,11 +1591,6 @@ func requestCommand(args []string) int {
 	}
 	if *maxAnswer > 65000 {
 		*maxAnswer = 65000
-	}
-	portList, err := parsePorts(*ports, *exclude)
-	if err != nil {
-		log.Printf("-ports: %v", err)
-		return 1
 	}
 	key, err := rsa.GenerateKey(rand.Reader, 1024)
 	if err != nil {
@@ -1212,21 +1614,21 @@ func requestCommand(args []string) int {
 			return 1
 		}
 	}
-	epfd, bound, busy, err := listenPorts(portList)
+	fd, err := listenTransparent(*listen)
 	if err != nil {
 		log.Printf("%v", err)
 		return 1
 	}
-	if bound == 0 {
-		log.Printf("could not bind any port of %s", *ports)
+	out, err := newRawSender(*mark)
+	if err != nil {
+		log.Printf("raw socket: %v", err)
 		return 1
 	}
-	if len(busy) > 0 {
-		log.Printf("%d port(s) in use by something else and skipped: %v", len(busy), busy)
-	}
 
+	fr := newFront(out, *hyObfs, *ucObfs, *ziObfs, *hyPort, *ucPort, *ziPort)
+	fr.debug = *debug
 	s := &requestServer{
-		epfd: epfd, tun: tun, key: key, pubMsg: pub, users: *users, maxAnswer: *maxAnswer,
+		fd: fd, out: out, front: fr, tun: tun, key: key, pubMsg: pub, users: *users, maxAnswer: *maxAnswer,
 		prefix: prefix.Masked(), gateway: prefix.Addr(), nextIP: prefix.Addr(),
 		sessions: map[[clientIDLen]byte]*session{},
 		byIP:     map[netip.Addr]*session{},
@@ -1239,8 +1641,8 @@ func requestCommand(args []string) int {
 	go s.udpLoop()
 	go s.tunLoop()
 	go s.housekeeping()
-	log.Printf("UDP Request server listening on %d UDP ports of %s, tunnel %s on %s, %d session(s) restored",
-		bound, *ports, prefix, *tunName, restored)
+	log.Printf("UDP Request server and port front on :%d, tunnel %s on %s, %d session(s) restored",
+		*listen, prefix, *tunName, restored)
 
 	sig := make(chan os.Signal, 1)
 	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
@@ -1600,21 +2002,23 @@ write_tools() {
 #   firewall.sh stop     remove every rule
 #   firewall.sh status   are the rules in place?
 #
-# Everything lives in chains of its own (MINA_UDP*), so nothing here touches
-# another tool's rules. What they do:
+# Every UDP port (1-65535) serves every protocol. A UDP packet for this
+# machine whose port belongs to something else (a port in UDP_EXCLUDE, a
+# port another program listens on, a server's own port, the answer to a
+# connection this machine made) is left alone. Every other one is handed,
+# port unchanged, to the front socket of mina-udp (mangle, TPROXY), which
+# serves UDP Request itself and relays the rest to the hysteria server it is
+# for (src/minaudp/front.go).
 #
-#   nat/PREROUTING   the hysteria servers' client port ranges -> each one's
-#                    single port (their clients hop between the ports of a
-#                    range). Only UDP addressed to this machine itself, and
-#                    never the ports in UDP_EXCLUDE.
-#   raw              UDP Request's ports skip connection tracking. Its
-#                    clients send every datagram to another port of the
-#                    range (the server listens on all of them), which would
-#                    otherwise be a conntrack entry per datagram.
-#   nat/POSTROUTING  UDP Request's tunnel network goes out masqueraded.
-#   filter/INPUT     the servers' ports are open.
-#   filter/FORWARD   the UDP Request tunnel may forward.
-#   mangle/FORWARD   TCP MSS of tunnel connections fits the tunnel MTU.
+# Every packet stays connection-tracked, so the answers to connections this
+# machine makes or translates for others (docker, another VPN) are
+# recognised as such on any port and left alone. Only what mina-udp itself
+# sends from its raw socket is untracked: tracked, its answers would turn a
+# client's next packet to the same port into "an answered connection", and
+# so into something to leave alone.
+#
+# Everything lives in chains of its own (MINA_UDP*), so
+# nothing here touches another tool's rules.
 
 set -u
 CONF=/etc/mina-udp/config.env
@@ -1623,10 +2027,9 @@ CONF=/etc/mina-udp/config.env
 . "$CONF"
 
 IPT="iptables -w 5"
-PRE=MINA_UDP_PRE POST=MINA_UDP_POST IN=MINA_UDP_IN FWD=MINA_UDP_FWD MSS=MINA_UDP_MSS
-RAWIN=MINA_UDP_RAW_IN RAWOUT=MINA_UDP_RAW_OUT
-CHAINS="nat:$PRE nat:$POST filter:$IN filter:$FWD mangle:$MSS raw:$RAWIN raw:$RAWOUT"
-
+POST=MINA_UDP_POST IN=MINA_UDP_IN FWD=MINA_UDP_FWD MSS=MINA_UDP_MSS
+MG=MINA_UDP_FRONT RAWOUT=MINA_UDP_RAW_OUT
+CHAINS="nat:$POST filter:$IN filter:$FWD mangle:$MSS mangle:$MG raw:$RAWOUT"
 # jump TABLE BUILTIN CHAIN [match...]: the jump is first in BUILTIN.
 jump() {
   local table=$1 builtin=$2 chain=$3
@@ -1635,74 +2038,87 @@ jump() {
     $IPT -t "$table" -I "$builtin" 1 "$@" -j "$chain"
 }
 
-unjump() {
-  local table=$1 builtin=$2 chain=$3
-  shift 3
-  while $IPT -t "$table" -D "$builtin" "$@" -j "$chain" 2>/dev/null; do :; done
-}
+LOCAL_UDP="-p udp -m addrtype --dst-type LOCAL"
 
-PRE_MATCH="-p udp -m addrtype --dst-type LOCAL"
-
-# The ports of range LO-HI that are not excluded, as iptables LO:HI pieces.
-pieces() {
-  local lo=$1 hi=$2 p start
-  start=$lo
-  for p in $(echo "$EXCLUDED" | tr ',' '\n' | sort -n | uniq); do
-    [ "$p" -ge "$lo" ] && [ "$p" -le "$hi" ] || continue
-    [ "$p" -gt "$start" ] && echo "$start:$((p - 1))"
-    start=$((p + 1))
+# Removes what an earlier version of this script left behind: jumps into our
+# chains that this version does not make (it would otherwise run next to
+# them), and chains it no longer has. An upgrade once kept an old, unmatched
+# jump into the chain that now untracks packets: every answer of every
+# server then left untranslated, from the wrong port.
+sweep() {
+  local table rule chain want
+  for table in raw mangle nat filter; do
+    $IPT -t "$table" -S 2> /dev/null | grep -E '^-A (PREROUTING|INPUT|FORWARD|OUTPUT|POSTROUTING) .*-j MINA_UDP' |
+      while read -r rule; do
+        # shellcheck disable=SC2086
+        $IPT -t "$table" ${rule/#-A/-D} 2> /dev/null
+      done
+    for chain in $($IPT -t "$table" -S 2> /dev/null | sed -n 's/^-N \(MINA_UDP[A-Z_]*\)$/\1/p'); do
+      want=""
+      case " $CHAINS " in *" $table:$chain "*) want=1 ;; esac
+      if [ -z "$want" ]; then
+        $IPT -t "$table" -F "$chain" 2> /dev/null
+        $IPT -t "$table" -X "$chain" 2> /dev/null
+      fi
+    done
   done
-  [ "$start" -le "$hi" ] && echo "$start:$hi"
 }
 
-# UDP ports of the UDP Request range that some other program on this machine
-# is listening on. They stay that program's: no rule here opens them or takes
-# them out of connection tracking (and the server could not bind them anyway).
+# UDP ports some other program on this machine is listening on. They stay
+# that program's. (Only below the range the kernel hands out to outgoing
+# connections: sockets up there come and go, and their answers are already
+# recognised as answers.)
 busy_ports() {
-  local lo=${REQUEST_RANGE%-*} hi=${REQUEST_RANGE#*-}
-  ss -Hlunp 2> /dev/null | awk -v lo="$lo" -v hi="$hi" '!/"mina-udp"/ {
+  local hi
+  read -r hi _ < /proc/sys/net/ipv4/ip_local_port_range
+  ss -Hlunp 2> /dev/null | awk -v hi="$hi" '!/"mina-/ {
     n = split($4, a, ":"); p = a[n] + 0
-    if (p >= lo && p <= hi) print p }' | sort -un | paste -sd, -
+    if (p >= 1 && p < hi) print p }' | sort -un | paste -sd, -
 }
 
-redirect() { # redirect RANGE PORT
-  local lo=${1%-*} hi=${1#*-} piece
-  for piece in $(pieces "$lo" "$hi"); do
-    $IPT -t nat -A $PRE -p udp --dport "$piece" -j REDIRECT --to-ports "$2" || return 1
+# skip TABLE CHAIN: ports that belong to something else leave the chain (15 per rule is
+# multiport's limit).
+skip() {
+  local table=$1 chain=$2 p batch="" n=0
+  for p in $(echo "$OWNED" | tr ',' '\n' | sort -un); do
+    batch="${batch:+$batch,}$p"
+    n=$((n + 1))
+    if [ $n = 15 ]; then
+      $IPT -t "$table" -A "$chain" -p udp -m multiport --dports "$batch" -j RETURN || return 1
+      batch="" n=0
+    fi
   done
+  [ -z "$batch" ] || $IPT -t "$table" -A "$chain" -p udp -m multiport --dports "$batch" -j RETURN
 }
 
 start() {
-  local t piece
+  local t
+  sweep
+  # Sets an earlier version kept its clients in; nothing refers to them now.
+  if command -v ipset > /dev/null; then
+    for t in mina_udp_hy mina_udp_uc mina_udp_zi; do ipset destroy "$t" 2> /dev/null; done
+  fi
   for t in $CHAINS; do
     $IPT -t "${t%:*}" -N "${t#*:}" 2> /dev/null
     $IPT -t "${t%:*}" -F "${t#*:}" || return 1
   done
 
-  # Ports no range may take: the servers' own, the reserved ones, and the
-  # ones other programs hold.
   BUSY=$(busy_ports)
-  EXCLUDED="$ZIVPN_PORT,$HYSTERIA_PORT,$CUSTOM_PORT${UDP_EXCLUDE:+,$UDP_EXCLUDE}${BUSY:+,$BUSY}"
+  OWNED="$FRONT_PORT,$ZIVPN_PORT,$HYSTERIA_PORT,$CUSTOM_PORT${UDP_EXCLUDE:+,$UDP_EXCLUDE}${BUSY:+,$BUSY}"
 
-  $IPT -t nat -A $PRE -i lo -j RETURN || return 1
-  $IPT -t nat -A $PRE -i "$REQUEST_TUN" -j RETURN || return 1
-  redirect "$ZIVPN_RANGE" "$ZIVPN_PORT" || return 1
-  redirect "$HYSTERIA_RANGE" "$HYSTERIA_PORT" || return 1
-  redirect "$CUSTOM_RANGE" "$CUSTOM_PORT" || return 1
+  $IPT -t raw -A $RAWOUT -j CT --notrack || return 1
 
-  # Mapped source ports stay out of the untracked range below, where the
-  # answers could not be matched back to their connection.
-  $IPT -t nat -A $POST -s "$REQUEST_SUBNET" ! -o "$REQUEST_TUN" -p udp -j MASQUERADE --to-ports 1024-65535 || return 1
-  $IPT -t nat -A $POST -s "$REQUEST_SUBNET" ! -o "$REQUEST_TUN" -p tcp -j MASQUERADE --to-ports 1024-65535 || return 1
+  $IPT -t mangle -A $MG -i lo -j RETURN || return 1
+  $IPT -t mangle -A $MG -i "$REQUEST_TUN" -j RETURN || return 1
+  skip mangle $MG || return 1
+  $IPT -t mangle -A $MG -m conntrack --ctstate ESTABLISHED,RELATED -j RETURN || return 1
+  $IPT -t mangle -A $MG -p udp -j TPROXY --on-port "$FRONT_PORT" --tproxy-mark "$FRONT_MARK/$FRONT_MARK" || return 1
+
   $IPT -t nat -A $POST -s "$REQUEST_SUBNET" ! -o "$REQUEST_TUN" -j MASQUERADE || return 1
 
   $IPT -A $IN -p udp -m multiport --dports "$ZIVPN_PORT,$HYSTERIA_PORT,$CUSTOM_PORT" -j ACCEPT || return 1
+  $IPT -A $IN -p udp -m mark --mark "$FRONT_MARK/$FRONT_MARK" -j ACCEPT || return 1
   $IPT -A $IN -i "$REQUEST_TUN" -j ACCEPT || return 1
-  for piece in $(pieces "${REQUEST_RANGE%-*}" "${REQUEST_RANGE#*-}"); do
-    $IPT -A $IN -p udp --dport "$piece" -j ACCEPT || return 1
-    $IPT -t raw -A $RAWIN -p udp --dport "$piece" -j CT --notrack || return 1
-    $IPT -t raw -A $RAWOUT -p udp --sport "$piece" -j CT --notrack || return 1
-  done
 
   $IPT -A $FWD -i "$REQUEST_TUN" -j ACCEPT || return 1
   $IPT -A $FWD -o "$REQUEST_TUN" -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT || return 1
@@ -1710,49 +2126,41 @@ start() {
   $IPT -t mangle -A $MSS -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu || return 1
 
   # shellcheck disable=SC2086
-  jump nat PREROUTING $PRE $PRE_MATCH || return 1
-  # shellcheck disable=SC2086
-  jump raw PREROUTING $RAWIN $PRE_MATCH || return 1
-  jump raw OUTPUT $RAWOUT -p udp || return 1
-  jump nat POSTROUTING $POST || return 1
-  jump filter INPUT $IN || return 1
-  jump filter FORWARD $FWD || return 1
-  jump mangle FORWARD $MSS -o "$REQUEST_TUN" || return 1
-  jump mangle FORWARD $MSS -i "$REQUEST_TUN" || return 1
+  {
+    jump raw OUTPUT $RAWOUT -p udp -m mark --mark "$FRONT_MARK/$FRONT_MARK" &&
+      jump mangle PREROUTING $MG $LOCAL_UDP &&
+      jump nat POSTROUTING $POST &&
+      jump filter INPUT $IN &&
+      jump filter FORWARD $FWD &&
+      jump mangle FORWARD $MSS -o "$REQUEST_TUN" &&
+      jump mangle FORWARD $MSS -i "$REQUEST_TUN"
+  } || return 1
 }
 
 stop() {
-  # shellcheck disable=SC2086
-  unjump nat PREROUTING $PRE $PRE_MATCH
-  # shellcheck disable=SC2086
-  unjump raw PREROUTING $RAWIN $PRE_MATCH
-  unjump raw OUTPUT $RAWOUT -p udp
-  unjump nat POSTROUTING $POST
-  unjump filter INPUT $IN
-  unjump filter FORWARD $FWD
-  unjump mangle FORWARD $MSS -o "$REQUEST_TUN"
-  unjump mangle FORWARD $MSS -i "$REQUEST_TUN"
-  local t
-  for t in $CHAINS; do
-    $IPT -t "${t%:*}" -F "${t#*:}" 2> /dev/null
-    $IPT -t "${t%:*}" -X "${t#*:}" 2> /dev/null
-  done
+  CHAINS="" sweep
   return 0
 }
 
+# jumps TABLE: how many jumps into our chains the table has.
+jumps() {
+  $IPT -t "$1" -S 2> /dev/null | grep -cE '^-A (PREROUTING|INPUT|FORWARD|OUTPUT|POSTROUTING) .*-j MINA_UDP'
+}
+
 intact() {
+  # Exactly the jumps start() makes, no more.
+  [ "$(jumps raw)" = 1 ] && [ "$(jumps mangle)" = 3 ] && [ "$(jumps nat)" = 1 ] && [ "$(jumps filter)" = 2 ] || return 1
   # shellcheck disable=SC2086
   {
-    $IPT -t nat -C PREROUTING $PRE_MATCH -j $PRE &&
-      $IPT -t raw -C PREROUTING $PRE_MATCH -j $RAWIN &&
-      $IPT -t raw -C OUTPUT -p udp -j $RAWOUT &&
+    $IPT -t raw -C OUTPUT -p udp -m mark --mark "$FRONT_MARK/$FRONT_MARK" -j $RAWOUT &&
+      $IPT -t mangle -C PREROUTING $LOCAL_UDP -j $MG &&
       $IPT -t nat -C POSTROUTING -j $POST &&
       $IPT -C INPUT -j $IN &&
       $IPT -C FORWARD -j $FWD &&
       $IPT -t mangle -C FORWARD -o "$REQUEST_TUN" -j $MSS
   } > /dev/null 2>&1 &&
-    $IPT -t nat -S $PRE 2> /dev/null | grep -q REDIRECT &&
-    $IPT -t raw -S $RAWIN 2> /dev/null | grep -q notrack &&
+    $IPT -t mangle -S $MG 2> /dev/null | grep -q TPROXY &&
+    $IPT -t raw -S $RAWOUT 2> /dev/null | grep -q notrack &&
     $IPT -S $IN 2> /dev/null | grep -q ACCEPT
 }
 
@@ -1766,7 +2174,7 @@ case "${1:-}" in
         echo "mina-udp firewall: rules were removed by something else, restoring them"
         start || echo "mina-udp firewall: could not restore the rules" >&2
       elif [ "$(busy_ports)" != "$BUSY" ]; then
-        # Another program took, or gave up, a port of the UDP Request range.
+        # Another program took, or gave up, a UDP port.
         start || echo "mina-udp firewall: could not update the rules" >&2
       fi
     done
@@ -1832,15 +2240,15 @@ ${B}Account: ${C}$user${N}   password: ${C}$pass${N}   expires: $expiry  ${color
 ${B}------------------------------------------------------------------${N}
 ${B}UDP Hysteria${N}
   Server : $PUBLIC_HOST
-  Port   : $HYSTERIA_PORT
+  Port   : any, e.g. $HYSTERIA_PORT
   Obfs   : $HYSTERIA_OBFS
   Auth   : $pass
 
 ${B}SlowUDP${N} (link)
-  hysteria://$PUBLIC_HOST:$HYSTERIA_RANGE?protocol=udp&auth=$(urlencode "$pass")&obfsParam=$(urlencode "$HYSTERIA_OBFS")&insecure=1&upmbps=50&downmbps=100#$(urlencode "$user")
+  hysteria://$PUBLIC_HOST:$CLIENT_PORTS?protocol=udp&auth=$(urlencode "$pass")&obfsParam=$(urlencode "$HYSTERIA_OBFS")&insecure=1&upmbps=50&downmbps=100#$(urlencode "$user")
 
 ${B}UDP Custom${N} (config)
-  $PUBLIC_HOST:$CUSTOM_RANGE@$user:$pass
+  $PUBLIC_HOST:$CLIENT_PORTS@$user:$pass
 
 ${B}ZIVPN UDP${N}
   Server   : $PUBLIC_HOST
@@ -1850,7 +2258,7 @@ ${B}UDP Request${N}
   Server IP : $PUBLIC_HOST
   Username  : $user
   Password  : $pass
-  Ports     : Start ${REQUEST_HINT%-*}  End ${REQUEST_HINT#*-}   (the app's default 1 - 1 works too)
+  Ports     : Start ${CLIENT_PORTS%-*}  End ${CLIENT_PORTS#*-}   (any narrower range works too)
 EOF
 }
 
@@ -1898,9 +2306,9 @@ listening() { # is anything bound to UDP port $1?
 }
 
 cmd_status() {
-  local svc port ok=0 state line
-  printf "${B}%-22s %-10s %-8s %s${N}\n" SERVER SERVICE PORT CLIENT-PORTS
-  while read -r svc name port range; do
+  local svc name port ok=0 state line
+  printf "${B}%-22s %-10s %-8s %s${N}\n" SERVER SERVICE LISTENS CLIENT-PORTS
+  while read -r svc name port; do
     state=$(systemctl is-active "$svc" 2>/dev/null)
     if [ "$state" = active ] && listening "$port"; then
       line="${G}running${N}   "
@@ -1908,12 +2316,12 @@ cmd_status() {
       line="${R}${state:-down}${N}  "
       ok=1
     fi
-    printf "%-22s %b %-8s %s\n" "$name" "$line" "$port" "$range"
+    printf "%-22s %b %-8s %s\n" "$name" "$line" "$port" "$CLIENT_PORTS"
   done <<EOF
-mina-udp-hysteria Hysteria/SlowUDP $HYSTERIA_PORT $HYSTERIA_RANGE
-mina-udp-custom UDP-Custom $CUSTOM_PORT $CUSTOM_RANGE
-mina-udp-zivpn ZIVPN $ZIVPN_PORT $ZIVPN_RANGE
-mina-udp-request UDP-Request ${REQUEST_HINT%-*} $REQUEST_RANGE
+mina-udp-hysteria Hysteria/SlowUDP $HYSTERIA_PORT
+mina-udp-custom UDP-Custom $CUSTOM_PORT
+mina-udp-zivpn ZIVPN $ZIVPN_PORT
+mina-udp-request UDP-Request $FRONT_PORT
 EOF
   if [ "$(systemctl is-active mina-udp-udpgw 2> /dev/null)" = active ] &&
     ss -Hltn 2> /dev/null | awk '{print $4}' | grep -qxF "$UDPGW_ADDR"; then
@@ -1959,7 +2367,7 @@ cmd_uninstall() {
   sysctl --system > /dev/null 2>&1
   rm -f /usr/local/bin/mina-udp /usr/local/bin/mina-udp-auth /usr/local/bin/mina-hysteria \
     /usr/local/bin/mina-udp-custom /usr/local/bin/mina-zivpn
-  rm -rf /etc/mina-udp "$LIB"
+  rm -rf /etc/mina-udp /run/mina-udp "$LIB"
   rm -f /usr/local/bin/udp
   echo "removed"
 }
@@ -2058,10 +2466,19 @@ packages() {
 fetch_go() { # fetch_go VERSION -> $BUILD/go-VERSION
   local v=$1 dir=$BUILD/go-$1 tgz=$BUILD/go-$1.tar.gz
   [ -x "$dir/bin/go" ] && return 0
-  curl -fsSL --retry 5 --retry-delay 2 -o "$tgz" "https://go.dev/dl/go$v.linux-$ARCH.tar.gz" ||
-    die "could not download Go $v"
-  echo "${GO_SHA256[$v-$ARCH]}  $tgz" | sha256sum -c --status ||
-    die "Go $v download does not match its checksum"
+  # go.dev is not reachable (or answers 404) from every network; the mirrors
+  # serve the same file, and the checksum below is what is trusted.
+  local f=go$v.linux-$ARCH.tar.gz url ok=""
+  for url in "https://go.dev/dl/$f" "https://dl.google.com/go/$f" \
+    "https://golang.google.cn/dl/$f" "https://mirrors.aliyun.com/golang/$f"; do
+    if curl -fsSL --retry 2 --retry-delay 2 --connect-timeout 15 -o "$tgz" "$url" 2> /dev/null &&
+      echo "${GO_SHA256[$v-$ARCH]}  $tgz" | sha256sum -c --status; then
+      ok=1
+      break
+    fi
+    echo "    (Go $v: ${url%/"$f"} did not work, trying the next source)"
+  done
+  [ -n "$ok" ] || die "could not download Go $v from go.dev or its mirrors (is outbound HTTPS open on this server?)"
   mkdir -p "$dir"
   tar -xzf "$tgz" -C "$dir" --strip-components=1
   rm -f "$tgz"
@@ -2081,6 +2498,8 @@ fetch_source() { # fetch_source DIR COMMIT
   [ "$(git -C "$dir" rev-parse HEAD)" = "$commit" ] || die "hysteria source is not the pinned revision"
 }
 
+# Modules come from the first proxy that answers; each is checked against
+# the hashes in the source's own go.sum, so no checksum database is asked.
 gobuild() { # gobuild GOVERSION SRCDIR OUT ARGS...
   local v=$1 src=$2 out=$3
   shift 3
@@ -2088,6 +2507,7 @@ gobuild() { # gobuild GOVERSION SRCDIR OUT ARGS...
     cd "$src"
     env GOROOT="$BUILD/go-$v" GOTOOLCHAIN=local GOWORK=off CGO_ENABLED=0 \
       GOPATH="$BUILD/gopath" GOCACHE="$BUILD/gocache" GOFLAGS="${LOWMEM:+-p=1}" \
+      GOPROXY="https://proxy.golang.org|https://goproxy.io|https://goproxy.cn|direct" GOSUMDB=off \
       "$BUILD/go-$v/bin/go" build -trimpath -o "$out" "$@"
   ) > "$BUILD/build.log" 2>&1 || {
     tail -n 30 "$BUILD/build.log" >&2
@@ -2200,21 +2620,6 @@ valid_ports() { # every item of a comma list is a port number
   done
 }
 
-# The widest run of ports in REQUEST_RANGE that holds no excluded port: the
-# range to type into the app, where every port then reaches the server.
-request_hint() {
-  local lo=${REQUEST_RANGE%-*} hi=${REQUEST_RANGE#*-} p start best_lo best_hi
-  start=$lo best_lo=$lo best_hi=$lo
-  for p in $(echo "$UDP_EXCLUDE" | tr ',' '\n' | sort -n | uniq) $((hi + 1)); do
-    [ "$p" -ge "$lo" ] && [ "$p" -le $((hi + 1)) ] || continue
-    if [ $((p - 1 - start)) -gt $((best_hi - best_lo)) ]; then
-      best_lo=$start best_hi=$((p - 1))
-    fi
-    start=$((p + 1))
-  done
-  echo "$best_lo-$best_hi"
-}
-
 configure() {
   step "Writing the configuration"
   mkdir -p "$ETC" "$LIB"
@@ -2222,18 +2627,15 @@ configure() {
 
   # Values of an earlier install win over the defaults, so re-running this
   # never changes what clients already have typed in.
-  local old_host="" old_obfs="" old_exclude=""
+  local old_host="" old_exclude=""
   if [ -r "$CONF" ]; then
     old_host=$(. "$CONF" && echo "${PUBLIC_HOST:-}")
-    old_obfs=$(. "$CONF" && echo "${HYSTERIA_OBFS:-}")
     old_exclude=$(. "$CONF" && echo "${UDP_EXCLUDE:-}")
   fi
   PUBLIC_HOST=${UDP_HOST:-${old_host:-$(public_ip)}}
   [ -n "$PUBLIC_HOST" ] || die "could not find this machine's public address; run again with UDP_HOST=<address>"
-  HYSTERIA_OBFS=${old_obfs:-$(random 12)}
   UDP_EXCLUDE=${UDP_EXCLUDE:-${old_exclude:-$DEFAULT_EXCLUDE}}
   valid_ports "$UDP_EXCLUDE" || die "UDP_EXCLUDE must be a comma-separated list of ports"
-  REQUEST_HINT=$(request_hint)
 
   cat > "$CONF" <<EOF
 # MinaProNet UDP servers. Written by install-udp.sh on every run; to change
@@ -2242,17 +2644,15 @@ configure() {
 PUBLIC_HOST='$PUBLIC_HOST'
 HYSTERIA_OBFS='$HYSTERIA_OBFS'
 UDP_EXCLUDE='$UDP_EXCLUDE'
-REQUEST_RANGE=$REQUEST_RANGE
-REQUEST_HINT=$REQUEST_HINT
+CLIENT_PORTS=$CLIENT_PORTS
+FRONT_PORT=$FRONT_PORT
+FRONT_MARK=$FRONT_MARK
 REQUEST_TUN=$REQUEST_TUN
 REQUEST_NET=$REQUEST_NET
 REQUEST_SUBNET=$REQUEST_SUBNET
 ZIVPN_PORT=$ZIVPN_PORT
-ZIVPN_RANGE=$ZIVPN_RANGE
 HYSTERIA_PORT=$HYSTERIA_PORT
-HYSTERIA_RANGE=$HYSTERIA_RANGE
 CUSTOM_PORT=$CUSTOM_PORT
-CUSTOM_RANGE=$CUSTOM_RANGE
 UDPGW_ADDR=$UDPGW_ADDR
 EOF
   chmod 600 "$CONF"
@@ -2266,6 +2666,9 @@ EOF
     chmod 600 "$ETC/key.pem"
   fi
 
+  # Path MTU discovery is off in all three: a server's packets go to mina-udp
+  # over loopback first, where any size passes, so a probe would "prove" a
+  # size the real path to the client may not carry.
   cat > "$ETC/hysteria.json" <<EOF
 {
   "listen": ":$HYSTERIA_PORT",
@@ -2275,7 +2678,8 @@ EOF
   "auth": {"mode": "external", "config": {"cmd": "/usr/local/bin/mina-udp-auth"}},
   "recv_window_conn": 16777216,
   "recv_window_client": 67108864,
-  "max_conn_client": 4096
+  "max_conn_client": 4096,
+  "disable_mtu_discovery": true
 }
 EOF
   cat > "$ETC/udp-custom.json" <<EOF
@@ -2288,7 +2692,8 @@ EOF
   "auth": {"mode": "external", "config": {"cmd": "/usr/local/bin/mina-udp-auth"}},
   "recv_window_conn": 16777216,
   "recv_window_client": 67108864,
-  "max_conn_client": 4096
+  "max_conn_client": 4096,
+  "disable_mtu_discovery": true
 }
 EOF
   cat > "$ETC/zivpn.yaml" <<EOF
@@ -2310,6 +2715,7 @@ quic:
   maxConnReceiveWindow: 20971520
   maxIdleTimeout: 60s
   maxIncomingStreams: 1024
+  disablePathMTUDiscovery: true
 udpIdleTimeout: 120s
 EOF
   chmod 600 "$ETC"/*.json "$ETC"/*.yaml
@@ -2341,8 +2747,6 @@ net.core.netdev_max_backlog = 16384
 net.core.somaxconn = 8192
 net.ipv4.udp_rmem_min = 16384
 net.ipv4.udp_wmem_min = 16384
-# The servers' own outgoing connections stay clear of the client port ranges.
-net.ipv4.ip_local_port_range = 40000 65535
 # Outgoing TCP (what the tunnels fetch for their clients).
 net.ipv4.tcp_fastopen = 3
 net.ipv4.tcp_mtu_probing = 1
@@ -2350,10 +2754,12 @@ net.ipv4.tcp_slow_start_after_idle = 0
 net.ipv4.tcp_rmem = 4096 131072 33554432
 net.ipv4.tcp_wmem = 4096 65536 33554432
 $bbr
-# Every client is a few conntrack entries (port hopping makes more); a full
-# table drops packets.
+# A client that scatters its packets over many ports (UDP Request, and the
+# app's Hysteria client, which uses another port for every packet) leaves one
+# never-answered conntrack entry per port. The short timeout for unanswered
+# UDP keeps those few; a full table drops packets.
 net.netfilter.nf_conntrack_max = 1048576
-net.netfilter.nf_conntrack_udp_timeout = 60
+net.netfilter.nf_conntrack_udp_timeout = 4
 net.netfilter.nf_conntrack_udp_timeout_stream = 180
 EOF
   printf 'tun\nnf_conntrack\n%s' "${bbr:+tcp_bbr
@@ -2415,7 +2821,7 @@ services() {
     "/usr/local/bin/mina-zivpn server --disable-update-check --log-level info --config $ETC/zivpn.yaml" \
     "Environment=HYSTERIA_DISABLE_UPDATE_CHECK=1"
   unit mina-udp-request "UDP Request" \
-    "/usr/local/bin/mina-udp request -ports $REQUEST_RANGE -exclude $UDP_EXCLUDE,$ZIVPN_PORT,$HYSTERIA_PORT,$CUSTOM_PORT -tun $REQUEST_TUN -net $REQUEST_NET -users $ETC/users.db -state /run/mina-udp/sessions" \
+    "/usr/local/bin/mina-udp request -listen $FRONT_PORT -mark $FRONT_MARK -hysteria-obfs $HYSTERIA_OBFS -hysteria-port $HYSTERIA_PORT -custom-port $CUSTOM_PORT -zivpn-port $ZIVPN_PORT -tun $REQUEST_TUN -net $REQUEST_NET -users $ETC/users.db -state /run/mina-udp/sessions" \
     "ExecStartPre=-/sbin/modprobe tun
 RuntimeDirectory=mina-udp
 RuntimeDirectoryMode=0700
